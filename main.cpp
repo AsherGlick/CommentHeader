@@ -44,7 +44,6 @@
 | ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   |
 | POSSIBILITY OF SUCH DAMAGE.                                                  |
 \******************************************************************************/
-
 #include <iostream>
 #include <string>
 #include <time.h>
@@ -103,7 +102,7 @@ int main (int argv, char * argc[])
   else if (string(argc[1]) == "-sig")  cout << signiture(cppTop,cppColumn,cppBottom) << endl; // Asher Glick Signiture
   else if (string(argc[1]) == "-psig") cout << signiture(pythonTop,pythonColumn,pythonBottom) << endl; // python formatted signature
   else if (string(argc[1]) == "-bsd")  cout << bsd(input,cppTop,cppColumn,cppBottom) << endl; // default bsd licence
-  else if (string(argc[1]) == "-pbsd") cout << pbsd(2,input) << endl;
+  else if (string(argc[1]) == "-pbsd") cout << bsd(input,pythonTop,pythonColumn,pythonBottom) << endl;
   else if (string(argc[1]) == "-fsig") cout << signiture(cppTop,cppColumn,cppBottom) << endl << bsd("Asher Glick",cppTop,cppColumn,cppBottom) << endl; // Signature and licence
   //else if (string(argc[1]) == "-pfsig") cout << pythonSigniture() << pbsd(2,"Asher Glick") << endl; // 
   else { // Defaut to c headder
@@ -134,25 +133,30 @@ void help()
 /********************************** C HEADDER *********************************\
 | The C headder function
 \******************************************************************************/
-string cHead (string input) {
-  int half = (74-input.size())/2;  
+string cHead (string input, string top, string col, string bot) {
+
+  string topBegin = top.substr(0,4);
+  string topFill = top.substr(5,1);
+  string topEnd = top.substr(76,4);
+  
+  int half = (70-input.size())/2;
   string output;
   // Begin Comment
-  output = "/*";
+  output = topBegin;
   // Predicessing Marks
-  for (int i = 0; i < half; i++) output += '*';
+  for (int i = 0; i < half; i++) output += topFill;
   // Account for an odd number of Marks
-  if (input.size()%2 == 1)output += '*';
+  if (input.size()%2 == 1)output += topFill;
   // Add the title of the headder
   output += ' ' + input + ' ';
   // Prodceeding Marks
-  for (int i = 0; i < half; i++) output += '*';
+  for (int i = 0; i < half; i++) output += topFill;
   // Finish Tital Line
-  output += "*\\\n";
+  output += topEnd+"\n";
   // Body
-  output += "|\n";
+  output += col+"\n";
   // Footer Line
-  output += "\\******************************************************************************/";
+  output += bot;
   return output;
 }
 /****************************** C TITLE HEADDER *******************************\
