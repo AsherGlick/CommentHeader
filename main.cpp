@@ -51,7 +51,7 @@
 using namespace std;
 
 void help();
-string cHead(string input);
+string cHead(string input, string top, string col, string bot);
 string cTitle(string input);
 string htmlHead(string input);
 string pythonHead(string input);
@@ -94,10 +94,12 @@ int main (int argv, char * argc[])
   }
   else input = "";
   // Check to see what type of headder needs to be generated
-  if (string(argc[1]) == "-c")         cout << cHead(input) << endl; // C / C++ HEADDER
+  if (string(argc[1]) == "-c")         cout << cHead(input,cppTop   ,cppColumn   ,cppBottom)    << endl; // C / C++ HEADDER
+  else if (string(argc[1]) == "-h")    cout << cHead(input,htmlTop  ,htmlColumn  ,htmlBottom)   << endl; // HTML HEADDER
+  else if (string(argc[1]) == "-p")    cout << cHead(input,pythonTop,pythonColumn,pythonBottom) << endl; // Python HEADDER
+  
+  
   else if (string(argc[1]) == "-ct")   cout << cTitle(input) << endl; // C / C++ TITLE HEADDER
-  else if (string(argc[1]) == "-h")    cout << htmlHead(input) << endl;// HTML HEADDER
-  else if (string(argc[1]) == "-p")    cout << pythonHead(input) << endl; // Python HEADDER
   else if (string(argc[1]) == "-pt")   cout << pythonTitle(input) << endl; // Python TITLE HEADDER
   else if (string(argc[1]) == "-sig")  cout << signiture(cppTop,cppColumn,cppBottom) << endl; // Asher Glick Signiture
   else if (string(argc[1]) == "-psig") cout << signiture(pythonTop,pythonColumn,pythonBottom) << endl; // python formatted signature
@@ -108,9 +110,19 @@ int main (int argv, char * argc[])
   else { // Defaut to c headder
     string input = string(argc[1]);
     for (int i = 2; i < argv; i++) input += " "+string(argc[i]);
-    cout << cHead(input) << endl;
+    cout << cHead(input,cppTop,cppColumn,cppBottom) << endl;
   }
 }
+
+  /****************************************************************************/
+ /****************************************************************************/
+/****************************************************************************/
+
+  //////////////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+
 /************************************ HELP ************************************\
 |
 \******************************************************************************/
@@ -129,6 +141,20 @@ void help()
   cout << "-pbsd [name] will give you a python version of the bsd licence" <<endl;
   cout << "-fsig will give you an Asher Glick signature and BSD Licence" << endl;
   cout << "-pfsig will give you an fsig for python" << endl;
+  
+  // new style
+  cout << "Comment Headder Function" << endl;
+  cout << " -T title" << endl;
+  cout << " -H headder" << endl;
+  cout << " -S signature" << endl;
+  cout << " -L licence <style" << endl;
+  cout << "  'bsd' BSDv2 licence" << endl;
+  cout << "  'gpl' GPLv3 licence" << endl;
+  cout << "" << endl;
+  cout << " -c <title> c++ headder" << endl;
+  cout << " -p <title> python headder" << endl;
+  cout << " -h <title> html headder" << endl;
+  cout << " -<number> go to the alternet version of that command" << endl;
 }
 /********************************** C HEADDER *********************************\
 | The C headder function
@@ -179,54 +205,6 @@ string cTitle (string input) {
   output += "\n//////////////////////////////////////////////////////////////////////////////";
   return output;
 }
-/******************************** HTML HEADDER ********************************\
-| The HTML Headder Function, this function is probably flawed
-\******************************************************************************/
-string htmlHead (string input) {
-  int half = (70-input.size())/2;  
-  string output;
-  // Begin Comment
-  output = "<!--";
-  // Predicessing Marks
-  for (int i = 0; i < half; i++) output += '-';
-  // Account for an odd number of Marks
-  if (input.size()%2 == 1)output += '-';
-  // Add the title of the headder
-  output += ' ' + input + ' ';
-  // Prodceeding Marks
-  for (int i = 0; i < half; i++) output += '-';
-  // Finish Tital Line
-  output += "--!>\n";
-  // Body
-  output += "<\n";
-  // Footer Line
-  output += "<------------------------------------------------------------------------------>";
-  return output;
-}
-/******************************* PYTHON HEADDER *******************************\
-| The Python Headder function
-\******************************************************************************/
-string pythonHead (string input) {
-  int half = (76-input.size())/2;  
-  string output;
-  // Begin Comment
-  output = "#";
-  // Predicessing Marks
-  for (int i = 0; i < half; i++) output += '#';
-  // Account for an odd number of Marks
-  if (input.size()%2 == 1)output += '#';
-  // Add the title of the headder
-  output += ' ' + input + ' ';
-  // Prodceeding Marks
-  for (int i = 0; i < half; i++) output += '#';
-  // Finish Tital Line
-  output += "#\n";
-  // Body
-  output += "#\n";
-  // Footer Line
-  output += "################################################################################";
-  return output;
-}
 /**************************** PYTHON TITLE HEADDER ****************************\
 |
 \******************************************************************************/
@@ -252,7 +230,29 @@ string pythonTitle (string input) {
 | column variables                                                             |
 \******************************************************************************/
 string signiture (string top, string col,string bot) {
-  return top+"\n"+col+"                                     ,,                                       "+col+"\n"+col+"                    db             `7MM                                       "+col+"\n"+col+"                   ;MM:              MM                                       "+col+"\n"+col+"                  ,V^MM.    ,pP\"Ybd  MMpMMMb.  .gP\"Ya `7Mb,od8                "+col+"\n"+col+"                 ,M  `MM    8I   `\"  MM    MM ,M'   Yb  MM' \"'                "+col+"\n"+col+"                 AbmmmqMA   `YMMMa.  MM    MM 8M\"\"\"\"\"\"  MM                    "+col+"\n"+col+"                A'     VML  L.   I8  MM    MM YM.    ,  MM                    "+col+"\n"+col+"              .AMA.   .AMMA.M9mmmP'.JMML  JMML.`Mbmmd'.JMML.                  "+col+"\n"+col+"                                                                              "+col+"\n"+col+"                                                                              "+col+"\n"+col+"                                ,,    ,,                                      "+col+"\n"+col+"                     .g8\"\"\"bgd `7MM    db        `7MM                         "+col+"\n"+col+"                   .dP'     `M   MM                MM                         "+col+"\n"+col+"                   dM'       `   MM  `7MM  ,p6\"bo  MM  ,MP'                   "+col+"\n"+col+"                   MM            MM    MM 6M'  OO  MM ;Y                      "+col+"\n"+col+"                   MM.    `7MMF' MM    MM 8M       MM;Mm                      "+col+"\n"+col+"                   `Mb.     MM   MM    MM YM.    , MM `Mb.                    "+col+"\n"+col+"                     `\"bmmmdPY .JMML..JMML.YMbmd'.JMML. YA.                   "+col+"\n"+col+"                                                                              "+col+"\n"+bot;
+  string sig = "";
+  sig += top+"\n"
+  sig += col+"                                     ,,                                       "+      col+"\n";
+  sig += col+"                    db             `7MM                                       "+      col+"\n";
+  sig += col+"                   ;MM:              MM                                       "+      col+"\n";
+  sig += col+"                  ,V^MM.    ,pP\"Ybd  MMpMMMb.  .gP\"Ya `7Mb,od8                "+    col+"\n";
+  sig += col+"                 ,M  `MM    8I   `\"  MM    MM ,M'   Yb  MM' \"'                "+    col+"\n";
+  sig += col+"                 AbmmmqMA   `YMMMa.  MM    MM 8M\"\"\"\"\"\"  MM                    "+col+"\n"
+  sig += col+"                A'     VML  L.   I8  MM    MM YM.    ,  MM                    "+      col+"\n"
+  sig += col+"              .AMA.   .AMMA.M9mmmP'.JMML  JMML.`Mbmmd'.JMML.                  "+      col+"\n"
+  sig += col+"                                                                              "+      col+"\n"
+  sig += col+"                                                                              "+      col+"\n"
+  sig += col+"                                ,,    ,,                                      "+      col+"\n"
+  sig += col+"                     .g8\"\"\"bgd `7MM    db        `7MM                         "+   col+"\n"
+  sig += col+"                   .dP'     `M   MM                MM                         "+      col+"\n"
+  sig += col+"                   dM'       `   MM  `7MM  ,p6\"bo  MM  ,MP'                   "+     col+"\n"
+  sig += col+"                   MM            MM    MM 6M'  OO  MM ;Y                      "+      col+"\n"
+  sig += col+"                   MM.    `7MMF' MM    MM 8M       MM;Mm                      "+      col+"\n"
+  sig += col+"                   `Mb.     MM   MM    MM YM.    , MM `Mb.                    "+      col+"\n"
+  sig += col+"                     `\"bmmmdPY .JMML..JMML.YMbmd'.JMML. YA.                   "+     col+"\n"
+  sig += col+"                                                                              "+      col+"\n"
+  sig += bot;
+  return sig;
 }
 /********************************* BSD2 / BSD *********************************\
 |
