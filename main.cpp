@@ -231,7 +231,7 @@ string pythonTitle (string input) {
 \******************************************************************************/
 string signiture (string top, string col,string bot) {
   string sig = "";
-  sig += top+"\n"
+  sig += top+"\n";
   sig += col+"                                     ,,                                       "+      col+"\n";
   sig += col+"                    db             `7MM                                       "+      col+"\n";
   sig += col+"                   ;MM:              MM                                       "+      col+"\n";
