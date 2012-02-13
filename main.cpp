@@ -237,20 +237,20 @@ string signiture (string top, string col,string bot) {
   sig += col+"                   ;MM:              MM                                       "+      col+"\n";
   sig += col+"                  ,V^MM.    ,pP\"Ybd  MMpMMMb.  .gP\"Ya `7Mb,od8                "+    col+"\n";
   sig += col+"                 ,M  `MM    8I   `\"  MM    MM ,M'   Yb  MM' \"'                "+    col+"\n";
-  sig += col+"                 AbmmmqMA   `YMMMa.  MM    MM 8M\"\"\"\"\"\"  MM                    "+col+"\n"
-  sig += col+"                A'     VML  L.   I8  MM    MM YM.    ,  MM                    "+      col+"\n"
-  sig += col+"              .AMA.   .AMMA.M9mmmP'.JMML  JMML.`Mbmmd'.JMML.                  "+      col+"\n"
-  sig += col+"                                                                              "+      col+"\n"
-  sig += col+"                                                                              "+      col+"\n"
-  sig += col+"                                ,,    ,,                                      "+      col+"\n"
-  sig += col+"                     .g8\"\"\"bgd `7MM    db        `7MM                         "+   col+"\n"
-  sig += col+"                   .dP'     `M   MM                MM                         "+      col+"\n"
-  sig += col+"                   dM'       `   MM  `7MM  ,p6\"bo  MM  ,MP'                   "+     col+"\n"
-  sig += col+"                   MM            MM    MM 6M'  OO  MM ;Y                      "+      col+"\n"
-  sig += col+"                   MM.    `7MMF' MM    MM 8M       MM;Mm                      "+      col+"\n"
-  sig += col+"                   `Mb.     MM   MM    MM YM.    , MM `Mb.                    "+      col+"\n"
-  sig += col+"                     `\"bmmmdPY .JMML..JMML.YMbmd'.JMML. YA.                   "+     col+"\n"
-  sig += col+"                                                                              "+      col+"\n"
+  sig += col+"                 AbmmmqMA   `YMMMa.  MM    MM 8M\"\"\"\"\"\"  MM                    "+col+"\n";
+  sig += col+"                A'     VML  L.   I8  MM    MM YM.    ,  MM                    "+      col+"\n";
+  sig += col+"              .AMA.   .AMMA.M9mmmP'.JMML  JMML.`Mbmmd'.JMML.                  "+      col+"\n";
+  sig += col+"                                                                              "+      col+"\n";
+  sig += col+"                                                                              "+      col+"\n";
+  sig += col+"                                ,,    ,,                                      "+      col+"\n";
+  sig += col+"                     .g8\"\"\"bgd `7MM    db        `7MM                         "+   col+"\n";
+  sig += col+"                   .dP'     `M   MM                MM                         "+      col+"\n";
+  sig += col+"                   dM'       `   MM  `7MM  ,p6\"bo  MM  ,MP'                   "+     col+"\n";
+  sig += col+"                   MM            MM    MM 6M'  OO  MM ;Y                      "+      col+"\n";
+  sig += col+"                   MM.    `7MMF' MM    MM 8M       MM;Mm                      "+      col+"\n";
+  sig += col+"                   `Mb.     MM   MM    MM YM.    , MM `Mb.                    "+      col+"\n";
+  sig += col+"                     `\"bmmmdPY .JMML..JMML.YMbmd'.JMML. YA.                   "+     col+"\n";
+  sig += col+"                                                                              "+      col+"\n";
   sig += bot;
   return sig;
 }
