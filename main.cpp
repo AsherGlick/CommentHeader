@@ -255,7 +255,7 @@ string signiture (string top, string col,string bot) {
   return sig;
 }
 /********************************* BSD2 / BSD *********************************\
-|
+| the BSD 2 licence, one of the best licences in my oppinion!                  |
 \******************************************************************************/
 string thisyear() {
   #define SECONDSPERYEAR 31556926
