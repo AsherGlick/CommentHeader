@@ -266,6 +266,7 @@ string thisyear() {
   return ss.str();
 }
 
+
 string bsd(string name, string top, string col, string bot) {
   string year = thisyear();
   string owner = name;
