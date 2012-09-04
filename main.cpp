@@ -266,7 +266,10 @@ string thisyear() {
   return ss.str();
 }
 
-
+/******************************** BSD FUNCTION ********************************\
+| This function prints out the BSD licence to the screen with the correct      |
+| borders for the style of source code                                         |
+\******************************************************************************/
 string bsd(string name, string top, string col, string bot) {
   string year = thisyear();
   string owner = name;
