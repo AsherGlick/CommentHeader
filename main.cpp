@@ -59,6 +59,41 @@ string pythonTitle(string input);
 string signiture(string,string,string);
 string bsd(string input,string top,string col,string mid);
 
+
+struct headerStyle {
+  string _TOP-LEFT = "";
+  string _TOP-FILL = " ";
+  string _TOP-RIGHT = "";
+  
+  string _LEFT-COLUMN = "";
+  string _RIGHT-COLUMN = "";
+  
+  string _BOTTOM-LEFT = "";
+  string _BOTTOM-FILL = " ";
+  string _BOTTOM-RIGHT = "";
+};
+
+struct titleStyle {
+  string outsideLeft[] = { "",  "",  "",  "",  ""  };
+  string insideLeft[] =  { "", " ", " ", " ", "" };
+  string insideRight[] = { "", " ", " ", " ", "" };
+  string outsideRight[] ={ "",  "",  "",  "",  ""  };
+  string filler[]       ={"*","*","*","*","*"}
+};
+
+headerStyle newHeader(string topleft, string topfill) {
+  
+}
+
+titleStyle newTitle (, outsideLeft, insideLeft,) {
+
+}
+
+titlestyle CPP = newTitle
+
+
+
+
 string cppTop    = "/******************************************************************************\\";
 string pythonTop = "################################################################################";
 string htmlTop   = "<!------------------------------------------------------------------------------"; 
@@ -71,16 +106,36 @@ string cppBottom = "\\**********************************************************
 string pythonBottom = "################################################################################";
 string htmlBottom   = "------------------------------------------------------------------------------->";
 
-
+#define _PYTHON
+#define _C
+#define _HTML
 
 int main (int argv, char * argc[])
 {
-  // check input functions
+  // Declare all the flags
+  
+  // If there are no arguments, output the help screen
   if (argv <= 1)
   {
     help();
     return 0;
   }
+  
+  //
+  for (int i = 0; i < argv; i++) {
+    // Check for flags
+    if (argc[i][0] == "-") {
+      
+    }
+    
+    // Take all non flagged input and append it together
+    else {
+      
+    }
+  }
+  
+  
+  
   if (string(argc[1]) == "--h" || string(argc[1]) == "--help")
   {
     help();
@@ -104,7 +159,7 @@ int main (int argv, char * argc[])
   else if (string(argc[1]) == "-sig")  cout << signiture(cppTop,cppColumn,cppBottom) << endl; // Asher Glick Signiture
   else if (string(argc[1]) == "-psig") cout << signiture(pythonTop,pythonColumn,pythonBottom) << endl; // python formatted signature
   else if (string(argc[1]) == "-bsd")  cout << bsd(input,cppTop,cppColumn,cppBottom) << endl; // default bsd licence
-  else if (string(argc[1]) == "-pbsd") cout << bsd(input,pythonTop,pythonColumn,pythonBottom) << endl;
+  else if (string(argc[1]) == "-pbsd") cout << bsd(input,pythonTop,pythonColumn   ,pythonBottom) << endl;
   else if (string(argc[1]) == "-fsig") cout << signiture(cppTop,cppColumn,cppBottom) << endl << bsd("Asher Glick",cppTop,cppColumn,cppBottom) << endl; // Signature and licence
   //else if (string(argc[1]) == "-pfsig") cout << pythonSigniture() << pbsd(2,"Asher Glick") << endl; // 
   else { // Defaut to c headder
@@ -128,6 +183,7 @@ int main (int argv, char * argc[])
 \******************************************************************************/
 void help()
 {
+  // Version 1
   cout << "Comment Headder Function" << endl;
   cout << "--help will display a help message" << endl;
   cout << "-c [title] will give you a c headder" << endl;
@@ -142,7 +198,7 @@ void help()
   cout << "-fsig will give you an Asher Glick signature and BSD Licence" << endl;
   cout << "-pfsig will give you an fsig for python" << endl;
   
-  // new style
+  // Version 2
   cout << "Comment Headder Function" << endl;
   cout << " -T title" << endl;
   cout << " -H headder" << endl;
@@ -155,7 +211,11 @@ void help()
   cout << " -p <title> python headder" << endl;
   cout << " -h <title> html headder" << endl;
   cout << " -<number> go to the alternet version of that command" << endl;
+  
+  // Version 3
+  
 }
+
 /********************************** C HEADDER *********************************\
 | The C headder function
 \******************************************************************************/
@@ -254,6 +314,7 @@ string signiture (string top, string col,string bot) {
   sig += bot;
   return sig;
 }
+
 /********************************* BSD2 / BSD *********************************\
 | the BSD 2 licence, one of the best licences in my oppinion!                  |
 \******************************************************************************/
