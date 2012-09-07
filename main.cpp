@@ -136,14 +136,45 @@ headerStyles[_PYTHON] = newHeader("#","#","#",
 
 
 
+map<string, char> fullFlagCompression;
+fullFlagCompression["c++"] = 'c';
 
 
+/* Flags ************
+
+ h - help
+ s - signiture
+ f - function header
+ t - section title
+ b - bsd licence
+ - - full tag (eg --help vs -h)
+
+ i - append input to the arguments
+ l - specify a custom character length for the title (default 80)
+
+****************/
+
+bool activateFlag () {
+  switch (argc[i][j]) {
+          case 'h':
+            cout << "YOU HAVE ENTERED THE HELP MENU!" << endl;
+            break;
+          case 's':
+            cout << "YOU HAVE ENABLED THE SIGNIGTURE OUTPUT" << endl;
+            break;
+          case 'f': 
+            cout << "YOU HAVE ENABLED THE FUNCTION HEADER METHOD (DEFAULT)" << endl;
+            break;
+          case 't':
+            cout << "YOU HAVE ENABLED THE TITLE HEADER METHOD" << endl;
+            break;
+          case 'b':
+            cout << "YOU HAVE ENABLED THE OUTPUT OF THE BSD HEADER" << endl;
+        }
+}
 
 int main (int argv, char * argc[])
 {
-  header
-  // Declare all the flags
-  
   // If there are no arguments, output the help screen
   if (argv <= 1)
   {
@@ -155,9 +186,12 @@ int main (int argv, char * argc[])
   for (int i = 0; i < argv; i++) {
     // Check for flags
     if (argc[i][0] == '-') {
-      for (int j = 1; j < argc.length; j++) {
-        if (headerStyles.find(argc[j]) != headerStyles.end()) {
-
+      if (argc[i][1] == '-') {
+        cout << "FULL FLAG MODE" << endl;
+      }
+      else {
+        for (int j = i; j < argv; j++) {
+          if (activateFlag(argc[i][j])) break;
         }
       }
     }
