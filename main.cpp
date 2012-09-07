@@ -48,70 +48,100 @@
 #include <string>
 #include <time.h>
 #include <sstream>
+#include <map>
 using namespace std;
 
+
+
+/***************************** HEADER STYLE CLASS *****************************\
+| The header style class is a class for each of the different style of headers |
+| for each different language. It allows an easy way of creating and           |
+| classifying different 
+\******************************************************************************/
+class headerStyle {
+  public:
+    string _TOP_LEFT;
+    string _TOP_FILL;
+    string _TOP_RIGHT;
+    
+    string _LEFT_COLUMN;
+    string _RIGHT_COLUMN;
+    
+    string _BOTTOM_LEFT;
+    string _BOTTOM_FILL;
+    string _BOTTOM_RIGHT;
+};
+
+
+
+
 void help();
-string cHead(string input, string top, string col, string bot);
-string cTitle(string input);
-string htmlHead(string input);
-string pythonHead(string input);
-string pythonTitle(string input);
+string cHead(string title, headerStyle);
+string cTitle(string input, titlestyle);
+//string htmlHead(string input);
+//string pythonHead(string input);
+//string pythonTitle(string input);
 string signiture(string,string,string);
 string bsd(string input,string top,string col,string mid);
 
 
-struct headerStyle {
-  string _TOP-LEFT = "";
-  string _TOP-FILL = " ";
-  string _TOP-RIGHT = "";
-  
-  string _LEFT-COLUMN = "";
-  string _RIGHT-COLUMN = "";
-  
-  string _BOTTOM-LEFT = "";
-  string _BOTTOM-FILL = " ";
-  string _BOTTOM-RIGHT = "";
-};
 
+
+
+/*
 struct titleStyle {
   string outsideLeft[] = { "",  "",  "",  "",  ""  };
   string insideLeft[] =  { "", " ", " ", " ", "" };
   string insideRight[] = { "", " ", " ", " ", "" };
   string outsideRight[] ={ "",  "",  "",  "",  ""  };
   string filler[]       ={"*","*","*","*","*"}
-};
+};*/
 
-headerStyle newHeader(string topleft, string topfill) {
-  
+headerStyle newHeader(string top_left, string top_fill, string top_right, string left_column, string right_column, string bottom_left, string bottom_fill, string bottom_right) {
+  headerStyle theNewHeader;
+  theNewHeader._TOP_LEFT     = top_left;
+  theNewHeader._TOP_FILL     = top_fill;
+  theNewHeader._TOP_RIGHT    = top_right;
+  theNewHeader._LEFT_COLUMN  = left_column;
+  theNewHeader._RIGHT_COLUMN = right_column;
+  theNewHeader._BOTTOM_LEFT  = bottom_right;
+  theNewHeader._BOTTOM_FILL  = bottom_fill;
+  theNewHeader._BOTTOM_RIGHT = bottom_right;
+  return theNewHeader;
 }
 
-titleStyle newTitle (, outsideLeft, insideLeft,) {
+/*titleStyle newTitle (, outsideLeft, insideLeft,) {
 
-}
-
-titlestyle CPP = newTitle
+}*/
 
 
 
 
-string cppTop    = "/******************************************************************************\\";
-string pythonTop = "################################################################################";
-string htmlTop   = "<!------------------------------------------------------------------------------"; 
 
-string cppColumn = "|";
-string pythonColumn = "#";
-string htmlColumn = "|";
 
-string cppBottom = "\\******************************************************************************/";
-string pythonBottom = "################################################################################";
-string htmlBottom   = "------------------------------------------------------------------------------->";
+#define _PYTHON 'p'
+#define _C      'c'
+#define _HTML   'h'
 
-#define _PYTHON
-#define _C
-#define _HTML
+
+map<char,headerStyle> headerStyles;
+// C / C++ Header Style
+headerStyles[_C]      = newHeader("/*","*","*\\",
+                                  "|",      "|",
+                                 "\\*","*","*/");
+//Python Header Style
+headerStyles[_PYTHON] = newHeader("#","#","#",
+                                  "#",    "#",
+                                  "#","#","#");
+
+
+
+
+
 
 int main (int argv, char * argc[])
 {
+  header
   // Declare all the flags
   
   // If there are no arguments, output the help screen
@@ -124,8 +154,12 @@ int main (int argv, char * argc[])
   //
   for (int i = 0; i < argv; i++) {
     // Check for flags
-    if (argc[i][0] == "-") {
-      
+    if (argc[i][0] == '-') {
+      for (int j = 1; j < argc.length; j++) {
+        if (headerStyles.find(argc[j]) != headerStyles.end()) {
+
+        }
+      }
     }
     
     // Take all non flagged input and append it together
@@ -147,7 +181,12 @@ int main (int argv, char * argc[])
     input = string(argc[2]);
     for (int i = 3; i < argv; i++) input += " "+string(argc[i]);
   }
+
+
+
+
   else input = "";
+
   // Check to see what type of headder needs to be generated
   if (string(argc[1]) == "-c")         cout << cHead(input,cppTop   ,cppColumn   ,cppBottom)    << endl; // C / C++ HEADDER
   else if (string(argc[1]) == "-h")    cout << cHead(input,htmlTop  ,htmlColumn  ,htmlBottom)   << endl; // HTML HEADDER
@@ -176,6 +215,26 @@ int main (int argv, char * argc[])
   //////////////////////////////////////////////////////////////////////////////
  //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
+
+/*
+ ##############################################################################
+#####################################             ##############################
+####################################  HELLO WORLD  #############################
+#####################################             ##############################
+ ##############################################################################
+*/
+
+    ////////////////////////////////////////////////////////////////////////////
+   ////////////////////////////////               /////////////////////////////
+  ////////////////////////////////  HELLO WORLD  /////////////////////////////
+ ////////////////////////////////               /////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+    /**************************************************************************/
+   /*******************************               ****************************/
+  /*******************************  HELLO WORLD  ****************************/
+ /*******************************               ****************************/
+/**************************************************************************/
 
 
 /************************************ HELP ************************************\
