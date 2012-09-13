@@ -202,25 +202,22 @@ int main (int argv, char * argc[])
   for (int i = 0; i < argv; i++) {
     arguments.push_back(argc[i]);
   }
-  cout << "This shoud compile now" << endl; 
-  cout << "ARGUMENT LENGTH:" << argv << endl;
-  cout << "VECTOR LENGTH:" << arguments.size() << endl;;
 
   // Loop throguh all of the arguments
-  for (int i = 0; i < argv; i++) {
+  for (unsigned int i = 0; i < arguments.size(); i++) {
     // Check for flags
-    if (argc[i][0] == '-') {
-      if (argc[i][1] == '-') {
+    if (arguments[i][0] == '-') {
+      if (arguments[i][1] == '-') {
         cout << "FULL FLAG MODE" << endl;
         // TODO: Hardcode width and length
       }
  
       else {
-        for (int j = i; j < argv; j++) {
-          if (argc[i][j] == 'w'){
+        for (unsigned int j = i; j < arguments.size(); j++) {
+          if (arguments[i][j] == 'w'){
             cout << "YOU HAVE DECIDED TO SPECIFY A CUSTOM WIDTH OF YOU TITLE" << endl;
           }
-          else if( argc[i][j] == 'l' ) {
+          else if( arguments[i][j] == 'l' ) {
             cout << "YOU HAVE DECIDED TO SPECIFY A CUSTOM LENGTH OF YOUR TITLE" << endl;
           }
           else if (activateFlag(argc[i][j])) break;
