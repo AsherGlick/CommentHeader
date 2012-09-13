@@ -184,13 +184,12 @@ bool activateFlag ( char flag ) {
         cout << "You have set multiple output flags, only one is allowed" << endl;
         exit (0);
       }
-      break;
-    
+      return true;    
     // Choose as many of these as you want
     case 'i':
       cout << "YOU HAVE ENABLED EXTENDED INPUT MODE" << endl;
       extendedInputFlag = true;
-      break;
+      return true;
   }
   return false;
 }
@@ -256,8 +255,9 @@ int main (int argv, char * argc[])
             }
 
           }
-          else if (activateFlag(argc[i][j])) {
-            break;
+          else if (activateFlag(arguments[i][j])) {}
+          else {
+            cout << "Undefined flag: " << arguments[i][j] << endl;
           }
         }
       }
