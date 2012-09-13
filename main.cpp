@@ -94,7 +94,7 @@ class headerStyle {
     string _BOTTOM_RIGHT;
 };
 
-
+/*
 headerStyle newHeader(string top_left, string top_fill, string top_right, string left_column, string right_column, string bottom_left, string bottom_fill, string bottom_right) {
   headerStyle theNewHeader;
   theNewHeader._TOP_LEFT     = top_left;
@@ -106,7 +106,7 @@ headerStyle newHeader(string top_left, string top_fill, string top_right, string
   theNewHeader._BOTTOM_FILL  = bottom_fill;
   theNewHeader._BOTTOM_RIGHT = bottom_right;
   return theNewHeader;
-}
+}*/
 
 /*
 class titleStyle {
