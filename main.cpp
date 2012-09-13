@@ -203,6 +203,8 @@ int main (int argv, char * argc[])
     arguments.push_back(argc[i]);
   }
   cout << "This shoud compile now" << endl; 
+  cout << "ARGUMENT LENGTH:" << argv << endl;
+  cout << "VECTOR LENGTH:" << arguments.size() << endl;;
 
   // Loop throguh all of the arguments
   for (int i = 0; i < argv; i++) {
