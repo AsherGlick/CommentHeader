@@ -179,11 +179,10 @@ bool activateFlag ( char flag ) {
     case 'b':
     case 't':
     case 'f':
-      cout << "YOU HAVE ENABLED AN OUPTU FLAG " << flag << endl;
-      if (!outputFlagSet) { outputFlag = flag; }
+      if (!outputFlagSet) { outputFlag = flag; outputFlagSet = true;}
       else {
         cout << "You have set multiple output flags, only one is allowed" << endl;
-        return 0;
+        exit (0);
       }
       break;
     
