@@ -62,6 +62,26 @@ using namespace std;
 \******************************************************************************/
 class headerStyle {
   public:
+    headerStyle () {
+      _TOP_LEFT     = "";
+      _TOP_FILL     = " ";
+      _TOP_RIGHT    = "";
+      _LEFT_COLUMN  = "";
+      _RIGHT_COLUMN = "";
+      _BOTTOM_LEFT  = "";
+      _BOTTOM_FILL  = " ";
+      _BOTTOM_RIGHT = "";
+    }
+    headerStyle (string top_left, string top_fill, string top_right, string left_column, string right_column, string bottom_left, string bottom_fill, string bottom_right) {
+      _TOP_LEFT     = top_left;
+      _TOP_FILL     = top_fill;
+      _TOP_RIGHT    = top_right;
+      _LEFT_COLUMN  = left_column;
+      _RIGHT_COLUMN = right_column;
+      _BOTTOM_LEFT  = bottom_right;
+      _BOTTOM_FILL  = bottom_fill;
+      _BOTTOM_RIGHT = bottom_right;
+    }
     string _TOP_LEFT;
     string _TOP_FILL;
     string _TOP_RIGHT;
@@ -70,34 +90,10 @@ class headerStyle {
     string _RIGHT_COLUMN;
     
     string _BOTTOM_LEFT;
-    string _BOTTOM_FILL;
+    string _BOTTOM_FILL;  
     string _BOTTOM_RIGHT;
 };
 
-
-
-
-void help();
-string cHead(string title, headerStyle);
-//string cTitle(string input, titlestyle);
-//string htmlHead(string input);
-//string pythonHead(string input);
-//string pythonTitle(string input);
-string signiture(string,string,string);
-string bsd(string input,string top,string col,string mid);
-
-
-
-
-
-/*
-struct titleStyle {
-  string outsideLeft[] = { "",  "",  "",  "",  ""  };
-  string insideLeft[] =  { "", " ", " ", " ", "" };
-  string insideRight[] = { "", " ", " ", " ", "" };
-  string outsideRight[] ={ "",  "",  "",  "",  ""  };
-  string filler[]       ={"*","*","*","*","*"}
-};*/
 
 headerStyle newHeader(string top_left, string top_fill, string top_right, string left_column, string right_column, string bottom_left, string bottom_fill, string bottom_right) {
   headerStyle theNewHeader;
@@ -111,6 +107,28 @@ headerStyle newHeader(string top_left, string top_fill, string top_right, string
   theNewHeader._BOTTOM_RIGHT = bottom_right;
   return theNewHeader;
 }
+
+/*
+class titleStyle {
+  string outsideLeft[] = { "",  "",  "",  "",  ""  };
+  string insideLeft[] =  { "", " ", " ", " ", "" };
+  string insideRight[] = { "", " ", " ", " ", "" };
+  string outsideRight[] ={ "",  "",  "",  "",  ""  };
+  string filler[]       ={"*","*","*","*","*"}
+};*/
+
+
+
+
+void help();
+string cHead(string title, headerStyle);
+//string cTitle(string input, titlestyle);
+//string htmlHead(string input);
+//string pythonHead(string input);
+//string pythonTitle(string input);
+string signiture(string,string,string);
+string bsd(string input,string top,string col,string mid);
+
 
 /*titleStyle newTitle (, outsideLeft, insideLeft,) {
 
@@ -130,11 +148,11 @@ map<char,headerStyle> headerStyles;
 // C / C++ Header Style
 
 void initilizeHeaderStyles() {
-  headerStyles[_C]       = newHeader("/*","*","*\\",
+  headerStyles[_C]       = headerStyle("/*","*","*\\",
                                     "|",      "|",
                                    "\\*","*","*/");
   //Python Header Style
-  headerStyles[_PYTHON] = newHeader("#","#","#",
+  headerStyles[_PYTHON] = headerStyle("#","#","#",
                                     "#",    "#",
                                     "#","#","#");
 }
