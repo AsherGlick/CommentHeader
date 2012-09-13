@@ -279,6 +279,7 @@ int main (int argv, char * argc[])
   cout << "Current Language Mode: " << "I HAVE NOT DONE THIS YET" << endl;
 
   // Check to see what type of headder needs to be generated
+
 }
 
 /*
@@ -355,17 +356,20 @@ void help()
   cout << "I am the version 3 help menu, still being completed" << endl;
   cout << "Modifying the size of the output" << endl;
   cout << "   l    Length    change how many rows are formatted within the title" << endl;
-  cout << equivilantFlags('l');
-  cout << "   w    Width     chage how many colums the text box takes up" << endl;
-  cout << equivilantFlags('w');
-  cout << "" << endl;
+  cout << "   w    Width     chage how many colums the text box takes up defaults to 80" << endl;
+  cout << endl;
   cout << "Output formats" << endl;
   cout << "   h   Help         Bring up this help menu" << endl;
   cout << "   s   Signature    Output your signature form sigfile correctly formatted" << endl;
   cout << "   b   BSD Licence  Output a BSD licence using your input as the copyright holder" << endl;
-  cout << "   t   " << endl;
-  cout << "   f " << endl;
-  
+  cout << "   t   Title        Output a title style header" << endl;
+  cout << "   f   Function     Output a function style header, default option" << endl;
+  cout << endl;
+  cout << "Input formats" << endl;
+  cout << "   i   Extended     Also accept input from stdin for the content" << endl;  
+  cout << endl;
+  cout << "Languages" << endl;
+  cout << "----MEH I GOT TO DO THIS NOW-------" << endl;
 }
 
 /********************************** C HEADDER *********************************\
