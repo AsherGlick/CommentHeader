@@ -49,6 +49,7 @@
 #include <time.h>
 #include <sstream>
 #include <map>
+#include <vector>
 using namespace std;
 
 
@@ -77,7 +78,7 @@ class headerStyle {
 
 void help();
 string cHead(string title, headerStyle);
-string cTitle(string input, titlestyle);
+//string cTitle(string input, titlestyle);
 //string htmlHead(string input);
 //string pythonHead(string input);
 //string pythonTitle(string input);
@@ -126,18 +127,24 @@ headerStyle newHeader(string top_left, string top_fill, string top_right, string
 
 map<char,headerStyle> headerStyles;
 // C / C++ Header Style
-headerStyles[_C]      = newHeader("/*","*","*\\",
-                                  "|",      "|",
-                                 "\\*","*","*/");
-//Python Header Style
-headerStyles[_PYTHON] = newHeader("#","#","#",
-                                  "#",    "#",
-                                  "#","#","#");
+
+void initilizeHeaderStyles() {
+  headerStyles[_C]       = newHeader("/*","*","*\\",
+                                    "|",      "|",
+                                   "\\*","*","*/");
+  //Python Header Style
+  headerStyles[_PYTHON] = newHeader("#","#","#",
+                                    "#",    "#",
+                                    "#","#","#");
+}
 
 
 
 map<string, char> fullFlagCompression;
-fullFlagCompression["c++"] = 'c';
+
+void initilizeFullFlags() {
+  fullFlagCompression["c++"] = 'c';
+}
 
 
 /************ Flags ************
@@ -176,10 +183,11 @@ bool activateFlag ( char flag ) {
           case 'i':
             cout << "YOU HAVE ENABLED EXTENDED INPUT MODE" << endl;
             break;
-          case 'l'
-            cout << "YOU HAVE DECIDED TO SPECIFY A CUSTOM WIDTH OF YOU TITLE" << endl;
-        }
+          }
+  return false;
 }
+
+
 
 int main (int argv, char * argc[])
 {
@@ -189,17 +197,31 @@ int main (int argv, char * argc[])
     help();
     return 0;
   }
-  
-  //
+  // create a vector of the arguments
+  vector<string> arguments;
+  for (int i = 0; i < argv; i++) {
+    arguments.push_back(argc[i]);
+  }
+  cout << "This shoud compile now" << endl; 
+
+  // Loop throguh all of the arguments
   for (int i = 0; i < argv; i++) {
     // Check for flags
     if (argc[i][0] == '-') {
       if (argc[i][1] == '-') {
         cout << "FULL FLAG MODE" << endl;
+        // TODO: Hardcode width and length
       }
+ 
       else {
         for (int j = i; j < argv; j++) {
-          if (activateFlag(argc[i][j])) break;
+          if (argc[i][j] == 'w'){
+            cout << "YOU HAVE DECIDED TO SPECIFY A CUSTOM WIDTH OF YOU TITLE" << endl;
+          }
+          else if( argc[i][j] == 'l' ) {
+            cout << "YOU HAVE DECIDED TO SPECIFY A CUSTOM LENGTH OF YOUR TITLE" << endl;
+          }
+          else if (activateFlag(argc[i][j])) break;
         }
       }
     }
@@ -208,14 +230,6 @@ int main (int argv, char * argc[])
     else {
       
     }
-  }
-  
-  
-  
-  if (string(argc[1]) == "--h" || string(argc[1]) == "--help")
-  {
-    help();
-    return 0;
   }
   // parse arguments into a string
   string input;
@@ -230,24 +244,6 @@ int main (int argv, char * argc[])
   else input = "";
 
   // Check to see what type of headder needs to be generated
-  if (string(argc[1]) == "-c")         cout << cHead(input,cppTop   ,cppColumn   ,cppBottom)    << endl; // C / C++ HEADDER
-  else if (string(argc[1]) == "-h")    cout << cHead(input,htmlTop  ,htmlColumn  ,htmlBottom)   << endl; // HTML HEADDER
-  else if (string(argc[1]) == "-p")    cout << cHead(input,pythonTop,pythonColumn,pythonBottom) << endl; // Python HEADDER
-  
-  
-  else if (string(argc[1]) == "-ct")   cout << cTitle(input) << endl; // C / C++ TITLE HEADDER
-  else if (string(argc[1]) == "-pt")   cout << pythonTitle(input) << endl; // Python TITLE HEADDER
-  else if (string(argc[1]) == "-sig")  cout << signiture(cppTop,cppColumn,cppBottom) << endl; // Asher Glick Signiture
-  else if (string(argc[1]) == "-psig") cout << signiture(pythonTop,pythonColumn,pythonBottom) << endl; // python formatted signature
-  else if (string(argc[1]) == "-bsd")  cout << bsd(input,cppTop,cppColumn,cppBottom) << endl; // default bsd licence
-  else if (string(argc[1]) == "-pbsd") cout << bsd(input,pythonTop,pythonColumn   ,pythonBottom) << endl;
-  else if (string(argc[1]) == "-fsig") cout << signiture(cppTop,cppColumn,cppBottom) << endl << bsd("Asher Glick",cppTop,cppColumn,cppBottom) << endl; // Signature and licence
-  //else if (string(argc[1]) == "-pfsig") cout << pythonSigniture() << pbsd(2,"Asher Glick") << endl; // 
-  else { // Defaut to c headder
-    string input = string(argc[1]);
-    for (int i = 2; i < argv; i++) input += " "+string(argc[i]);
-    cout << cHead(input,cppTop,cppColumn,cppBottom) << endl;
-  }
 }
 
 /*
@@ -285,7 +281,7 @@ int main (int argv, char * argc[])
 |
 \******************************************************************************/
 void help()
-{
+{ /*
   // Version 1
   cout << "Comment Headder Function" << endl;
   cout << "--help will display a help message" << endl;
@@ -314,8 +310,10 @@ void help()
   cout << " -p <title> python headder" << endl;
   cout << " -h <title> html headder" << endl;
   cout << " -<number> go to the alternet version of that command" << endl;
-  
+  */
+
   // Version 3
+  cout << "I am the version 3 help menu, still being completed" << endl;
   
 }
 
@@ -368,6 +366,7 @@ string cTitle (string input) {
   output += "\n//////////////////////////////////////////////////////////////////////////////";
   return output;
 }
+
 /**************************** PYTHON TITLE HEADDER ****************************\
 |
 \******************************************************************************/
@@ -388,6 +387,7 @@ string pythonTitle (string input) {
   output += "\n################################################################################";
   return output;
 }
+
 /******************************** MY SIGNITURE ********************************\
 | Returns my signiture, it's nice and pretty :) it takes in top, bottom and    |
 | column variables                                                             |
