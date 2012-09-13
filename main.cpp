@@ -165,6 +165,7 @@ void initilizeFullFlags() {
 
 // Output style flag
 char outputFlag = 'f'; // defaults to the function header flag
+bool outputFlagSet = false;
 // Input flag
 bool extendedInputFlag  = false;
 
@@ -179,7 +180,11 @@ bool activateFlag ( char flag ) {
     case 't':
     case 'f':
       cout << "YOU HAVE ENABLED AN OUPTU FLAG " << flag << endl;
-      outputFlag = flag;
+      if (!outputFlagSet) { outputFlag = flag; }
+      else {
+        cout << "You have set multiple output flags, only one is allowed" << endl;
+        return 0;
+      }
       break;
     
     // Choose as many of these as you want
@@ -218,14 +223,15 @@ int main (int argv, char * argc[])
 
   // Loop throguh all of the arguments
   for (unsigned int i = 1; i < arguments.size(); i++) {
-    // Check for flags
+    // Check to see if the input is a flag
     if (arguments[i][0] == '-') {
+      // Check to see if the flag is a fulltext flag
       if (arguments[i][1] == '-') {
         string flag = arguments[i];
         flag = flag.substr(2,flag.size()-2);
         cout << "FULL FLAG SEARCHING FOR: " << flag << endl;
       }
-  
+      
       else {
         for (unsigned int j = 1; j < arguments[i].size(); j++) {
           // Grab arguments for width
@@ -271,6 +277,7 @@ int main (int argv, char * argc[])
   cout << "Current Title Text: " << userInput << endl;
   cout << "Current Input Mode: " << (extendedInputFlag ? "Append stdin to arguments" : "Use arguments only") << endl;
   cout << "Current Output Mode: " << outputFlag << endl;
+  cout << "Current Language Mode: " << "I HAVE NOT DONE THIS YET" << endl;
 
   // Check to see what type of headder needs to be generated
 }
@@ -305,6 +312,10 @@ int main (int argv, char * argc[])
  /*******************************               ****************************/
 /**************************************************************************/
 
+// retun all flags that reduce to the flag requested
+string equivilantFlags(char flag) {
+    return "";
+}
 
 /************************************ HELP ************************************\
 |
@@ -343,6 +354,18 @@ void help()
 
   // Version 3
   cout << "I am the version 3 help menu, still being completed" << endl;
+  cout << "Modifying the size of the output" << endl;
+  cout << "   l    Length    change how many rows are formatted within the title" << endl;
+  cout << equivilantFlags('l');
+  cout << "   w    Width     chage how many colums the text box takes up" << endl;
+  cout << equivilantFlags('w');
+  cout << "" << endl;
+  cout << "Output formats" << endl;
+  cout << "   h   Help         Bring up this help menu" << endl;
+  cout << "   s   Signature    Output your signature form sigfile correctly formatted" << endl;
+  cout << "   b   BSD Licence  Output a BSD licence using your input as the copyright holder" << endl;
+  cout << "   t   " << endl;
+  cout << "   f " << endl;
   
 }
 
