@@ -50,6 +50,7 @@
 #include <sstream>
 #include <map>
 #include <vector>
+#include <stdlib.h>
 using namespace std;
 
 
@@ -148,49 +149,61 @@ void initilizeFullFlags() {
 
 
 /************ Flags ************
+|
+| h - help
+| s - signiture
+| f - function header
+| t - section title
+| b - bsd licence
+| - - full tag (eg --help vs -h)
+|
+| i - append input to the arguments
+| l - specify a custom character length for the title (default 80)
+|
+\****************/
 
- h - help
- s - signiture
- f - function header
- t - section title
- b - bsd licence
- - - full tag (eg --help vs -h)
 
- i - append input to the arguments
- l - specify a custom character length for the title (default 80)
+// Output style flag
+char outputFlag = 'f'; // defaults to the function header flag
+// Input flag
+bool extendedInputFlag  = false;
 
-****************/
+
 
 bool activateFlag ( char flag ) {
   switch ( flag ) {
-          // Chose one of these, help will override everything
-          case 'h':
-            cout << "YOU HAVE ENTERED THE HELP MENU!" << endl;
-            break;
-          case 's':
-            cout << "YOU HAVE ENABLED THE SIGNIGTURE OUTPUT" << endl;
-            break;
-          case 'f': 
-            cout << "YOU HAVE ENABLED THE FUNCTION HEADER METHOD (DEFAULT)" << endl;
-            break;
-          case 't':
-            cout << "YOU HAVE ENABLED THE TITLE HEADER METHOD" << endl;
-            break;
-          case 'b':
-            cout << "YOU HAVE ENABLED THE OUTPUT OF THE BSD HEADER" << endl;
-            break;
-          // Choose as many of these as you want
-          case 'i':
-            cout << "YOU HAVE ENABLED EXTENDED INPUT MODE" << endl;
-            break;
-          }
+    // Chose one of these output flags, help will override everything
+    case 'h':
+    case 's':
+    case 'b':
+    case 't':
+    case 'f':
+      cout << "YOU HAVE ENABLED AN OUPTU FLAG " << flag << endl;
+      outputFlag = flag;
+      break;
+    
+    // Choose as many of these as you want
+    case 'i':
+      cout << "YOU HAVE ENABLED EXTENDED INPUT MODE" << endl;
+      extendedInputFlag = true;
+      break;
+  }
   return false;
 }
 
+// The default title length
+#define DEFAULT_TITLE_LENGTH 0
+unsigned int titleLength = DEFAULT_TITLE_LENGTH;
+#define DEFAULT_TITLE_WIDTH 80
+unsigned int titleWidth = DEFAULT_TITLE_WIDTH;
+// parse arguments into a string
+string userInput = "";
 
 
 int main (int argv, char * argc[])
 {
+  string inputSpaces = ""; // used to append spaces after the first text argument
+
   // If there are no arguments, output the help screen
   if (argv <= 1)
   {
@@ -204,43 +217,60 @@ int main (int argv, char * argc[])
   }
 
   // Loop throguh all of the arguments
-  for (unsigned int i = 0; i < arguments.size(); i++) {
+  for (unsigned int i = 1; i < arguments.size(); i++) {
     // Check for flags
     if (arguments[i][0] == '-') {
       if (arguments[i][1] == '-') {
-        cout << "FULL FLAG MODE" << endl;
-        // TODO: Hardcode width and length
+        string flag = arguments[i];
+        flag = flag.substr(2,flag.size()-2);
+        cout << "FULL FLAG SEARCHING FOR: " << flag << endl;
       }
- 
+  
       else {
-        for (unsigned int j = i; j < arguments.size(); j++) {
+        for (unsigned int j = 1; j < arguments[i].size(); j++) {
+          // Grab arguments for width
           if (arguments[i][j] == 'w'){
-            cout << "YOU HAVE DECIDED TO SPECIFY A CUSTOM WIDTH OF YOU TITLE" << endl;
+            if (i+1 >= arguments.size()) {
+              cout << "Error: You did not specify a width for your title after using the -w flag" << endl;
+              return 0;
+            }
+            else { 
+              titleWidth = atoi(arguments[i+1].c_str()); 
+              arguments.erase (arguments.begin()+i+1);
+            }
           }
+          // Grab arguments for length
           else if( arguments[i][j] == 'l' ) {
-            cout << "YOU HAVE DECIDED TO SPECIFY A CUSTOM LENGTH OF YOUR TITLE" << endl;
+            if (i+1 >= arguments.size()) {
+              cout << "Error: You did not specify a length for your title after using the -l flag" << endl;
+              return 0;
+            }
+            else { 
+              titleLength = atoi(arguments[i+1].c_str()); 
+              arguments.erase (arguments.begin()+i+1);
+            }
+
           }
-          else if (activateFlag(argc[i][j])) break;
+          else if (activateFlag(argc[i][j])) {
+            break;
+          }
         }
       }
     }
     
+  
     // Take all non flagged input and append it together
     else {
-      
+      userInput += inputSpaces + arguments[i];
+      inputSpaces = " ";
     }
   }
-  // parse arguments into a string
-  string input;
-  if (argv > 2) {
-    input = string(argc[2]);
-    for (int i = 3; i < argv; i++) input += " "+string(argc[i]);
-  }
 
-
-
-
-  else input = "";
+  cout << "Current Title Width: " << titleWidth << endl;
+  cout << "Current Title Length: " << titleLength << endl;
+  cout << "Current Title Text: " << userInput << endl;
+  cout << "Current Input Mode: " << (extendedInputFlag ? "Append stdin to arguments" : "Use arguments only") << endl;
+  cout << "Current Output Mode: " << outputFlag << endl;
 
   // Check to see what type of headder needs to be generated
 }
