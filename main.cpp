@@ -94,30 +94,33 @@ class headerStyle {
     string _BOTTOM_RIGHT;
 };
 
-/*
-headerStyle newHeader(string top_left, string top_fill, string top_right, string left_column, string right_column, string bottom_left, string bottom_fill, string bottom_right) {
-  headerStyle theNewHeader;
-  theNewHeader._TOP_LEFT     = top_left;
-  theNewHeader._TOP_FILL     = top_fill;
-  theNewHeader._TOP_RIGHT    = top_right;
-  theNewHeader._LEFT_COLUMN  = left_column;
-  theNewHeader._RIGHT_COLUMN = right_column;
-  theNewHeader._BOTTOM_LEFT  = bottom_right;
-  theNewHeader._BOTTOM_FILL  = bottom_fill;
-  theNewHeader._BOTTOM_RIGHT = bottom_right;
-  return theNewHeader;
-}*/
 
-/*
+
 class titleStyle {
-  string outsideLeft[] = { "",  "",  "",  "",  ""  };
-  string insideLeft[] =  { "", " ", " ", " ", "" };
-  string insideRight[] = { "", " ", " ", " ", "" };
-  string outsideRight[] ={ "",  "",  "",  "",  ""  };
-  string filler[]       ={"*","*","*","*","*"}
-};*/
+  public:
+    titleStyle() {
 
+    }
 
+    titleStyle() {
+
+    }
+    string _TOP_LEFT;
+    string _TOP_FILL;
+    string _TOP_RIGHT;
+
+    string _MID_LEFT_START;
+    string _MID_LEFT_FILL;
+    string _MID_LEFT_END;
+
+    string _MID_RIGHT_START;
+    string _MID_RIGHT_FILL;
+    string _MID_RIGHT_END;
+
+    string _BOTTOM_LEFT;
+    string _BOTTOM_FILL;
+    string _BOTTOM_RIGHT;
+};
 
 
 void help();
@@ -130,31 +133,33 @@ string signiture(string,string,string);
 string bsd(string input,string top,string col,string mid);
 
 
-/*titleStyle newTitle (, outsideLeft, insideLeft,) {
-
-}*/
-
-
-
-
 
 
 #define _PYTHON 'p'
 #define _C      'c'
 #define _HTML   'h'
-
+#define _LATEX  't'
 
 map<char,headerStyle> headerStyles;
-// C / C++ Header Style
+map<char,titleStyle> titleStyles;
 
 void initilizeHeaderStyles() {
-  headerStyles[_C]       = headerStyle("/*","*","*\\",
-                                    "|",      "|",
-                                   "\\*","*","*/");
+  // C / C++ Styles
+  headerStyles[_C] = headerStyle("/*","*","*\\",
+                                 "|",      "|",
+                                "\\*","*","*/");
+
+  titleStyles [_C] = titleStyle ("  /","*"            ,"/",
+                                 " /","*","/","/","*","/ ",
+                                 "/","*",            "/  ");
+
   //Python Header Style
   headerStyles[_PYTHON] = headerStyle("#","#","#",
-                                    "#",    "#",
-                                    "#","#","#");
+                                      "#",    "#",
+                                      "#","#","#");
+  titleStyles[_PYTHON] = titleStyle ("#","#","#",
+                                     "#","#","#","#","#","#",
+                                     "#","#","#");
 }
 
 
@@ -309,14 +314,20 @@ int main (int argv, char * argc[])
 #####################################             ##############################
  ##############################################################################
 
-
-*/
+/******************************************************************************\
+|                                    HELLO WORLD                               |
+\******************************************************************************/
 
     ////////////////////////////////////////////////////////////////////////////
    //////////////////////////                           ///////////////////////
   //////////////////////////  HELLO WORLD HOW ARE YOU  ///////////////////////
  //////////////////////////                           ///////////////////////
 ////////////////////////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////////////////////////
+ ///////////////////////////////// HELLO WORLD ///////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////////////////////
    ////////////////////////////////               /////////////////////////////
@@ -329,11 +340,6 @@ int main (int argv, char * argc[])
   /*******************************  HELLO WORLD  ****************************/
  /*******************************               ****************************/
 /**************************************************************************/
-
-// retun all flags that reduce to the flag requested
-string equivilantFlags(char flag) {
-    return "";
-}
 
 /************************************ HELP ************************************\
 |
