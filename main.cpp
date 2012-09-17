@@ -148,7 +148,6 @@ void initilizeHeaderStyles() {
   headerStyles[_C] = headerStyle("/*","*","*\\",
                                  "|",      "|",
                                 "\\*","*","*/");
-
   titleStyles [_C] = titleStyle ("  /","*"            ,"/",
                                  " /","*","/","/","*","/ ",
                                  "/","*",            "/  ");
@@ -157,9 +156,9 @@ void initilizeHeaderStyles() {
   headerStyles[_PYTHON] = headerStyle("#","#","#",
                                       "#",    "#",
                                       "#","#","#");
-  titleStyles[_PYTHON] = titleStyle ("#","#","#",
-                                     "#","#","#","#","#","#",
-                                     "#","#","#");
+  titleStyles [_PYTHON] = titleStyle ("#","#",          "#",
+                                      "#","#","","","#","#",
+                                      "#","#",          "#");
 }
 
 
