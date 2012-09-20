@@ -176,9 +176,9 @@ void initilizeHeaderStyles() {
   globalHeaderStyle = headerStyles[_C] = headerStyle("/*","*","*\\",
                                  "|",      "|",
                                 "\\*","*","*/");
-  globalTitleStyle = titleStyles [_C] = titleStyle ("  /","*"            ,"/",
-                                 " /","*","/","/","*","/ ",
-                                 "/","*",            "/  ");
+  globalTitleStyle = titleStyles [_C] = titleStyle ("  /","/"            ,"/",
+                                 " /","/","/","/","/","/ ",
+                                 "/","/",            "/  ");
 
   //Python Header Style
   headerStyles[_PYTHON] = headerStyle("#","#","#",
@@ -254,7 +254,9 @@ bool activateFlag ( char flag ) {
 // parse arguments into a string
 string userInput = "";
 
-
+/************************************ MAIN ************************************\
+| The main function handles all of the arguments for parsing  
+\******************************************************************************/
 int main (int argv, char * argc[])
 {
   initilizeHeaderStyles();
@@ -358,8 +360,7 @@ int main (int argv, char * argc[])
 |
 \******************************************************************************/
 void help()
-{
-  // Version 3
+{ // VERSION 3
   cout << "I am the version 3 help menu, still being completed" << endl;
   cout << "Modifying the size of the output" << endl;
   cout << "   l    Length    change how many rows are formatted within the title" << endl;
@@ -390,11 +391,11 @@ string headder (string input) {
   int halfFillWidth = fillWidth/2;
 
   output += globalHeaderStyle._TOP_LEFT;
-  for (int i = 0; i < halfFillWidth; i++) {
+  for (int i = 0; i < fillWidth - halfFillWidth; i++) {
     output+=globalHeaderStyle._TOP_FILL;
   }
   output += " " + input + " ";
-  for (int i = 0; i < fillWidth - halfFillWidth; i ++) {
+  for (int i = 0; i < halfFillWidth; i ++) {
     output += globalHeaderStyle._TOP_FILL;
   }
   output += globalHeaderStyle._TOP_RIGHT;
@@ -421,7 +422,7 @@ string headder (string input) {
   for (int i = 0; i < bottomWidth; i++) {
     output += globalHeaderStyle._BOTTOM_FILL;
   }
-  output += globalHeaderStyle._BOTTOM_RIGHT + "\n";
+  output += globalHeaderStyle._BOTTOM_RIGHT;
   
   return output;
 }
@@ -430,20 +431,42 @@ string headder (string input) {
 | the C title generator 
 \******************************************************************************/
 string title (string input) {
-  int half = (76-input.size())/2;  
-  string output;
+  string output = "";
   // Begin Comment
-  output = "  //////////////////////////////////////////////////////////////////////////////\n ";
-  // Predicessing Marks
-  for (int i = 0; i < half; i++) output += '/';
-  // Account for an odd number of Marks
-  if (input.size()%2 == 1)output += '/';
-  // Add the title of the headder
-  output += ' ' + input + ' ';
-  // Prodceeding Marks
-  for (int i = 0; i < half; i++) output += '/';
+  int headerLength = titleWidth - globalTitleStyle._TOP_LEFT.size() - globalTitleStyle._TOP_RIGHT.size();
+  output += globalTitleStyle._TOP_LEFT;
+  for (int i = 0; i < headerLength; i++) {
+    output += globalTitleStyle._TOP_FILL;
+  }
+  output += globalTitleStyle._TOP_RIGHT;
+
+  output += "\n";
+
+  // Middle Row
+  int midLength = titleWidth - input.size() - 2 - globalTitleStyle._MID_LEFT_START.size() - globalTitleStyle._MID_RIGHT_END.size() - globalTitleStyle._MID_LEFT_END.size() - globalTitleStyle._MID_RIGHT_START.size();
+  int halfLength = midLength / 2;
+
+  output += globalTitleStyle._MID_LEFT_START;
+  for (int i = 0; i < midLength - halfLength; i++) {
+    output += globalTitleStyle._MID_LEFT_FILL;
+  }
+  output += globalTitleStyle._MID_LEFT_END;
+  output += " " + input + " ";
+  output += globalTitleStyle._MID_RIGHT_START;
+  for (int i = 0; i < halfLength; i++) {
+    output += globalTitleStyle._MID_RIGHT_FILL;
+  }
+  output += globalTitleStyle._MID_RIGHT_END;
+  output += "\n";
+
   // Footer Line
-  output += "\n//////////////////////////////////////////////////////////////////////////////";
+  int footerLength = titleWidth - globalTitleStyle._BOTTOM_LEFT.size() - globalTitleStyle._BOTTOM_RIGHT.size();
+  output += globalTitleStyle._BOTTOM_LEFT;
+  for (int i = 0; i < footerLength; i++) {
+    output += globalTitleStyle._BOTTOM_FILL;
+  }
+  output += globalTitleStyle._BOTTOM_RIGHT;
+
   return output;
 }
 
