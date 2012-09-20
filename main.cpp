@@ -155,6 +155,7 @@ map<char,headerStyle> headerStyles;
 map<char,titleStyle> titleStyles;
 
 void initilizeHeaderStyles() {
+  cout << "INTITILIZING THE HEADERS" << endl;
   // C / C++ Styles
   headerStyles[_C] = headerStyle("/*","*","*\\",
                                  "|",      "|",
@@ -226,8 +227,12 @@ bool activateFlag ( char flag ) {
   }
 
   // Find the flag in the language map
-  //map<char,headerStyle>::iterator it = headerStyle.find(flag);
-  //if (it != headerStyle::endl);
+  map<char,headerStyle>::iterator it = headerStyles.find(flag);
+  if (it != headerStyles.end()) {
+    cout << "FOUND A LANGUAGE FLAG " << flag << endl;
+    //cout << "output" << headerStyles[flag]._TOP_LEFT << endl;
+    return true;
+  }
 
   return false;
 }
@@ -243,6 +248,9 @@ string userInput = "";
 
 int main (int argv, char * argc[])
 {
+  initilizeHeaderStyles();
+  initilizeFullFlags();
+
   string inputSpaces = ""; // used to append spaces after the first text argument
 
   // If there are no arguments, output the help screen
