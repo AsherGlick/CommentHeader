@@ -163,14 +163,15 @@ unsigned int titleWidth = DEFAULT_TITLE_WIDTH;
 
 
 void help();
-string cHead(string title);
+string headder(string title);
+string title (string title);
 string signiture(string,string,string);
 string bsd(string input,string top,string col,string mid);
 
 
 
 void initilizeHeaderStyles() {
-  cout << "INTITILIZING THE HEADERS" << endl;
+  //cout << "INTITILIZING THE HEADERS" << endl;
   // C / C++ Styles
   globalHeaderStyle = headerStyles[_C] = headerStyle("/*","*","*\\",
                                  "|",      "|",
@@ -336,12 +337,19 @@ int main (int argv, char * argc[])
 
   switch (outputFlag) {
     case 'h':
-
+      help();
+      break;
     case 's':
+      //signiture();
     case 'b':
+      cout << "The signiture and bsd functions will be implmented after extended input is implemented" << endl;
+      break;
     case 't':
+      cout << title(userInput) << endl;
+      break;
     case 'f':
-      cout << cHead(userInput) << endl;
+      cout << headder(userInput) << endl;
+      break;
   }
 }
 
@@ -371,15 +379,10 @@ void help()
   cout << "----MEH I GOT TO DO THIS NOW-------" << endl;
 }
 
-/********************************** C HEADDER *********************************\
-| The C headder function
+/*********************************** HEADDER **********************************\
+| GENERAL HEADER FUNCTION
 \******************************************************************************/
-string cHead (string input) {
-  // The width to use for the output is: titleWidth
-  // HEIGHT WILL BE IMPLEMENTED LATER
-  // the graphics to use for the title are found in globalHeaderStyle
-
-  
+string headder (string input) {
   string output = "";
 
   // Print Top Line
@@ -413,7 +416,6 @@ string cHead (string input) {
   }
 
   // Print Bottom Line
-
   output += globalHeaderStyle._BOTTOM_LEFT;
   int bottomWidth = titleWidth - globalHeaderStyle._BOTTOM_LEFT.size() - globalHeaderStyle._BOTTOM_RIGHT.size();
   for (int i = 0; i < bottomWidth; i++) {
@@ -421,14 +423,13 @@ string cHead (string input) {
   }
   output += globalHeaderStyle._BOTTOM_RIGHT + "\n";
   
-
-
   return output;
 }
-/****************************** C TITLE HEADDER *******************************\
+
+/******************************* TITLE HEADDER ********************************\
 | the C title generator 
 \******************************************************************************/
-string cTitle (string input) {
+string title (string input) {
   int half = (76-input.size())/2;  
   string output;
   // Begin Comment
@@ -443,27 +444,6 @@ string cTitle (string input) {
   for (int i = 0; i < half; i++) output += '/';
   // Footer Line
   output += "\n//////////////////////////////////////////////////////////////////////////////";
-  return output;
-}
-
-/**************************** PYTHON TITLE HEADDER ****************************\
-|
-\******************************************************************************/
-string pythonTitle (string input) {
-  int half = (78-input.size())/2;  
-  string output;
-  // Begin Comment
-  output = "################################################################################\n";
-  // Predicessing Marks
-  for (int i = 0; i < half; i++) output += '#';
-  // Account for an odd number of Marks
-  if (input.size()%2 == 1)output += '#';
-  // Add the title of the headder
-  output += ' ' + input + ' ';
-  // Prodceeding Marks
-  for (int i = 0; i < half; i++) output += '#';
-  // Footer Line
-  output += "\n################################################################################";
   return output;
 }
 
