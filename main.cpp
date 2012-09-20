@@ -102,9 +102,24 @@ class titleStyle {
 
     }
 
-    titleStyle() {
+    titleStyle(string topleft,string topfill,string topright,string midleftstart,string midleftfill,string midleftend,string midrightstart,string midrightfill,string midrightend,string bottomleft,string bottomfill,string bottomright) {
+      _TOP_LEFT = topleft;
+      _TOP_FILL = topfill;
+      _TOP_RIGHT = topright;
 
+      _MID_LEFT_START = midleftstart;
+      _MID_LEFT_FILL = midleftfill;
+      _MID_LEFT_END = midleftend;
+
+      _MID_RIGHT_START = midrightstart;
+      _MID_RIGHT_FILL = midrightfill;
+      _MID_RIGHT_END = midrightend;
+
+      _BOTTOM_LEFT = bottomleft;
+      _BOTTOM_FILL = bottomfill;
+      _BOTTOM_RIGHT = bottomright;
     }
+
     string _TOP_LEFT;
     string _TOP_FILL;
     string _TOP_RIGHT;
@@ -125,10 +140,6 @@ class titleStyle {
 
 void help();
 string cHead(string title, headerStyle);
-//string cTitle(string input, titlestyle);
-//string htmlHead(string input);
-//string pythonHead(string input);
-//string pythonTitle(string input);
 string signiture(string,string,string);
 string bsd(string input,string top,string col,string mid);
 
@@ -213,6 +224,11 @@ bool activateFlag ( char flag ) {
       extendedInputFlag = true;
       return true;
   }
+
+  // Find the flag in the language map
+  //map<char,headerStyle>::iterator it = headerStyle.find(flag);
+  //if (it != headerStyle::endl);
+
   return false;
 }
 
@@ -312,6 +328,7 @@ int main (int argv, char * argc[])
 ####################################  HELLO WORLD  #############################
 #####################################             ##############################
  ##############################################################################
+*/
 
 /******************************************************************************\
 |                                    HELLO WORLD                               |
