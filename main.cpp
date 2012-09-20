@@ -51,95 +51,10 @@
 #include <map>
 #include <vector>
 #include <stdlib.h>
+#include "headertitle.h"
 using namespace std;
 
-
-
-/***************************** HEADER STYLE CLASS *****************************\
-| The header style class is a class for each of the different style of headers |
-| for each different language. It allows an easy way of creating and           |
-| classifying different 
-\******************************************************************************/
-class headerStyle {
-  public:
-    headerStyle () {
-      _TOP_LEFT     = "";
-      _TOP_FILL     = " ";
-      _TOP_RIGHT    = "";
-      _LEFT_COLUMN  = "";
-      _RIGHT_COLUMN = "";
-      _BOTTOM_LEFT  = "";
-      _BOTTOM_FILL  = " ";
-      _BOTTOM_RIGHT = "";
-    }
-    headerStyle (string top_left, string top_fill, string top_right, string left_column, string right_column, string bottom_left, string bottom_fill, string bottom_right) {
-      _TOP_LEFT     = top_left;
-      _TOP_FILL     = top_fill;
-      _TOP_RIGHT    = top_right;
-      _LEFT_COLUMN  = left_column;
-      _RIGHT_COLUMN = right_column;
-      _BOTTOM_LEFT  = bottom_left;
-      _BOTTOM_FILL  = bottom_fill;
-      _BOTTOM_RIGHT = bottom_right;
-    }
-    string _TOP_LEFT;
-    string _TOP_FILL;
-    string _TOP_RIGHT;
-    
-    string _LEFT_COLUMN;
-    string _RIGHT_COLUMN;
-    
-    string _BOTTOM_LEFT;
-    string _BOTTOM_FILL;  
-    string _BOTTOM_RIGHT;
-};
-
-
-
-class titleStyle {
-  public:
-    titleStyle() {
-
-    }
-
-    titleStyle(string topleft,string topfill,string topright,string midleftstart,string midleftfill,string midleftend,string midrightstart,string midrightfill,string midrightend,string bottomleft,string bottomfill,string bottomright) {
-      _TOP_LEFT = topleft;
-      _TOP_FILL = topfill;
-      _TOP_RIGHT = topright;
-
-      _MID_LEFT_START = midleftstart;
-      _MID_LEFT_FILL = midleftfill;
-      _MID_LEFT_END = midleftend;
-
-      _MID_RIGHT_START = midrightstart;
-      _MID_RIGHT_FILL = midrightfill;
-      _MID_RIGHT_END = midrightend;
-
-      _BOTTOM_LEFT = bottomleft;
-      _BOTTOM_FILL = bottomfill;
-      _BOTTOM_RIGHT = bottomright;
-    }
-
-    string _TOP_LEFT;
-    string _TOP_FILL;
-    string _TOP_RIGHT;
-
-    string _MID_LEFT_START;
-    string _MID_LEFT_FILL;
-    string _MID_LEFT_END;
-
-    string _MID_RIGHT_START;
-    string _MID_RIGHT_FILL;
-    string _MID_RIGHT_END;
-
-    string _BOTTOM_LEFT;
-    string _BOTTOM_FILL;
-    string _BOTTOM_RIGHT;
-};
-
-
 /////////////////////////////// GLOBAL VARIABLES /////////////////////////////////////////
-
 headerStyle globalHeaderStyle;
 titleStyle globalTitleStyle; 
 #define _PYTHON 'p'
