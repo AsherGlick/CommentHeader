@@ -60,7 +60,7 @@ titleStyle globalTitleStyle;
 #define _PYTHON 'p'
 #define _C      'c'
 #define _HTML   'h'
-#define _LATEX  't'
+#define _LATEX  'x'
 map<char,headerStyle> headerStyles;
 map<char,titleStyle> titleStyles;
 // Output style flag
@@ -73,7 +73,7 @@ bool extendedInputFlag  = false;
 unsigned int titleLength = DEFAULT_TITLE_LENGTH;
 #define DEFAULT_TITLE_WIDTH 80
 unsigned int titleWidth = DEFAULT_TITLE_WIDTH;
-
+map<string, char> fullFlagCompression;
 
 
 
@@ -84,7 +84,11 @@ string signiture(string,string,string);
 string bsd(string input,string top,string col,string mid);
 
 
-
+/*************************** INITILIZE HEADER STYLES **************************\
+| Include all of the header and title styles into the list of possible styles  |
+| to choose from. In order to add  a new language you just need to set a new   |
+| element of both the 'globalHeaderStyle' map and the 'globalTitleStyle' map   |
+\******************************************************************************/
 void initilizeHeaderStyles() {
   //cout << "INTITILIZING THE HEADERS" << endl;
   // C / C++ Styles
@@ -102,36 +106,42 @@ void initilizeHeaderStyles() {
   titleStyles [_PYTHON] = titleStyle ("#","#",          "#",
                                       "#","#","","","#","#",
                                       "#","#",          "#");
+
+  // LaTeX Header Style
+  headerStyles[_LATEX] = headerStyle("%","%","%",
+                                     "%",    "%",
+                                     "%","%","%");
+  titleStyles [_LATEX] = titleStyle (" %","%",          "% ",
+                                     "%%","%","","","%","%%",
+                                     " %","%",          "% ");
 }
 
 
 
-map<string, char> fullFlagCompression;
 
+/**************************** INITILIZE FULL FLAGS ****************************\
+| Add all of the full name alias functions to a list that can be parsed when   |
+| the user is calling the funciton                                             |
+\******************************************************************************/
 void initilizeFullFlags() {
   fullFlagCompression["c++"] = 'c';
 }
 
 
-/************ Flags ************
-|
-| h - help
-| s - signiture
-| f - function header
-| t - section title
-| b - bsd licence
-| - - full tag (eg --help vs -h)
-|
-| i - append input to the arguments
-| l - specify a custom character length for the title (default 80)
-|
-\****************/
-
-
-
-
-
-
+/******************************* ACTIVATE FLAGS *******************************\
+| Given a specific character flag this functions changes internal variables to |
+| change how the input / output works                                          |
+|                                                                              |
+| STATIC FLAGS                                                                 |
+| h - help                                                                     |
+| s - signiture                                                                |
+| f - function header                                                          |
+| t - section title                                                            |
+| b - bsd licence                                                              |
+| - - full tag (eg --help vs -h)                                    [External] |
+| i - append input to the arguments                                            |
+| l - specify a custom character length for the title (default 80)  [External] |
+\******************************************************************************/
 bool activateFlag ( char flag ) {
   switch ( flag ) {
     // Chose one of these output flags, help will override everything
@@ -156,8 +166,6 @@ bool activateFlag ( char flag ) {
   // Find the flag in the language map
   map<char,headerStyle>::iterator it = headerStyles.find(flag);
   if (it != headerStyles.end()) {
-    cout << "FOUND A LANGUAGE FLAG " << flag << endl;
-    //cout << "output" << headerStyles[flag]._TOP_LEFT << endl;
     globalHeaderStyle = headerStyles[flag];
     globalTitleStyle = titleStyles[flag];
     return true;
