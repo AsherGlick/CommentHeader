@@ -78,7 +78,7 @@ class headerStyle {
       _TOP_RIGHT    = top_right;
       _LEFT_COLUMN  = left_column;
       _RIGHT_COLUMN = right_column;
-      _BOTTOM_LEFT  = bottom_right;
+      _BOTTOM_LEFT  = bottom_left;
       _BOTTOM_FILL  = bottom_fill;
       _BOTTOM_RIGHT = bottom_right;
     }
@@ -325,90 +325,32 @@ int main (int argv, char * argc[])
     }
   }
 
-  cout << "Current Title Width: " << titleWidth << endl;
-  cout << "Current Title Length: " << titleLength << endl;
-  cout << "Current Title Text: " << userInput << endl;
+  //cout << "Current Title Width: " << titleWidth << endl;
+  //cout << "Current Title Length: " << titleLength << endl;
+  //cout << "Current Title Text: " << userInput << endl;
   cout << "Current Input Mode: " << (extendedInputFlag ? "Append stdin to arguments" : "Use arguments only") << endl;
   cout << "Current Output Mode: " << outputFlag << endl;
   cout << "Current Language Mode: " << "I HAVE NOT DONE THIS YET" << endl;
 
   // Check to see what type of headder needs to be generated
 
-  cout << cHead(userInput) << endl;
+  switch (outputFlag) {
+    case 'h':
+
+    case 's':
+    case 'b':
+    case 't':
+    case 'f':
+      cout << cHead(userInput) << endl;
+  }
 }
 
-/*
-
-
- ##############################################################################
-#####################################             ##############################
-####################################  HELLO WORLD  #############################
-#####################################             ##############################
- ##############################################################################
-*/
-
-/******************************************************************************\
-|                                    HELLO WORLD                               |
-\******************************************************************************/
-
-    ////////////////////////////////////////////////////////////////////////////
-   //////////////////////////                           ///////////////////////
-  //////////////////////////  HELLO WORLD HOW ARE YOU  ///////////////////////
- //////////////////////////                           ///////////////////////
-////////////////////////////////////////////////////////////////////////////
-
-
-  /////////////////////////////////////////////////////////////////////////////
- ///////////////////////////////// HELLO WORLD ///////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-
-    ////////////////////////////////////////////////////////////////////////////
-   ////////////////////////////////               /////////////////////////////
-  ////////////////////////////////  HELLO WORLD  /////////////////////////////
- ////////////////////////////////               /////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-
-    /**************************************************************************/
-   /*******************************               ****************************/
-  /*******************************  HELLO WORLD  ****************************/
- /*******************************               ****************************/
-/**************************************************************************/
 
 /************************************ HELP ************************************\
 |
 \******************************************************************************/
 void help()
-{ /*
-  // Version 1
-  cout << "Comment Headder Function" << endl;
-  cout << "--help will display a help message" << endl;
-  cout << "-c [title] will give you a c headder" << endl;
-  cout << "-ct [title] will give you a c title" << endl;
-  cout << "-h [title] will give you an HTML headder" << endl;
-  cout << "-p [title] will give you a python headder" << endl;
-  cout << "-pt [title] will give you a python title" << endl;
-  cout << "-sig will give you an asherglick signature" << endl;
-  cout << "-psig will give you a python version of asherglick signature" << endl;
-  cout << "-bsd [name] will give you the BSD licence by [name]" << endl;
-  cout << "-pbsd [name] will give you a python version of the bsd licence" <<endl;
-  cout << "-fsig will give you an Asher Glick signature and BSD Licence" << endl;
-  cout << "-pfsig will give you an fsig for python" << endl;
-  
-  // Version 2
-  cout << "Comment Headder Function" << endl;
-  cout << " -T title" << endl;
-  cout << " -H headder" << endl;
-  cout << " -S signature" << endl;
-  cout << " -L licence <style" << endl;
-  cout << "  'bsd' BSDv2 licence" << endl;
-  cout << "  'gpl' GPLv3 licence" << endl;
-  cout << "" << endl;
-  cout << " -c <title> c++ headder" << endl;
-  cout << " -p <title> python headder" << endl;
-  cout << " -h <title> html headder" << endl;
-  cout << " -<number> go to the alternet version of that command" << endl;
-  */
-
+{
   // Version 3
   cout << "I am the version 3 help menu, still being completed" << endl;
   cout << "Modifying the size of the output" << endl;
@@ -439,6 +381,7 @@ string cHead (string input) {
 
   
   string output = "";
+
   // Print Top Line
   int fillWidth = titleWidth - 2 - globalHeaderStyle._TOP_LEFT.size() - globalHeaderStyle._TOP_RIGHT.size() - input.size();
   int halfFillWidth = fillWidth/2;
@@ -453,49 +396,33 @@ string cHead (string input) {
   }
   output += globalHeaderStyle._TOP_RIGHT;
 
+  output += "\n";
+
   // Print Rows
+  if (titleLength == 0) output += globalHeaderStyle._LEFT_COLUMN + "\n";
+  else {
+    for (unsigned int i = 0; i < titleLength; i++ ) {
+      int whitespaceLength = titleWidth - globalHeaderStyle._LEFT_COLUMN.size() - globalHeaderStyle._RIGHT_COLUMN.size();
+      output += globalHeaderStyle._LEFT_COLUMN;
+      for (int j = 0; j < whitespaceLength; j++ ) {
+        output += " ";
+      }
+      output += globalHeaderStyle._RIGHT_COLUMN + "\n";
+
+    }
+  }
+
   // Print Bottom Line
+
+  output += globalHeaderStyle._BOTTOM_LEFT;
+  int bottomWidth = titleWidth - globalHeaderStyle._BOTTOM_LEFT.size() - globalHeaderStyle._BOTTOM_RIGHT.size();
+  for (int i = 0; i < bottomWidth; i++) {
+    output += globalHeaderStyle._BOTTOM_FILL;
+  }
+  output += globalHeaderStyle._BOTTOM_RIGHT + "\n";
   
 
 
-/*
-  _TOP_LEFT;
-  _TOP_FILL;
-  _TOP_RIGHT;
-
-    
-    string _LEFT_COLUMN;
-    string _RIGHT_COLUMN;
-    
-    string _BOTTOM_LEFT;
-    string _BOTTOM_FILL;  
-    string _BOTTOM_RIGHT
-    */
-
-
-/*
-  string topBegin = top.substr(0,4);
-  string topFill = top.substr(5,1);
-  string topEnd = top.substr(76,4);
-
-  int half = (70-input.size())/2;
-  string output;
-  // Begin Comment
-  output = topBegin;
-  // Predicessing Marks
-  for (int i = 0; i < half; i++) output += topFill;
-  // Account for an odd number of Marks
-  if (input.size()%2 == 1)output += topFill;
-  // Add the title of the headder
-  output += ' ' + input + ' ';
-  // Prodceeding Marks
-  for (int i = 0; i < half; i++) output += topFill;
-  // Finish Tital Line
-  output += topEnd+"\n";
-  // Body
-  output += col+"\n";
-  // Footer Line
-  output += bot;*/
   return output;
 }
 /****************************** C TITLE HEADDER *******************************\
@@ -622,3 +549,41 @@ string bsd(string name, string top, string col, string bot) {
   output += bot;
   return output;
 }
+
+
+/*
+
+
+ ##############################################################################
+#####################################             ##############################
+####################################  HELLO WORLD  #############################
+#####################################             ##############################
+ ##############################################################################
+*/
+
+/******************************************************************************\
+|                                    HELLO WORLD                               |
+\******************************************************************************/
+
+    ////////////////////////////////////////////////////////////////////////////
+   //////////////////////////                           ///////////////////////
+  //////////////////////////  HELLO WORLD HOW ARE YOU  ///////////////////////
+ //////////////////////////                           ///////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////////////////////////
+ ///////////////////////////////// HELLO WORLD ///////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////
+   ////////////////////////////////               /////////////////////////////
+  ////////////////////////////////  HELLO WORLD  /////////////////////////////
+ ////////////////////////////////               /////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+    /**************************************************************************/
+   /*******************************               ****************************/
+  /*******************************  HELLO WORLD  ****************************/
+ /*******************************               ****************************/
+/**************************************************************************/
