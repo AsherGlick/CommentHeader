@@ -172,10 +172,10 @@ string bsd(string input,string top,string col,string mid);
 void initilizeHeaderStyles() {
   cout << "INTITILIZING THE HEADERS" << endl;
   // C / C++ Styles
-  headerStyles[_C] = headerStyle("/*","*","*\\",
+  globalHeaderStyle = headerStyles[_C] = headerStyle("/*","*","*\\",
                                  "|",      "|",
                                 "\\*","*","*/");
-  titleStyles [_C] = titleStyle ("  /","*"            ,"/",
+  globalTitleStyle = titleStyles [_C] = titleStyle ("  /","*"            ,"/",
                                  " /","*","/","/","*","/ ",
                                  "/","*",            "/  ");
 
@@ -242,6 +242,8 @@ bool activateFlag ( char flag ) {
   if (it != headerStyles.end()) {
     cout << "FOUND A LANGUAGE FLAG " << flag << endl;
     //cout << "output" << headerStyles[flag]._TOP_LEFT << endl;
+    globalHeaderStyle = headerStyles[flag];
+    globalTitleStyle = titleStyles[flag];
     return true;
   }
 
