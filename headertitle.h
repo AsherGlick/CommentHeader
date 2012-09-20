@@ -64,7 +64,11 @@ class headerStyle {
 };
 
 
-
+/********************************* TITLE STYLE ********************************\
+| The title stule class is a class for each of the differnet styles of titles  |
+| each one stores the beginning, end, and fill characters for each language    |
+| the titleStyle represents                                                    |
+\******************************************************************************/
 class titleStyle {
   public:
     titleStyle() {
