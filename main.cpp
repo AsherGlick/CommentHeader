@@ -138,21 +138,36 @@ class titleStyle {
 };
 
 
-void help();
-string cHead(string title, headerStyle);
-string signiture(string,string,string);
-string bsd(string input,string top,string col,string mid);
+/////////////////////////////// GLOBAL VARIABLES /////////////////////////////////////////
 
-
-
-
+headerStyle globalHeaderStyle;
+titleStyle globalTitleStyle; 
 #define _PYTHON 'p'
 #define _C      'c'
 #define _HTML   'h'
 #define _LATEX  't'
-
 map<char,headerStyle> headerStyles;
 map<char,titleStyle> titleStyles;
+// Output style flag
+char outputFlag = 'f'; // defaults to the function header flag
+bool outputFlagSet = false;
+// Input flag
+bool extendedInputFlag  = false;
+// The default title length
+#define DEFAULT_TITLE_LENGTH 0
+unsigned int titleLength = DEFAULT_TITLE_LENGTH;
+#define DEFAULT_TITLE_WIDTH 80
+unsigned int titleWidth = DEFAULT_TITLE_WIDTH;
+
+
+
+
+void help();
+string cHead(string title);
+string signiture(string,string,string);
+string bsd(string input,string top,string col,string mid);
+
+
 
 void initilizeHeaderStyles() {
   cout << "INTITILIZING THE HEADERS" << endl;
@@ -197,11 +212,7 @@ void initilizeFullFlags() {
 \****************/
 
 
-// Output style flag
-char outputFlag = 'f'; // defaults to the function header flag
-bool outputFlagSet = false;
-// Input flag
-bool extendedInputFlag  = false;
+
 
 
 
@@ -237,11 +248,6 @@ bool activateFlag ( char flag ) {
   return false;
 }
 
-// The default title length
-#define DEFAULT_TITLE_LENGTH 0
-unsigned int titleLength = DEFAULT_TITLE_LENGTH;
-#define DEFAULT_TITLE_WIDTH 80
-unsigned int titleWidth = DEFAULT_TITLE_WIDTH;
 // parse arguments into a string
 string userInput = "";
 
@@ -326,6 +332,7 @@ int main (int argv, char * argc[])
 
   // Check to see what type of headder needs to be generated
 
+  cout << cHead(userInput) << endl;
 }
 
 /*
@@ -423,12 +430,52 @@ void help()
 /********************************** C HEADDER *********************************\
 | The C headder function
 \******************************************************************************/
-string cHead (string input, string top, string col, string bot) {
+string cHead (string input) {
+  // The width to use for the output is: titleWidth
+  // HEIGHT WILL BE IMPLEMENTED LATER
+  // the graphics to use for the title are found in globalHeaderStyle
 
+  
+  string output = "";
+  // Print Top Line
+  int fillWidth = titleWidth - 2 - globalHeaderStyle._TOP_LEFT.size() - globalHeaderStyle._TOP_RIGHT.size() - input.size();
+  int halfFillWidth = fillWidth/2;
+
+  output += globalHeaderStyle._TOP_LEFT;
+  for (int i = 0; i < halfFillWidth; i++) {
+    output+=globalHeaderStyle._TOP_FILL;
+  }
+  output += " " + input + " ";
+  for (int i = 0; i < fillWidth - halfFillWidth; i ++) {
+    output += globalHeaderStyle._TOP_FILL;
+  }
+  output += globalHeaderStyle._TOP_RIGHT;
+
+  // Print Rows
+  // Print Bottom Line
+  
+
+
+/*
+  _TOP_LEFT;
+  _TOP_FILL;
+  _TOP_RIGHT;
+
+    
+    string _LEFT_COLUMN;
+    string _RIGHT_COLUMN;
+    
+    string _BOTTOM_LEFT;
+    string _BOTTOM_FILL;  
+    string _BOTTOM_RIGHT
+    */
+
+
+/*
   string topBegin = top.substr(0,4);
   string topFill = top.substr(5,1);
   string topEnd = top.substr(76,4);
-  
+
   int half = (70-input.size())/2;
   string output;
   // Begin Comment
@@ -446,7 +493,7 @@ string cHead (string input, string top, string col, string bot) {
   // Body
   output += col+"\n";
   // Footer Line
-  output += bot;
+  output += bot;*/
   return output;
 }
 /****************************** C TITLE HEADDER *******************************\
