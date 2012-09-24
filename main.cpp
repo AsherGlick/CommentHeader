@@ -68,7 +68,7 @@ char outputFlag = 'f'; // defaults to the function header flag
 bool outputFlagSet = false;
 // Input flag
 bool extendedInputFlag  = false;
-char extendedInputAlign = '';
+char extendedInputAlign = 'l';
 // The default title length
 #define DEFAULT_TITLE_LENGTH 0
 unsigned int titleLength = DEFAULT_TITLE_LENGTH;
@@ -161,12 +161,12 @@ bool activateFlag ( char flag ) {
       return true;    
     // Choose as many of these as you want
     case 'i':
-      cout << "YOU HAVE ENABLED EXTENDED INPUT MODE" << endl;
+      //cout << "YOU HAVE ENABLED EXTENDED INPUT MODE" << endl;
       extendedInputFlag = true;
       return true;
     case 'r':
       extendedInputFlag = true;
-      if (extendedInputAlign == '') extendedInputAlign = 'r';
+      if (extendedInputAlign == 'l') extendedInputAlign = 'r';
       else {
         cout << "You have set multiple align flags for extended input, only one is allowed" << endl;
         exit (0);
@@ -174,7 +174,7 @@ bool activateFlag ( char flag ) {
       return true;
     case 'm':
       extendedInputFlag = true;
-      if (extendedInputAlign == '') extendedInputAlign = 'm';
+      if (extendedInputAlign == 'l') extendedInputAlign = 'm';
       else {
         cout << "You have set multiple align flags for extended input, only one is allowed" << endl;
         exit (0);
@@ -390,13 +390,13 @@ string title (string input) {
   int halfLength = midLength / 2;
 
   output += globalTitleStyle._MID_LEFT_START;
-  for (int i = 0; i < midLength - halfLength; i++) {
+  for (int i = 0; i < halfLength; i++) {
     output += globalTitleStyle._MID_LEFT_FILL;
   }
   output += globalTitleStyle._MID_LEFT_END;
   output += " " + input + " ";
   output += globalTitleStyle._MID_RIGHT_START;
-  for (int i = 0; i < halfLength; i++) {
+  for (int i = 0; i < midLength - halfLength; i++) {
     output += globalTitleStyle._MID_RIGHT_FILL;
   }
   output += globalTitleStyle._MID_RIGHT_END;
