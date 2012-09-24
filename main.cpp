@@ -68,6 +68,7 @@ char outputFlag = 'f'; // defaults to the function header flag
 bool outputFlagSet = false;
 // Input flag
 bool extendedInputFlag  = false;
+char extendedInputAlign = '';
 // The default title length
 #define DEFAULT_TITLE_LENGTH 0
 unsigned int titleLength = DEFAULT_TITLE_LENGTH;
@@ -140,6 +141,8 @@ void initilizeFullFlags() {
 | b - bsd licence                                                              |
 | - - full tag (eg --help vs -h)                                    [External] |
 | i - append input to the arguments                                            |
+| m - align the extended input to the middle                                   |
+| r - align the extended input to the right                                    |
 | l - specify a custom character length for the title (default 80)  [External] |
 \******************************************************************************/
 bool activateFlag ( char flag ) {
@@ -161,6 +164,23 @@ bool activateFlag ( char flag ) {
       cout << "YOU HAVE ENABLED EXTENDED INPUT MODE" << endl;
       extendedInputFlag = true;
       return true;
+    case 'r':
+      extendedInputFlag = true;
+      if (extendedInputAlign == '') extendedInputAlign = 'r';
+      else {
+        cout << "You have set multiple align flags for extended input, only one is allowed" << endl;
+        exit (0);
+      }
+      return true;
+    case 'm':
+      extendedInputFlag = true;
+      if (extendedInputAlign == '') extendedInputAlign = 'm';
+      else {
+        cout << "You have set multiple align flags for extended input, only one is allowed" << endl;
+        exit (0);
+      }
+      return true;
+
   }
 
   // Find the flag in the language map
