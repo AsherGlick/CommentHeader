@@ -371,12 +371,29 @@ vector<string> wrap (string text, unsigned int width) {
 vector<string> align (string text, char position, unsigned int width) {
   vector <string> wrapped = wrap(text,width);
   for (unsigned int i = 0; i < wrapped.size(); i++) {
+    unsigned int difference = width-wrapped[i].size();
     switch(position){
       case 'l':
-        unsigned int difference = width-wrapped[i].size();
         for (unsigned int j = 0; j < difference; j++) {
           wrapped[i] += " ";
         }
+        break;
+      case 'r':
+        for (unsigned int j = 0; j < difference; j++) {
+          wrapped[i] = " " + wrapped[i];
+        }
+        break;
+      case 'm':
+        unsigned int leftDifference = difference / 2;
+        unsigned int rightDifference = difference - leftDifference;
+        for (unsigned int j = 0; j < leftDifference; j++) {
+          wrapped[i] = " " + wrapped[i];
+        }
+        for (unsigned int j = 0; j < rightDifference; j++) {
+          wrapped[i] += " ";
+        }
+
+        break;
     }
   }
   return wrapped;
