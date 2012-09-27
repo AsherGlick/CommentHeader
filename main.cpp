@@ -365,10 +365,6 @@ vector<string> wrap (string text, unsigned int width) {
     }
     wrappedLines.push_back(lines[i]);
   }
-
-  for (unsigned int i = 0; i < wrappedLines.size(); i++) {
-    cout << "|" << wrappedLines[i] << "|" << endl;
-  }
   return wrappedLines;
 }
 
