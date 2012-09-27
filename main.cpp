@@ -94,7 +94,7 @@ void initilizeHeaderStyles() {
   //cout << "INTITILIZING THE HEADERS" << endl;
   // C / C++ Styles
   globalHeaderStyle = headerStyles[_C] = headerStyle("/*","*","*\\",
-                                 "|",      "|",
+                                 "| ",    " |",
                                 "\\*","*","*/");
   globalTitleStyle = titleStyles [_C] = titleStyle ("  /","/"            ,"/",
                                  " /","/","/","/","/","/ ",
@@ -337,10 +337,6 @@ void help()
 }
 
 
-vector<string> align (string text, char position, int width) {
-  vector <string> aligned;
-  return aligned;
-}
 vector<string> wrap (string text, unsigned int width) {
   vector<string> lines;
   int lastSplit = 0;
@@ -355,9 +351,7 @@ vector<string> wrap (string text, unsigned int width) {
   vector<string> wrappedLines;
   for (unsigned int i = 0; i < lines.size(); i++) {
     while (lines[i].size() > width){
-
       int splitIndex = width;
-
       // Find the last space for a cleaner split
       for (int j = width-1; j >= 0; j--) {
         if (lines[i][j] == ' ') {
@@ -368,8 +362,6 @@ vector<string> wrap (string text, unsigned int width) {
 
       wrappedLines.push_back(lines[i].substr(0,splitIndex));
       lines[i] = lines[i].substr(splitIndex+1, lines.size()-splitIndex);
-
-
     }
     wrappedLines.push_back(lines[i]);
   }
@@ -378,6 +370,20 @@ vector<string> wrap (string text, unsigned int width) {
     cout << "|" << wrappedLines[i] << "|" << endl;
   }
   return wrappedLines;
+}
+
+vector<string> align (string text, char position, unsigned int width) {
+  vector <string> wrapped = wrap(text,width);
+  for (unsigned int i = 0; i < wrapped.size(); i++) {
+    switch(position){
+      case 'l':
+        unsigned int difference = width-wrapped[i].size();
+        for (unsigned int j = 0; j < difference; j++) {
+          wrapped[i] += " ";
+        }
+    }
+  }
+  return wrapped;
 }
 
 /*********************************** HEADDER **********************************\
@@ -405,8 +411,8 @@ string headder (string input, string extendedInput) {
   // Print Text filled Rows
   int whitespaceLength = titleWidth - globalHeaderStyle._LEFT_COLUMN.size() - globalHeaderStyle._RIGHT_COLUMN.size();
   if (extendedInput != "") {
-    vector<string> textLines = wrap(extendedInput,whitespaceLength);
-    for (int i = 0; i < textLines.size(); i++) {
+    vector<string> textLines = align(extendedInput,'l',whitespaceLength);
+    for (unsigned int i = 0; i < textLines.size(); i++) {
       output += globalHeaderStyle._LEFT_COLUMN;
       output += textLines[i];
       output += globalHeaderStyle._RIGHT_COLUMN + "\n";
