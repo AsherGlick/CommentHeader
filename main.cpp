@@ -341,7 +341,7 @@ vector<string> align (string text, char position, int width) {
   vector <string> aligned;
   return aligned;
 }
-vector<string> wrap (string text, int width) {
+vector<string> wrap (string text, unsigned int width) {
   vector<string> lines;
   int lastSplit = 0;
   // Split on newlines
@@ -355,8 +355,21 @@ vector<string> wrap (string text, int width) {
   vector<string> wrappedLines;
   for (unsigned int i = 0; i < lines.size(); i++) {
     while (lines[i].size() > width){
-      wrappedLines.push_back(lines[i].substr(0,width));
-      lines[i] = lines[i].substr(width, lines.size()-width);
+
+      int splitIndex = width;
+
+      // Find the last space for a cleaner split
+      for (int j = width-1; j >= 0; j--) {
+        if (lines[i][j] == ' ') {
+          splitIndex = j;
+          break;
+        }
+      }
+
+      wrappedLines.push_back(lines[i].substr(0,splitIndex));
+      lines[i] = lines[i].substr(splitIndex+1, lines.size()-splitIndex);
+
+
     }
     wrappedLines.push_back(lines[i]);
   }
@@ -364,18 +377,13 @@ vector<string> wrap (string text, int width) {
   for (unsigned int i = 0; i < wrappedLines.size(); i++) {
     cout << "|" << wrappedLines[i] << "|" << endl;
   }
-  return lines;
+  return wrappedLines;
 }
 
 /*********************************** HEADDER **********************************\
 | GENERAL HEADER FUNCTION
 \******************************************************************************/
 string headder (string input, string extendedInput) {
-
-  if (extendedInput != "") {
-    wrap(extendedInput,50);
-  }
-
   string output = "";
 
   // Print Top Line
@@ -394,11 +402,21 @@ string headder (string input, string extendedInput) {
 
   output += "\n";
 
-  // Print Rows
-  if (titleLength == 0) output += globalHeaderStyle._LEFT_COLUMN + "\n";
+  // Print Text filled Rows
+  int whitespaceLength = titleWidth - globalHeaderStyle._LEFT_COLUMN.size() - globalHeaderStyle._RIGHT_COLUMN.size();
+  if (extendedInput != "") {
+    vector<string> textLines = wrap(extendedInput,whitespaceLength);
+    for (int i = 0; i < textLines.size(); i++) {
+      output += globalHeaderStyle._LEFT_COLUMN;
+      output += textLines[i];
+      output += globalHeaderStyle._RIGHT_COLUMN + "\n";
+    }
+  }
+  // Print blank rows
+  if (titleLength == 0 && extendedInput == "") output += globalHeaderStyle._LEFT_COLUMN + "\n";
   else {
     for (unsigned int i = 0; i < titleLength; i++ ) {
-      int whitespaceLength = titleWidth - globalHeaderStyle._LEFT_COLUMN.size() - globalHeaderStyle._RIGHT_COLUMN.size();
+      
       output += globalHeaderStyle._LEFT_COLUMN;
       for (int j = 0; j < whitespaceLength; j++ ) {
         output += " ";
