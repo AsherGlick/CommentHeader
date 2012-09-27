@@ -407,7 +407,7 @@ string headder (string input, string extendedInput) {
   // Print Text filled Rows
   int whitespaceLength = titleWidth - globalHeaderStyle._LEFT_COLUMN.size() - globalHeaderStyle._RIGHT_COLUMN.size();
   if (extendedInput != "") {
-    vector<string> textLines = align(extendedInput,'l',whitespaceLength);
+    vector<string> textLines = align(extendedInput,extendedInputAlign,whitespaceLength);
     for (unsigned int i = 0; i < textLines.size(); i++) {
       output += globalHeaderStyle._LEFT_COLUMN;
       output += textLines[i];
