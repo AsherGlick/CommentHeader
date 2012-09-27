@@ -11,5 +11,5 @@ uninstall:
 
 clean:
 	rm chead
-test:
+test: chead
 	python unitTest.py
