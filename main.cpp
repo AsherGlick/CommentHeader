@@ -79,7 +79,7 @@ map<string, char> fullFlagCompression;
 
 
 void help();
-string headder(string title);
+string headder(string title,string extendedInput);
 string title (string title);
 string signiture(string,string,string);
 string bsd(string input,string top,string col,string mid);
@@ -197,6 +197,20 @@ bool activateFlag ( char flag ) {
 // parse arguments into a string
 string userInput = "";
 
+
+/******************************* EXTENDED INPUT *******************************\
+|
+\******************************************************************************/
+string captureExtendedInput() {
+  string input;
+  string output = "";
+  while (getline(cin, input)) {
+    if (input == "") return output;
+    output += input + "\n";
+  }
+  return output;
+}
+
 /************************************ MAIN ************************************\
 | The main function handles all of the arguments for parsing  
 \******************************************************************************/
@@ -213,6 +227,7 @@ int main (int argv, char * argc[])
     help();
     return 0;
   }
+
   // create a vector of the arguments
   vector<string> arguments;
   for (int i = 0; i < argv; i++) {
@@ -263,7 +278,6 @@ int main (int argv, char * argc[])
       }
     }
     
-  
     // Take all non flagged input and append it together
     else {
       userInput += inputSpaces + arguments[i];
@@ -271,15 +285,14 @@ int main (int argv, char * argc[])
     }
   }
 
-  //cout << "Current Title Width: " << titleWidth << endl;
-  //cout << "Current Title Length: " << titleLength << endl;
-  //cout << "Current Title Text: " << userInput << endl;
-  //cout << "Current Input Mode: " << (extendedInputFlag ? "Append stdin to arguments" : "Use arguments only") << endl;
-  //cout << "Current Output Mode: " << outputFlag << endl;
-  //cout << "Current Language Mode: " << "I HAVE NOT DONE THIS YET" << endl;
+  // A string for containing the extended input's data
+  string extendedInputString = "";
+  // Check for the input flag
+  if (extendedInputFlag == true){
+    extendedInputString = captureExtendedInput();
+  }
 
   // Check to see what type of headder needs to be generated
-
   switch (outputFlag) {
     case 'h':
       help();
@@ -293,14 +306,14 @@ int main (int argv, char * argc[])
       cout << title(userInput) << endl;
       break;
     case 'f':
-      cout << headder(userInput) << endl;
+      cout << headder(userInput,extendedInputString) << endl;
       break;
   }
 }
 
 
 /************************************ HELP ************************************\
-|
+| 
 \******************************************************************************/
 void help()
 { // VERSION 3
@@ -323,10 +336,46 @@ void help()
   cout << "----MEH I GOT TO DO THIS NOW-------" << endl;
 }
 
+
+vector<string> align (string text, char position, int width) {
+  vector <string> aligned;
+  return aligned;
+}
+vector<string> wrap (string text, int width) {
+  vector<string> lines;
+  int lastSplit = 0;
+  // Split on newlines
+  for (unsigned int i = 0; i < text.size(); i++){
+    if (text[i] == '\n'){
+      lines.push_back(text.substr(lastSplit,i-lastSplit));
+      lastSplit = i+1;
+    }
+  }
+  // Split lines that are too long
+  vector<string> wrappedLines;
+  for (unsigned int i = 0; i < lines.size(); i++) {
+    while (lines[i].size() > width){
+      wrappedLines.push_back(lines[i].substr(0,width));
+      lines[i] = lines[i].substr(width, lines.size()-width);
+    }
+    wrappedLines.push_back(lines[i]);
+  }
+
+  for (unsigned int i = 0; i < wrappedLines.size(); i++) {
+    cout << "|" << wrappedLines[i] << "|" << endl;
+  }
+  return lines;
+}
+
 /*********************************** HEADDER **********************************\
 | GENERAL HEADER FUNCTION
 \******************************************************************************/
-string headder (string input) {
+string headder (string input, string extendedInput) {
+
+  if (extendedInput != "") {
+    wrap(extendedInput,50);
+  }
+
   string output = "";
 
   // Print Top Line
