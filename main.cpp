@@ -75,6 +75,7 @@ unsigned int titleLength = DEFAULT_TITLE_LENGTH;
 #define DEFAULT_TITLE_WIDTH 80
 unsigned int titleWidth = DEFAULT_TITLE_WIDTH;
 map<string, char> fullFlagCompression;
+bool xclipMode = false;
 
 
 
@@ -179,6 +180,9 @@ bool activateFlag ( char flag ) {
         cout << "You have set multiple align flags for extended input, only one is allowed" << endl;
         exit (0);
       }
+      return true;
+    case 'v':
+      xclipMode = true;
       return true;
 
   }
@@ -292,6 +296,7 @@ int main (int argv, char * argc[])
     extendedInputString = captureExtendedInput();
   }
 
+  stringstream output;
   // Check to see what type of headder needs to be generated
   switch (outputFlag) {
     case 'h':
@@ -300,14 +305,23 @@ int main (int argv, char * argc[])
     case 's':
       //signiture();
     case 'b':
-      cout << "The signiture and bsd functions will be implmented after extended input is implemented" << endl;
+      output << "The signiture and bsd functions will be implmented after extended input is implemented" << endl;
       break;
     case 't':
-      cout << title(userInput) << endl;
+      output << title(userInput) << endl;
       break;
     case 'f':
-      cout << headder(userInput,extendedInputString) << endl;
+      output << headder(userInput,extendedInputString) << endl;
       break;
+  }
+
+  // check on stdout or xclip out
+  if (xclipMode){
+    string execute = "echo \"" + output.str() + "\" | xclip -sel clip";
+    system(execute.c_str());
+  }
+  else {
+    cout << output.str();
   }
 }
 
