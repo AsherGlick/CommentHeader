@@ -1,6 +1,6 @@
 all : chead
 
-chead: main.cpp
+chead: main.cpp headertitle.h pipein.h
 	g++ main.cpp -o chead -Wall
 
 install: chead
