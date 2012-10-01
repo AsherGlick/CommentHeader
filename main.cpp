@@ -52,6 +52,7 @@
 #include <vector>
 #include <stdlib.h>
 #include "headertitle.h"
+#include "pipein.h"
 using namespace std;
 
 /////////////////////////////// GLOBAL VARIABLES /////////////////////////////////////////
@@ -317,8 +318,9 @@ int main (int argv, char * argc[])
 
   // check on stdout or xclip out
   if (xclipMode){
-    string execute = "echo \"" + output.str() + "\" | xclip -sel clip";
-    system(execute.c_str());
+    //string execute = "echo \"" + output.str() + "\" | xclip -sel clip";
+    copyToClipboard(output.str());
+    //system(execute.c_str());
   }
   else {
     cout << output.str();
