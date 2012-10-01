@@ -72,14 +72,13 @@ int copyToClipboard(std::string contents)
         close(fd1[0]);
         close(fd2[1]);
         //contents += char(0);
-        std::cout << contents << std::endl;
         if ( write(fd1[1], contents.c_str(), contents.size() ) != contents.size() )
         {
             std::cerr << "PARENT: READ ERROR FROM PIPE" << std::endl;
         }
         close(fd1[1]);
         close(fd2[0]);
-        std::cout << "PRINTED THE CONTENTS" << std::endl;
+        /*std::cout << "PRINTED THE CONTENTS" << std::endl;
         if ( (rv = read(fd2[0], line, MAXLINE)) < 0 )
         {
             std::cerr << "PARENT: READ ERROR FROM PIPE" << std::endl;
@@ -91,7 +90,7 @@ int copyToClipboard(std::string contents)
         }
 
         std::cout << "PARENT: OUTPUT of PROGRAM B is: " << line;
-
+*/
 
         return 0;
     }
