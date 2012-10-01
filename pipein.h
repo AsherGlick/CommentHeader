@@ -55,7 +55,7 @@ int copyToClipboard(std::string contents)
         
 
         //char *args[] = {"xclip","-sel","clip", (char*)0};
-        char *args[] = {"xclip","-out", (char*)0};
+        char *args[] = {"xclip","-sel", "clip", (char*)0};
         int execvReturn = execv("/usr/bin/xclip", args);
         //int execvReturn = execv("/bin/ls", args);
         if ( execvReturn < 0)
@@ -63,20 +63,22 @@ int copyToClipboard(std::string contents)
             std::cerr << "CHILD: system error " << execvReturn << std::endl;
             return -4;
         }
-        std::cout << "DONE" << std::endl;
         return 0;
     }
-    // PARENT PROCESS
+    // PARENT process
     else
     {
         int rv;
         close(fd1[0]);
         close(fd2[1]);
-
+        //contents += char(0);
+        std::cout << contents << std::endl;
         if ( write(fd1[1], contents.c_str(), contents.size() ) != contents.size() )
         {
             std::cerr << "PARENT: READ ERROR FROM PIPE" << std::endl;
         }
+        close(fd1[1]);
+        close(fd2[0]);
         std::cout << "PRINTED THE CONTENTS" << std::endl;
         if ( (rv = read(fd2[0], line, MAXLINE)) < 0 )
         {
@@ -89,6 +91,7 @@ int copyToClipboard(std::string contents)
         }
 
         std::cout << "PARENT: OUTPUT of PROGRAM B is: " << line;
+
 
         return 0;
     }
