@@ -83,8 +83,8 @@ units = [
 	}
 	,
 	{"TestName" : "Extended Input Line Wrap"
-	,"Test"      : "echo Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras venenatis, mi vitae tempus aliquam, ligula metus tempor nisi, a aliquet lectus velit ut sem. Donec pharetra augue ac lacus sodales tincidunt. Sed felis enim, bibendum sit amet pharetra et, auctor nec dolor. Aliquam eu felis ut augue eleifend pharetra. In vitae lacus nec ligula interdum ultrices. Maecenas ullamcorper orci sed elit porttitor vestibulum ut eget odio. Nulla eleifend dolor ut tortor sagittis at venenatis lorem pharetra. Nam laoreet orci eget elit posuere ut pulvinar diam fermentum. Suspendisse nec facilisis metus. Maecenas mollis lacus ac neque sollicitudin vitae pharetra mi imperdiet. Praesent sit amet auctor nisi. | ./chead -i WORD WRAP"
-	,"Stdin"     : ""
+	,"Test"      : "./chead -i WORD WRAP"
+	,"Stdin"     : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras venenatis, mi vitae tempus aliquam, ligula metus tempor nisi, a aliquet lectus velit ut sem. Donec pharetra augue ac lacus sodales tincidunt. Sed felis enim, bibendum sit amet pharetra et, auctor nec dolor. Aliquam eu felis ut augue eleifend pharetra. In vitae lacus nec ligula interdum ultrices. Maecenas ullamcorper orci sed elit porttitor vestibulum ut eget odio. Nulla eleifend dolor ut tortor sagittis at venenatis lorem pharetra. Nam laoreet orci eget elit posuere ut pulvinar diam fermentum. Suspendisse nec facilisis metus. Maecenas mollis lacus ac neque sollicitudin vitae pharetra mi imperdiet. Praesent sit amet auctor nisi."
 	,"Result"    : "/********************************** WORD WRAP *********************************\\\n| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras venenatis, mi  |\n| vitae tempus aliquam, ligula metus tempor nisi, a aliquet lectus velit ut    |\n| sem. Donec pharetra augue ac lacus sodales tincidunt. Sed felis enim,        |\n| bibendum sit amet pharetra et, auctor nec dolor. Aliquam eu felis ut augue   |\n| eleifend pharetra. In vitae lacus nec ligula interdum ultrices. Maecenas     |\n| ullamcorper orci sed elit porttitor vestibulum ut eget odio. Nulla eleifend  |\n| dolor ut tortor sagittis at venenatis lorem pharetra. Nam laoreet orci eget  |\n| elit posuere ut pulvinar diam fermentum. Suspendisse nec facilisis metus.    |\n| Maecenas mollis lacus ac neque sollicitudin vitae pharetra mi imperdiet.     |\n| Praesent sit amet auctor nisi.                                               |\n\\******************************************************************************/\n"
 	}
 ]
@@ -105,7 +105,7 @@ def run (command, cin=""):
 	commands = command.split(" ")
 	process = Popen(commands, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 	if cin != "":
-		output = process.communicate(input=cin)
+		output = process.communicate(input=cin)[0]
 	else:
 		exit_code = os.waitpid(process.pid, 0)
 		output = process.communicate()[0]
@@ -156,6 +156,6 @@ for unit in units:
 		print unit["TestName"] + " " +("."*(width-11-len(unit["TestName"])) ) + OKGREEN + " [SUCESS]" + ENDC
 	else:
 		print unit["TestName"] + " " +("."*(width-11-len(unit["TestName"])) ) + FAIL + " [FAILED]" + ENDC
-		print run(unit["Test"])
+		print run(unit["Test"],unit["Stdin"])
 
 
