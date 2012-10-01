@@ -43,6 +43,7 @@ int copyToClipboard(std::string contents)
             close(fd1[0]);
         }
 
+
         if (fd2[1] != STDOUT_FILENO)
         {
             if (dup2(fd2[1], STDOUT_FILENO) != STDOUT_FILENO)
@@ -51,14 +52,18 @@ int copyToClipboard(std::string contents)
             }
             close(fd2[1]);
         }
-        char *args[] = {"xclip","-sel","clip", (char*)0};
+        
+
+        //char *args[] = {"xclip","-sel","clip", (char*)0};
+        char *args[] = {"xclip","-out", (char*)0};
         int execvReturn = execv("/usr/bin/xclip", args);
+        //int execvReturn = execv("/bin/ls", args);
         if ( execvReturn < 0)
         {
             std::cerr << "CHILD: system error " << execvReturn << std::endl;
             return -4;
         }
-
+        std::cout << "DONE" << std::endl;
         return 0;
     }
     // PARENT PROCESS
@@ -72,7 +77,7 @@ int copyToClipboard(std::string contents)
         {
             std::cerr << "PARENT: READ ERROR FROM PIPE" << std::endl;
         }
-
+        std::cout << "PRINTED THE CONTENTS" << std::endl;
         if ( (rv = read(fd2[0], line, MAXLINE)) < 0 )
         {
             std::cerr << "PARENT: READ ERROR FROM PIPE" << std::endl;
