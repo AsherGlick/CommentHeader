@@ -1,8 +1,4 @@
 // This function should be able to run some program with some arguments and some stdin
-
-
-// program "/usr/bin/xclip"
-
 #include <string>
 #include <iostream>
 
@@ -78,20 +74,6 @@ int copyToClipboard(std::string contents)
         }
         close(fd1[1]);
         close(fd2[0]);
-        /*std::cout << "PRINTED THE CONTENTS" << std::endl;
-        if ( (rv = read(fd2[0], line, MAXLINE)) < 0 )
-        {
-            std::cerr << "PARENT: READ ERROR FROM PIPE" << std::endl;
-        }
-        else if (rv == 0)
-        {
-            std::cerr << "PARENT: Child Closed Pipe" << std::endl;
-            return 0;
-        }
-
-        std::cout << "PARENT: OUTPUT of PROGRAM B is: " << line;
-*/
-
         return 0;
     }
     return 0;
