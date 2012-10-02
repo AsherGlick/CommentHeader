@@ -2,13 +2,11 @@
 #include <string>
 #include <iostream>
 
-#define MAXLINE 100
 int copyToClipboard(std::string contents)
 {
     int fd1[2];
     int fd2[2];
     pid_t pid;
-    char line[MAXLINE];
 
     // Create a pipe
     if ( (pipe(fd1) < 0) || (pipe(fd2) < 0) )
@@ -25,7 +23,7 @@ int copyToClipboard(std::string contents)
     }
 
     // Child process
-    else  if (pid == 0)     // CHILD PROCESS
+    else  if (pid == 0)
     {
         close(fd1[1]);
         close(fd2[0]);
@@ -49,11 +47,10 @@ int copyToClipboard(std::string contents)
             close(fd2[1]);
         }
         
-
-        //char *args[] = {"xclip","-sel","clip", (char*)0};
-        char *args[] = {"xclip","-sel", "clip", (char*)0};
+        //string arg = "xclip";
+        char *args[] = { (char*)"xclip" , (char*)"-sel", (char*)"clip", (char*)0};
         int execvReturn = execv("/usr/bin/xclip", args);
-        //int execvReturn = execv("/bin/ls", args);
+
         if ( execvReturn < 0)
         {
             std::cerr << "CHILD: system error " << execvReturn << std::endl;
@@ -64,11 +61,10 @@ int copyToClipboard(std::string contents)
     // PARENT process
     else
     {
-        int rv;
         close(fd1[0]);
         close(fd2[1]);
         //contents += char(0);
-        if ( write(fd1[1], contents.c_str(), contents.size() ) != contents.size() )
+        if ( write(fd1[1], contents.c_str(), contents.size() ) != (int)contents.size() )
         {
             std::cerr << "PARENT: READ ERROR FROM PIPE" << std::endl;
         }
