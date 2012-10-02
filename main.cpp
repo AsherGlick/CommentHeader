@@ -364,6 +364,8 @@ vector<string> wrap (string text, unsigned int width) {
       lastSplit = i+1;
     }
   }
+  if (text.substr(lastSplit,text.size()-lastSplit) != "") lines.push_back(text.substr(lastSplit,text.size()-lastSplit));
+
   // Split lines that are too long
   vector<string> wrappedLines;
   for (unsigned int i = 0; i < lines.size(); i++) {
@@ -386,7 +388,9 @@ vector<string> wrap (string text, unsigned int width) {
 }
 
 vector<string> align (string text, char position, unsigned int width) {
+
   vector <string> wrapped = wrap(text,width);
+
   for (unsigned int i = 0; i < wrapped.size(); i++) {
     unsigned int difference = width-wrapped[i].size();
     switch(position){
@@ -441,7 +445,9 @@ string headder (string input, string extendedInput) {
   // Print Text filled Rows
   int whitespaceLength = titleWidth - globalHeaderStyle._LEFT_COLUMN.size() - globalHeaderStyle._RIGHT_COLUMN.size();
   if (extendedInput != "") {
+
     vector<string> textLines = align(extendedInput,extendedInputAlign,whitespaceLength);
+
     for (unsigned int i = 0; i < textLines.size(); i++) {
       output += globalHeaderStyle._LEFT_COLUMN;
       output += textLines[i];
@@ -593,11 +599,9 @@ string bsd(string owner) {
   }
 
   // The actual licence
-  string licence = "a\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.";
+  string licence = " \nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n";
 
   string fullLicence = content + clause1 + clause2 + licence;
-
-  cout << fullLicence << endl;
 
   return headder ("LICENCE", fullLicence);
 }
