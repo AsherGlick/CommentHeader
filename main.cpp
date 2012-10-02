@@ -84,7 +84,7 @@ void help();
 string headder(string title,string extendedInput);
 string title (string title);
 string signiture(string,string,string);
-string bsd(string input,string top,string col,string mid);
+string bsd(string owner);
 
 
 /*************************** INITILIZE HEADER STYLES **************************\
@@ -305,8 +305,9 @@ int main (int argv, char * argc[])
       break;
     case 's':
       //signiture();
-    case 'b':
       output << "The signiture and bsd functions will be implmented after extended input is implemented" << endl;
+    case 'b':
+      output << bsd(userInput) << endl;
       break;
     case 't':
       output << title(userInput) << endl;
@@ -561,39 +562,42 @@ string thisyear() {
 | This function prints out the BSD licence to the screen with the correct      |
 | borders for the style of source code                                         |
 \******************************************************************************/
-string bsd(string name, string top, string col, string bot) {
+string bsd(string owner) {
+  // Get the width to wrap
+  int fillWidth = titleWidth - globalHeaderStyle._TOP_LEFT.size() - globalHeaderStyle._TOP_RIGHT.size();
+
+  // Calculate the Current Year
   string year = thisyear();
-  string owner = name;
   
-  string output = col+" Copyright (c) "+year+", "+owner;
-  for (int i = output.length(); i < 79; i++) {
-    output += " ";
+  // Top Half of the licence
+  string content = "Copyright (c) "+year+", "+owner+"\n";
+  content += "All rights reserved.\n";
+  content += " \n";
+  content += "Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: \n";
+  content += " \n";
+
+  // Clauses
+  string clause1 = "Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n";
+  string clause2 = "Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n";
+  
+  // Wrap the clauses smaller for 'indentation'
+  vector<string> wrappedClause1 = wrap(clause1, fillWidth-2);
+  clause1 = "* " + wrappedClause1[0] + "\n";
+  for (unsigned int i = 1; i < wrappedClause1.size(); i++) {
+    clause1 += "  " + wrappedClause1[i] + "\n";
   }
-  output += col+"\n";
-  
-  output =  top+"\n" + output;
-  output += col+" All rights reserved.                                                         "+col+"\n";
-  output += col+"                                                                              "+col+"\n";
-  output += col+" Redistribution and use in source and binary forms, with or without           "+col+"\n";
-  output += col+" modification, are permitted provided that the following conditions are met:  "+col+"\n";
-  output += col+"                                                                              "+col+"\n";
-  output += col+" * Redistributions of source code must retain the above copyright notice,     "+col+"\n";
-  output += col+"   this list of conditions and the following disclaimer.                      "+col+"\n";
-  output += col+" * Redistributions in binary form must reproduce the above copyright notice,  "+col+"\n";
-  output += col+"   this list of conditions and the following disclaimer in the documentation  "+col+"\n";
-  output += col+"   and/or other materials provided with the distribution.                     "+col+"\n";
-  output += col+"                                                                              "+col+"\n";
-  output += col+" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"  "+col+"\n";
-  output += col+" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE    "+col+"\n";
-  output += col+" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE   "+col+"\n";
-  output += col+" ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE    "+col+"\n";
-  output += col+" LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR          "+col+"\n";
-  output += col+" CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF         "+col+"\n";
-  output += col+" SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS     "+col+"\n";
-  output += col+" INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN      "+col+"\n";
-  output += col+" CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)      "+col+"\n";
-  output += col+" ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   "+col+"\n";
-  output += col+" POSSIBILITY OF SUCH DAMAGE.                                                  "+col+"\n";
-  output += bot;
-  return output;
+  vector<string> wrappedClause2 = wrap(clause2, fillWidth-2);
+  clause2 = "* " + wrappedClause2[0] + "\n";
+  for (unsigned int i = 1; i < wrappedClause2.size(); i++) {
+    clause2 += "  " + wrappedClause2[i] + "\n";
+  }
+
+  // The actual licence
+  string licence = "a\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.";
+
+  string fullLicence = content + clause1 + clause2 + licence;
+
+  cout << fullLicence << endl;
+
+  return headder ("LICENCE", fullLicence);
 }
