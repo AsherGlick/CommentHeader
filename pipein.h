@@ -19,7 +19,7 @@ int copyToClipboard(std::string contents)
     else  if (pid == 0) {
         close(fd1[1]);
         if (fd1[0] != STDIN_FILENO) {
-            if (dup2(fd1[0], STDIN_FILENO) != STDIN_FILENO) { return -5; // Dup2 error (Child)
+            if (dup2(fd1[0], STDIN_FILENO) != STDIN_FILENO) return -5; // Dup2 error (Child)
             close(fd1[0]);
         }
         char *args[] = { (char*)"xclip" , (char*)"-sel", (char*)"clip", (char*)0};
