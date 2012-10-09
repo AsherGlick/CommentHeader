@@ -64,6 +64,8 @@ titleStyle globalTitleStyle;
 #define _LATEX  'x'
 map<char,headerStyle> headerStyles;
 map<char,titleStyle> titleStyles;
+map<char,string> languageNames;
+map<char,string> languageDescription;
 // Output style flag
 char outputFlag = 'f'; // defaults to the function header flag
 bool outputFlagSet = false;
@@ -101,6 +103,8 @@ void initilizeHeaderStyles() {
   globalTitleStyle = titleStyles [_C] = titleStyle ("  /","/"            ,"/",
                                  " /","/","/","/","/","/ ",
                                  "/","/",            "/  ");
+  languageNames[_C] = "C/C++";
+  languageDescription[_C] = "Format comments in a C/C++/Java style";
 
   //Python Header Style
   headerStyles[_PYTHON] = headerStyle("#","#","#",
@@ -109,6 +113,8 @@ void initilizeHeaderStyles() {
   titleStyles [_PYTHON] = titleStyle ("#","#",          "#",
                                       "#","#","","","#","#",
                                       "#","#",          "#");
+  languageNames[_PYTHON] = "Python";
+  languageDescription[_PYTHON] = "Format comments in a Python style";
 
   // LaTeX Header Style
   headerStyles[_LATEX] = headerStyle("%","%","%",
@@ -117,6 +123,8 @@ void initilizeHeaderStyles() {
   titleStyles [_LATEX] = titleStyle (" %","%",          "% ",
                                      "%%","%","","","%","%%",
                                      " %","%",          "% ");
+  languageNames[_LATEX] = "LaTeX";
+  languageDescription[_LATEX] = "Format comments in a LaTeX style";
 }
 
 
@@ -336,8 +344,8 @@ void help()
 { // VERSION 3
   cout << "I am the version 3 help menu, still being completed" << endl;
   cout << "Modifying the size of the output" << endl;
-  cout << "   l    Length    change how many rows are formatted within the title" << endl;
-  cout << "   w    Width     chage how many colums the text box takes up defaults to 80" << endl;
+  cout << "   l    Length      Change how many rows are formatted within the title" << endl;
+  cout << "   w    Width       Chage how many colums the text box takes up defaults to 80" << endl;
   cout << endl;
   cout << "Output formats" << endl;
   cout << "   h   Help         Bring up this help menu" << endl;
@@ -348,9 +356,18 @@ void help()
   cout << endl;
   cout << "Input formats" << endl;
   cout << "   i   Extended     Also accept input from stdin for the content" << endl;  
+  cout << "   m   Middle       Extended input with each line aligned in the middle" << endl;
+  cout << "   r   Right        Extended input with each line aligned to the right" << endl;
   cout << endl;
   cout << "Languages" << endl;
-  cout << "----MEH I GOT TO DO THIS NOW-------" << endl;
+  //Dynamicly create the language section based on the languages initilized
+  map<char,headerStyle>::iterator it = headerStyles.begin();
+  while (it != headerStyles.end()){
+    cout << "   " << it->first  << "   " << languageNames[it->first];
+    for (int i = 0; i < (13-languageNames[it->first].length());i++)  cout << " ";
+    cout << languageDescription[it->first] << endl;
+    it++;
+  }
 }
 
 
@@ -527,6 +544,17 @@ string title (string input) {
 | column variables                                                             |
 \******************************************************************************/
 string signiture (string top, string col,string bot) {
+
+
+
+
+
+
+  return "";
+
+
+
+  /*
   string sig = "";
   sig += top+"\n";
   sig += col+"                                     ,,                                       "+      col+"\n";
@@ -549,7 +577,8 @@ string signiture (string top, string col,string bot) {
   sig += col+"                     `\"bmmmdPY .JMML..JMML.YMbmd'.JMML. YA.                   "+     col+"\n";
   sig += col+"                                                                              "+      col+"\n";
   sig += bot;
-  return sig;
+  return sig;*/
+
 }
 
 /********************************* BSD2 / BSD *********************************\
