@@ -353,6 +353,7 @@ void help()
   cout << "   b   BSD Licence  Output a BSD licence using your input as the copyright holder" << endl;
   cout << "   t   Title        Output a title style header" << endl;
   cout << "   f   Function     Output a function style header, default option" << endl;
+  cout << "   v   Clipboard    Copy the output to the clipboard instead of stdout" << endl;
   cout << endl;
   cout << "Input formats" << endl;
   cout << "   i   Extended     Also accept input from stdin for the content" << endl;  
