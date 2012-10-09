@@ -108,7 +108,7 @@ void initilizeHeaderStyles() {
 
   //Python Header Style
   headerStyles[_PYTHON] = headerStyle("#","#","#",
-                                      "#",    "#",
+                                      "# ",    " #",
                                       "#","#","#");
   titleStyles [_PYTHON] = titleStyle ("#","#",          "#",
                                       "#","#","","","#","#",
