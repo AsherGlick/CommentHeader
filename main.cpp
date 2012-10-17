@@ -45,12 +45,18 @@
 | POSSIBILITY OF SUCH DAMAGE.                                                  |
 \******************************************************************************/
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <time.h>
 #include <sstream>
 #include <map>
 #include <vector>
 #include <stdlib.h>
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+
 #include "headertitle.h"
 #include "pipein.h"
 using namespace std;
@@ -85,7 +91,7 @@ bool xclipMode = false;
 void help();
 string headder(string title,string extendedInput);
 string title (string title);
-string signiture(string,string,string);
+string signiture();
 string bsd(string owner);
 
 
@@ -97,10 +103,12 @@ string bsd(string owner);
 void initilizeHeaderStyles() {
   //cout << "INTITILIZING THE HEADERS" << endl;
   // C / C++ Styles
-  globalHeaderStyle = headerStyles[_C] = headerStyle("/*","*","*\\",
+  globalHeaderStyle = 
+  headerStyles[_C] = headerStyle("/*","*","*\\",
                                  "| ",    " |",
                                 "\\*","*","*/");
-  globalTitleStyle = titleStyles [_C] = titleStyle ("  /","/"            ,"/",
+  globalTitleStyle = 
+  titleStyles [_C] = titleStyle ("  /","/"            ,"/",
                                  " /","/","/","/","/","/ ",
                                  "/","/",            "/  ");
   languageNames[_C] = "C/C++";
@@ -127,9 +135,6 @@ void initilizeHeaderStyles() {
   languageDescription[_LATEX] = "Format comments in a LaTeX style";
 }
 
-
-
-
 /**************************** INITILIZE FULL FLAGS ****************************\
 | Add all of the full name alias functions to a list that can be parsed when   |
 | the user is calling the funciton                                             |
@@ -137,7 +142,6 @@ void initilizeHeaderStyles() {
 void initilizeFullFlags() {
   fullFlagCompression["c++"] = 'c';
 }
-
 
 /******************************* ACTIVATE FLAGS *******************************\
 | Given a specific character flag this functions changes internal variables to |
@@ -312,8 +316,9 @@ int main (int argv, char * argc[])
       help();
       break;
     case 's':
-      //signiture();
-      output << "The signiture and bsd functions will be implmented after extended input is implemented" << endl;
+      output << signiture() << endl;
+      break;
+      //output << "The signiture and bsd functions will be implmented after extended input is implemented" << endl;
     case 'b':
       output << bsd(userInput) << endl;
       break;
@@ -541,17 +546,39 @@ string title (string input) {
 }
 
 /******************************** MY SIGNITURE ********************************\
-| Returns my signiture, it's nice and pretty :) it takes in top, bottom and    |
-| column variables                                                             |
+| Returns my signiture, it's nice and pretty :) it takes in top, bottom and    |////////////
+| column variables                                                             |////////////
 \******************************************************************************/
-string signiture (string top, string col,string bot) {
+string signiture () {
+
+  struct passwd *pw = getpwuid(getuid());
+  const char *homedir = pw->pw_dir;
+  string path = string(homedir) + "/.signituresource";
 
 
+  string output = "";
+  string line;
+  ifstream myfile;
+  myfile.open(path.c_str());
+  if (myfile.is_open())
+  {
+    while ( myfile.good() )
+    {
+      getline (myfile,line);
+      output += line +'\n';
+    }
+    myfile.close();
+  }
+
+  else {
+    cout << "Unable to open file"; 
+    ofstream writeFile;
+    writeFile.open(path.c_str());
+    writeFile << "SIGNITURE" << endl;
+  }
 
 
-
-
-  return "";
+  return headder ("SIGNITURE", fullLicence);
 
 
 
