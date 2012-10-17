@@ -33,10 +33,14 @@ Due to more interest in this project I may begin documenting this and writing it
 Getting started
 ---------------
 If you just want to get the program installed download or clone the repo and run  
+
     make install
+
 which will compile the program and move an executable to `/bin/chead`
 if you do not have write permissions for `/bin` you may need to use
+
     sudo make install
+
 After it is installed type `chead` to bring up the help menu
 
 Some beginner commands to check out
