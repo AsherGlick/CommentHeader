@@ -553,32 +553,35 @@ string signiture () {
 
   struct passwd *pw = getpwuid(getuid());
   const char *homedir = pw->pw_dir;
-  string path = string(homedir) + "/.signituresource";
+  string path = string(homedir) + "/.signaturesource";
 
 
-  string output = "";
+  string signature = "";
   string line;
   ifstream myfile;
   myfile.open(path.c_str());
   if (myfile.is_open())
   {
+    getline (myfile,line);
+    signature += line;
     while ( myfile.good() )
     {
       getline (myfile,line);
-      output += line +'\n';
+      signature += '\n'+line;
     }
     myfile.close();
   }
 
   else {
-    cout << "Unable to open file"; 
-    ofstream writeFile;
-    writeFile.open(path.c_str());
-    writeFile << "SIGNITURE" << endl;
+    cerr << "Unable to open signature file" << endl;
+    cerr << path << endl;
+    //ofstream writeFile;
+    //writeFile.open(path.c_str());
+    //writeFile << "SIGNITURE" << endl;
   }
 
-
-  return headder ("SIGNITURE", fullLicence);
+  extendedInputAlign = 'm';
+  return headder ("SIGNATURE", signature);
 
 
 
