@@ -347,10 +347,17 @@ int main (int argv, char * argc[])
 \******************************************************************************/
 void help()
 { // VERSION 3
-  cout << "I am the version 3 help menu, still being completed" << endl;
+  string languageflags = "";
+  map<char,headerStyle>::iterator it = headerStyles.begin();
+  while (it != headerStyles.end()){
+    languageflags +=it->first;
+    it++;
+  }
+  cout << "usage: chead [-"+languageflags+"] [-hsbtf] [-v] [-imr]"<<endl;
+  cout << "             [-l #] [-w #] <Input>[Input ...] " << endl;
   cout << "Modifying the size of the output" << endl;
-  cout << "   l    Length      Change how many rows are formatted within the title" << endl;
-  cout << "   w    Width       Chage how many colums the text box takes up defaults to 80" << endl;
+  cout << "   l   Length       Change how many rows are formatted within the title" << endl;
+  cout << "   w   Width        Chage how many colums the text box takes up defaults to 80" << endl;
   cout << endl;
   cout << "Output formats" << endl;
   cout << "   h   Help         Bring up this help menu" << endl;
@@ -367,7 +374,7 @@ void help()
   cout << endl;
   cout << "Languages" << endl;
   //Dynamicly create the language section based on the languages initilized
-  map<char,headerStyle>::iterator it = headerStyles.begin();
+  it = headerStyles.begin();
   while (it != headerStyles.end()){
     cout << "   " << it->first  << "   " << languageNames[it->first];
     for (int i = 0; i < (13-languageNames[it->first].length());i++)  cout << " ";
@@ -575,41 +582,10 @@ string signiture () {
   else {
     cerr << "Unable to open signature file" << endl;
     cerr << path << endl;
-    //ofstream writeFile;
-    //writeFile.open(path.c_str());
-    //writeFile << "SIGNITURE" << endl;
   }
 
   extendedInputAlign = 'm';
   return headder ("SIGNATURE", signature);
-
-
-
-  /*
-  string sig = "";
-  sig += top+"\n";
-  sig += col+"                                     ,,                                       "+      col+"\n";
-  sig += col+"                    db             `7MM                                       "+      col+"\n";
-  sig += col+"                   ;MM:              MM                                       "+      col+"\n";
-  sig += col+"                  ,V^MM.    ,pP\"Ybd  MMpMMMb.  .gP\"Ya `7Mb,od8                "+    col+"\n";
-  sig += col+"                 ,M  `MM    8I   `\"  MM    MM ,M'   Yb  MM' \"'                "+    col+"\n";
-  sig += col+"                 AbmmmqMA   `YMMMa.  MM    MM 8M\"\"\"\"\"\"  MM                    "+col+"\n";
-  sig += col+"                A'     VML  L.   I8  MM    MM YM.    ,  MM                    "+      col+"\n";
-  sig += col+"              .AMA.   .AMMA.M9mmmP'.JMML  JMML.`Mbmmd'.JMML.                  "+      col+"\n";
-  sig += col+"                                                                              "+      col+"\n";
-  sig += col+"                                                                              "+      col+"\n";
-  sig += col+"                                ,,    ,,                                      "+      col+"\n";
-  sig += col+"                     .g8\"\"\"bgd `7MM    db        `7MM                         "+   col+"\n";
-  sig += col+"                   .dP'     `M   MM                MM                         "+      col+"\n";
-  sig += col+"                   dM'       `   MM  `7MM  ,p6\"bo  MM  ,MP'                   "+     col+"\n";
-  sig += col+"                   MM            MM    MM 6M'  OO  MM ;Y                      "+      col+"\n";
-  sig += col+"                   MM.    `7MMF' MM    MM 8M       MM;Mm                      "+      col+"\n";
-  sig += col+"                   `Mb.     MM   MM    MM YM.    , MM `Mb.                    "+      col+"\n";
-  sig += col+"                     `\"bmmmdPY .JMML..JMML.YMbmd'.JMML. YA.                   "+     col+"\n";
-  sig += col+"                                                                              "+      col+"\n";
-  sig += bot;
-  return sig;*/
-
 }
 
 /********************************* BSD2 / BSD *********************************\
