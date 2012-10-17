@@ -46,6 +46,7 @@ After it is installed type `chead` to bring up the help menu
 Some beginner commands to check out
 
 `chead -f I am a function header`
+
     /*************************** I am a function header ***************************\
 	| 
 	\******************************************************************************/
