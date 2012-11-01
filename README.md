@@ -1,13 +1,13 @@
 CommentHeader
 =============
-A quick script for creating nice looking comments in code
+A quick script for creating nice looking comments in code  
 
-Curent Supported Comments
-C / C++ / Java / Javascript
-python / bash / shell
+Curent Supported Comments  
+C / C++ / Java / Javascript  
+python / bash / shell  
 
-Coming Soon
-HTML / XML
+Coming Soon  
+HTML / XML  
 
 
 
@@ -61,3 +61,16 @@ Some beginner commands to check out
     ################################################################################
 	############################## I am in python too ##############################
 	################################################################################
+
+Modifying the size
+------------------
+You can modify the size (columns and rows) of the output using the `-l` and `-w` flags  
+`chead -l 10 -w 20`  
+`chead -lw 10 20`  
+`chead -wl 20 10`  
+
+Extended input mode
+-------------------
+
+Clipboard (via xclip)
+---------------------
