@@ -126,7 +126,7 @@ void initilizeHeaderStyles() {
 
   // LaTeX Header Style
   headerStyles[_LATEX] = headerStyle("%","%","%",
-                                     "%",    "%",
+                                     "% ",    " %",
                                      "%","%","%");
   titleStyles [_LATEX] = titleStyle (" %","%",          "% ",
                                      "%%","%","","","%","%%",
