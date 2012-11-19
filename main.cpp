@@ -64,10 +64,10 @@ using namespace std;
 /////////////////////////////// GLOBAL VARIABLES /////////////////////////////////////////
 headerStyle globalHeaderStyle;
 titleStyle globalTitleStyle; 
-#define _PYTHON 'p'
-#define _C      'c'
-#define _HTML   'h'
-#define _LATEX  'x'
+#define _PYTHON 'P'
+#define _C      'C'
+#define _HTML   'H'
+#define _LATEX  'X'
 map<char,headerStyle> headerStyles;
 map<char,titleStyle> titleStyles;
 map<char,string> languageNames;
@@ -133,6 +133,17 @@ void initilizeHeaderStyles() {
                                      " %","%",          "% ");
   languageNames[_LATEX] = "LaTeX";
   languageDescription[_LATEX] = "Format comments in a LaTeX style";
+
+  //HTML Header Style
+  headerStyles[_HTML] = headerStyle("<!--","-","+ ",
+                                    " | " ,   "| ",
+                                    " +"  ,"-","-->");
+  titleStyles[_HTML] = titleStyle("  <!--","-","-->",
+                                  " <!--","-","-","-","-","--> ",
+                                  "<!--","-","-->  ");
+  languageNames[_HTML] ="HTML / XML";
+  languageDescription[_HTML] = "Format Comments in HTML style";
+
 }
 
 /**************************** INITILIZE FULL FLAGS ****************************\
