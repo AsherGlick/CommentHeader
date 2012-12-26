@@ -68,6 +68,7 @@ titleStyle globalTitleStyle;
 #define _C      'C'
 #define _HTML   'H'
 #define _LATEX  'X'
+#define _NONE   'N'
 map<char,headerStyle> headerStyles;
 map<char,titleStyle> titleStyles;
 map<char,string> languageNames;
@@ -144,11 +145,17 @@ void initilizeHeaderStyles() {
   languageNames[_HTML] ="HTML / XML";
   languageDescription[_HTML] = "Format Comments in HTML style";
 
+  // No Border Style
+  headerStyles[_NONE] = headerStyle(""," ","","","",""," ","");
+  titleStyles[_NONE] = titleStyles(""," ","",""," "," ","",""," ","");
+  languageNames[_NONE] = "None";
+  languageDescription[_NONE] = "Format the comment without a border";
+
 }
 
 /**************************** INITILIZE FULL FLAGS ****************************\
 | Add all of the full name alias functions to a list that can be parsed when   |
-| the user is calling the funciton                                             |
+| the user is calling the function                                             |
 \******************************************************************************/
 void initilizeFullFlags() {
   fullFlagCompression["c++"] = 'c';
@@ -186,7 +193,6 @@ bool activateFlag ( char flag ) {
       return true;    
     // Choose as many of these as you want
     case 'i':
-      //cout << "YOU HAVE ENABLED EXTENDED INPUT MODE" << endl;
       extendedInputFlag = true;
       return true;
     case 'r':
@@ -262,7 +268,7 @@ int main (int argv, char * argc[])
     arguments.push_back(argc[i]);
   }
 
-  // Loop throguh all of the arguments
+  // Loop through all of the arguments
   for (unsigned int i = 1; i < arguments.size(); i++) {
     // Check to see if the input is a flag
     if (arguments[i][0] == '-') {
@@ -321,7 +327,7 @@ int main (int argv, char * argc[])
   }
 
   stringstream output;
-  // Check to see what type of headder needs to be generated
+  // Check to see what type of header needs to be generated
   switch (outputFlag) {
     case 'h':
       help();
@@ -329,7 +335,6 @@ int main (int argv, char * argc[])
     case 's':
       output << signiture() << endl;
       break;
-      //output << "The signiture and bsd functions will be implmented after extended input is implemented" << endl;
     case 'b':
       output << bsd(userInput) << endl;
       break;
@@ -354,10 +359,12 @@ int main (int argv, char * argc[])
 
 
 /************************************ HELP ************************************\
-| 
+| This is the help function it displays all of the possible settings that can  |
+| be activated in the code and presents them to the user. It will              |
+| automatically generate the information for the languages it supports using   |
+| the data specified when generating the settings for the language             |
 \******************************************************************************/
-void help()
-{ // VERSION 3
+void help() {
   string languageflags = "";
   map<char,headerStyle>::iterator it = headerStyles.begin();
   while (it != headerStyles.end()){
@@ -366,10 +373,12 @@ void help()
   }
   cout << "usage: chead [-"+languageflags+"] [-hsbtf] [-v] [-imr]"<<endl;
   cout << "             [-l #] [-w #] <Input>[Input ...] " << endl;
+
   cout << "Modifying the size of the output" << endl;
   cout << "   l   Length       Change how many rows are formatted within the title" << endl;
-  cout << "   w   Width        Chage how many colums the text box takes up defaults to 80" << endl;
+  cout << "   w   Width        Change how many columns the text box takes up defaults to 80" << endl;
   cout << endl;
+
   cout << "Output formats" << endl;
   cout << "   h   Help         Bring up this help menu" << endl;
   cout << "   s   Signature    Output your signature form sigfile correctly formatted" << endl;
@@ -378,13 +387,15 @@ void help()
   cout << "   f   Function     Output a function style header, default option" << endl;
   cout << "   v   Clipboard    Copy the output to the clipboard instead of stdout" << endl;
   cout << endl;
+
   cout << "Input formats" << endl;
   cout << "   i   Extended     Also accept input from stdin for the content" << endl;  
   cout << "   m   Middle       Extended input with each line aligned in the middle" << endl;
   cout << "   r   Right        Extended input with each line aligned to the right" << endl;
   cout << endl;
+
   cout << "Languages" << endl;
-  //Dynamicly create the language section based on the languages initilized
+  //Dynamically create the language section based on the languages initialized
   it = headerStyles.begin();
   while (it != headerStyles.end()){
     cout << "   " << it->first  << "   " << languageNames[it->first];
