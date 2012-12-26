@@ -329,11 +329,9 @@ int main (int argv, char * argc[])
       break;
   }
 
-  // check on stdout or xclip out
+  // Output the results to stdout or to xclip depending on the flag specified 
   if (xclipMode){
-    //string execute = "echo \"" + output.str() + "\" | xclip -sel clip";
     copyToClipboard(output.str());
-    //system(execute.c_str());
   }
   else {
     cout << output.str();
