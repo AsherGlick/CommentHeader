@@ -64,11 +64,6 @@ using namespace std;
 /////////////////////////////// GLOBAL VARIABLES /////////////////////////////////////////
 headerStyle globalHeaderStyle;
 titleStyle globalTitleStyle; 
-#define _PYTHON 'P'
-#define _C      'C'
-#define _HTML   'H'
-#define _LATEX  'X'
-#define _NONE   'N'
 map<char,headerStyle> headerStyles;
 map<char,titleStyle> titleStyles;
 map<char,string> languageNames;
@@ -102,50 +97,36 @@ string bsd(string owner);
 | element of both the 'globalHeaderStyle' map and the 'globalTitleStyle' map   |
 \******************************************************************************/
 void initilizeHeaderStyles() {
-  //cout << "INTITILIZING THE HEADERS" << endl;
   // C / C++ Styles
-  globalHeaderStyle = 
-  headerStyles[_C] = headerStyle("/*","*","*\\",
-                                 "| ",    " |",
-                                "\\*","*","*/");
-  globalTitleStyle = 
-  titleStyles [_C] = titleStyle ("  /","/"            ,"/",
-                                 " /","/","/","/","/","/ ",
-                                 "/","/",            "/  ");
+  #define _C 'C'
+  globalHeaderStyle = headerStyles[_C] = headerStyle("/*","*","*\\","| "," |","\\*","*","*/");
+  globalTitleStyle = titleStyles [_C] = titleStyle ("  /","/","/"," /","/","/","/","/","/ ","/","/","/  ");
   languageNames[_C] = "C/C++";
   languageDescription[_C] = "Format comments in a C/C++/Java style";
 
   //Python Header Style
-  headerStyles[_PYTHON] = headerStyle("#","#","#",
-                                      "# ",    " #",
-                                      "#","#","#");
-  titleStyles [_PYTHON] = titleStyle ("#","#",          "#",
-                                      "#","#","","","#","#",
-                                      "#","#",          "#");
+  #define _PYTHON 'P'
+  headerStyles[_PYTHON] = headerStyle("#","#","#","# "," #","#","#","#");
+  titleStyles [_PYTHON] = titleStyle ("#","#","#","#","#","","","#","#","#","#","#");
   languageNames[_PYTHON] = "Python";
   languageDescription[_PYTHON] = "Format comments in a Python style";
 
   // LaTeX Header Style
-  headerStyles[_LATEX] = headerStyle("%","%","%",
-                                     "% ",    " %",
-                                     "%","%","%");
-  titleStyles [_LATEX] = titleStyle (" %","%",          "% ",
-                                     "%%","%","","","%","%%",
-                                     " %","%",          "% ");
+  #define _LATEX 'X'
+  headerStyles[_LATEX] = headerStyle("%","%","%","% "," %","%","%","%");
+  titleStyles [_LATEX] = titleStyle (" %","%","% ","%%","%","","","%","%%"," %","%","% ");
   languageNames[_LATEX] = "LaTeX";
   languageDescription[_LATEX] = "Format comments in a LaTeX style";
 
   //HTML Header Style
-  headerStyles[_HTML] = headerStyle("<!--","-","+ ",
-                                    " | " ,   "| ",
-                                    " +"  ,"-","-->");
-  titleStyles[_HTML] = titleStyle("  <!--","-","-->",
-                                  " <!--","-","-","-","-","--> ",
-                                  "<!--","-","-->  ");
+  #define _HTML 'H'
+  headerStyles[_HTML] = headerStyle("<!--","-","+ "," | ","| "," +","-","-->");
+  titleStyles[_HTML] = titleStyle("  <!--","-","-->"," <!--","-","-","-","-","--> ","<!--","-","-->  ");
   languageNames[_HTML] ="HTML / XML";
   languageDescription[_HTML] = "Format Comments in HTML style";
 
   // No Border Style
+  #define _NONE 'N'
   headerStyles[_NONE] = headerStyle(""," ","","","",""," ","");
   titleStyles[_NONE] = titleStyle(""," ","",""," ","",""," ","",""," ","");
   languageNames[_NONE] = "None";
@@ -429,7 +410,7 @@ vector<string> wrap (string text, unsigned int width) {
   for (unsigned int i = 0; i < lines.size(); i++) {
     while (lines[i].size() > width){
       int splitIndex = width;
-      // Find the last space for a cleaner split
+      // Find the last space to prevent splitting mid-word
       for (int j = width-1; j >= 0; j--) {
         if (lines[i][j] == ' ') {
           splitIndex = j;
@@ -442,9 +423,17 @@ vector<string> wrap (string text, unsigned int width) {
     }
     wrappedLines.push_back(lines[i]);
   }
+
+  // Return the lines
   return wrappedLines;
 }
 
+/************************************ ALIGN ***********************************\
+| This function takes in a vector of strings and adds spaces to either side    |
+| of the string so that it becomes of length 'width'. The spaces are added to  |
+| the left, right, or both sides to center the text depending on the position  |
+| variable                                                                     |
+\******************************************************************************/
 vector<string> align (string text, char position, unsigned int width) {
 
   vector <string> wrapped = wrap(text,width);
@@ -478,8 +467,10 @@ vector<string> align (string text, char position, unsigned int width) {
   return wrapped;
 }
 
-/*********************************** HEADDER **********************************\
-| GENERAL HEADER FUNCTION
+/*********************************** HEADER ***********************************\
+| The header function takes in a title and a content variables for the header  |
+| to display. It then runs the wrap and align functions and returns the        |
+| wrapped and aligned text surrounded by the box style set by the user         |
 \******************************************************************************/
 string headder (string input, string extendedInput) {
   string output = "";
@@ -628,7 +619,7 @@ string thisyear() {
 
 /******************************** BSD FUNCTION ********************************\
 | This function prints out the BSD license to the screen with the correct      |
-| borders for the style of source code                                         |
+| borders for the language selected                                            |
 \******************************************************************************/
 string bsd(string owner) {
   // Get the width to wrap
