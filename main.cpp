@@ -147,7 +147,7 @@ void initilizeHeaderStyles() {
 
   // No Border Style
   headerStyles[_NONE] = headerStyle(""," ","","","",""," ","");
-  titleStyles[_NONE] = titleStyles(""," ","",""," "," ","",""," ","");
+  titleStyles[_NONE] = titleStyle(""," ","",""," ","",""," ","",""," ","");
   languageNames[_NONE] = "None";
   languageDescription[_NONE] = "Format the comment without a border";
 
@@ -373,32 +373,33 @@ void help() {
   }
   cout << "usage: chead [-"+languageflags+"] [-hsbtf] [-v] [-imr]"<<endl;
   cout << "             [-l #] [-w #] <Input>[Input ...] " << endl;
+  cout << endl;
 
   cout << "Modifying the size of the output" << endl;
-  cout << "   l   Length       Change how many rows are formatted within the title" << endl;
-  cout << "   w   Width        Change how many columns the text box takes up defaults to 80" << endl;
+  cout << "  l   Length       Change how many rows are formatted within the title" << endl;
+  cout << "  w   Width        Change how many columns the text box takes up defaults to 80" << endl;
   cout << endl;
 
   cout << "Output formats" << endl;
-  cout << "   h   Help         Bring up this help menu" << endl;
-  cout << "   s   Signature    Output your signature form sigfile correctly formatted" << endl;
-  cout << "   b   BSD Licence  Output a BSD licence using your input as the copyright holder" << endl;
-  cout << "   t   Title        Output a title style header" << endl;
-  cout << "   f   Function     Output a function style header, default option" << endl;
-  cout << "   v   Clipboard    Copy the output to the clipboard instead of stdout" << endl;
+  cout << "  h   Help         Bring up this help menu" << endl;
+  cout << "  s   Signature    Output your signature form sigfile correctly formatted" << endl;
+  cout << "  b   BSD Licence  Output a BSD licence using the input as the copyright holder" << endl;
+  cout << "  t   Title        Output a title style header" << endl;
+  cout << "  f   Function     Output a function style header, default option" << endl;
+  cout << "  v   Clipboard    Copy the output to the clipboard instead of stdout" << endl;
   cout << endl;
 
   cout << "Input formats" << endl;
-  cout << "   i   Extended     Also accept input from stdin for the content" << endl;  
-  cout << "   m   Middle       Extended input with each line aligned in the middle" << endl;
-  cout << "   r   Right        Extended input with each line aligned to the right" << endl;
+  cout << "  i   Extended     Also accept input from stdin for the content" << endl;  
+  cout << "  m   Middle       Extended input with each line aligned in the middle" << endl;
+  cout << "  r   Right        Extended input with each line aligned to the right" << endl;
   cout << endl;
 
   cout << "Languages" << endl;
   //Dynamically create the language section based on the languages initialized
   it = headerStyles.begin();
   while (it != headerStyles.end()){
-    cout << "   " << it->first  << "   " << languageNames[it->first];
+    cout << "  " << it->first  << "   " << languageNames[it->first];
     for (int i = 0; i < (13-languageNames[it->first].length());i++)  cout << " ";
     cout << languageDescription[it->first] << endl;
     it++;
