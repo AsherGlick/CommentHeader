@@ -167,10 +167,10 @@ void initilizeFullFlags() {
 |                                                                              |
 | STATIC FLAGS                                                                 |
 | h - help                                                                     |
-| s - signiture                                                                |
+| s - signature                                                                |
 | f - function header                                                          |
 | t - section title                                                            |
-| b - bsd licence                                                              |
+| b - bsd license                                                              |
 | - - full tag (eg --help vs -h)                                    [External] |
 | i - append input to the arguments                                            |
 | m - align the extended input to the middle                                   |
@@ -384,7 +384,7 @@ void help() {
   cout << "Output formats" << endl;
   cout << "  h   Help         Bring up this help menu" << endl;
   cout << "  s   Signature    Output your signature form sigfile correctly formatted" << endl;
-  cout << "  b   BSD Licence  Output a BSD licence using the input as the copyright holder" << endl;
+  cout << "  b   BSD License  Output a BSD license using the input as the copyright holder" << endl;
   cout << "  t   Title        Output a title style header" << endl;
   cout << "  f   Function     Output a function style header, default option" << endl;
   cout << "  v   Clipboard    Copy the output to the clipboard instead of stdout" << endl;
@@ -614,7 +614,7 @@ string signiture () {
 }
 
 /******************************* CALCULATE YEAR *******************************\
-| This functions calculates the current year for use in the BSD licence        |
+| This functions calculates the current year for use in the BSD license        |
 | function                                                                     |
 \******************************************************************************/
 string thisyear() {
@@ -627,7 +627,7 @@ string thisyear() {
 }
 
 /******************************** BSD FUNCTION ********************************\
-| This function prints out the BSD licence to the screen with the correct      |
+| This function prints out the BSD license to the screen with the correct      |
 | borders for the style of source code                                         |
 \******************************************************************************/
 string bsd(string owner) {
@@ -637,7 +637,7 @@ string bsd(string owner) {
   // Calculate the Current Year
   string year = thisyear();
   
-  // Top Half of the licence
+  // Top Half of the license
   string content = "Copyright (c) "+year+", "+owner+"\n";
   content += "All rights reserved.\n";
   content += " \n";
@@ -660,10 +660,10 @@ string bsd(string owner) {
     clause2 += "  " + wrappedClause2[i] + "\n";
   }
 
-  // The actual licence
-  string licence = " \nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n";
+  // The actual license
+  string license = " \nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n";
 
-  string fullLicence = content + clause1 + clause2 + licence;
+  string fullLicense = content + clause1 + clause2 + license;
 
-  return headder ("LICENCE", fullLicence);
+  return headder ("LICENSE", fullLicense);
 }
