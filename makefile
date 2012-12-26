@@ -4,10 +4,10 @@ chead: main.cpp headertitle.h pipein.h
 	g++ main.cpp -o chead -Wall
 
 install: chead
-	cp chead /bin/chead
+	cp chead /usr/bin/chead
 
 uninstall:
-	rm /bin/chead
+	rm /usr/bin/chead
 
 clean:
 	rm chead
