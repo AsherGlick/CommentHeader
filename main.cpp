@@ -232,8 +232,10 @@ bool activateFlag ( char flag ) {
 string userInput = "";
 
 
-/******************************* EXTENDED INPUT *******************************\
-|
+/*************************** CAPTURE EXTENDED INPUT ***************************\
+| This function takes the input from stdin and returns it once the input has   |
+| been terminated or two newline characters are detected without any data      |
+| between them                                                                 |
 \******************************************************************************/
 string captureExtendedInput() {
   string input;
@@ -357,7 +359,6 @@ int main (int argv, char * argc[])
   }
 }
 
-
 /************************************ HELP ************************************\
 | This is the help function it displays all of the possible settings that can  |
 | be activated in the code and presents them to the user. It will              |
@@ -406,7 +407,11 @@ void help() {
   }
 }
 
-
+/************************************ WRAP ************************************\
+| This function takes in a string of text wraps it to a specified width by     |
+| moving words that push a single line over that width to the next line. It    |
+| returns a vector of strings each element containing one line                 |
+\******************************************************************************/
 vector<string> wrap (string text, unsigned int width) {
   vector<string> lines;
   int lastSplit = 0;
@@ -482,7 +487,6 @@ string headder (string input, string extendedInput) {
   // Print Top Line
   int fillWidth = titleWidth - 2 - globalHeaderStyle._TOP_LEFT.size() - globalHeaderStyle._TOP_RIGHT.size() - input.size();
   int halfFillWidth = fillWidth/2;
-
   output += globalHeaderStyle._TOP_LEFT;
   for (int i = 0; i < fillWidth - halfFillWidth; i++) {
     output+=globalHeaderStyle._TOP_FILL;
@@ -492,26 +496,23 @@ string headder (string input, string extendedInput) {
     output += globalHeaderStyle._TOP_FILL;
   }
   output += globalHeaderStyle._TOP_RIGHT;
-
   output += "\n";
 
   // Print Text filled Rows
   int whitespaceLength = titleWidth - globalHeaderStyle._LEFT_COLUMN.size() - globalHeaderStyle._RIGHT_COLUMN.size();
   if (extendedInput != "") {
-
     vector<string> textLines = align(extendedInput,extendedInputAlign,whitespaceLength);
-
     for (unsigned int i = 0; i < textLines.size(); i++) {
       output += globalHeaderStyle._LEFT_COLUMN;
       output += textLines[i];
       output += globalHeaderStyle._RIGHT_COLUMN + "\n";
     }
   }
+
   // Print blank rows
   if (titleLength == 0 && extendedInput == "") output += globalHeaderStyle._LEFT_COLUMN + "\n";
   else {
     for (unsigned int i = 0; i < titleLength; i++ ) {
-      
       output += globalHeaderStyle._LEFT_COLUMN;
       for (int j = 0; j < whitespaceLength; j++ ) {
         output += " ";
@@ -529,6 +530,7 @@ string headder (string input, string extendedInput) {
   }
   output += globalHeaderStyle._BOTTOM_RIGHT;
   
+  // Return the result
   return output;
 }
 
@@ -575,8 +577,8 @@ string title (string input) {
   return output;
 }
 
-/******************************** MY SIGNITURE ********************************\
-| Returns my signiture, it's nice and pretty :) it takes in top, bottom and    |////////////
+/******************************** MY SIGNATURE ********************************\
+| Returns my signature, it's nice and pretty :) it takes in top, bottom and    |////////////
 | column variables                                                             |////////////
 \******************************************************************************/
 string signiture () {
@@ -611,8 +613,9 @@ string signiture () {
   return headder ("SIGNATURE", signature);
 }
 
-/********************************* BSD2 / BSD *********************************\
-| the BSD 2 licence, one of the best licences in my oppinion!                  |
+/******************************* CALCULATE YEAR *******************************\
+| This functions calculates the current year for use in the BSD licence        |
+| function                                                                     |
 \******************************************************************************/
 string thisyear() {
   #define SECONDSPERYEAR 31556926
