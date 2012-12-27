@@ -4,14 +4,17 @@ A quick script for creating nice looking comments in code
 
 --------------------------------------------------------------------------------
 
-Current Supported Comments      | Output modes       | Input Modes
---------------------------------|--------------------|---------------------
-`C` C / C++ / Java / Javascript | `h` Help           | `i` Left aligned
-`P` Python / Bash / Shell       | `s` Signature      | `r` Right Aligned
-`H` HTML / XML / Coldfusion     | `b` BSD License    | `m` Middle Aligned
-`X` Latex                       | `t` Title          |                              
-`N` None / Borderless           | `f` Function       |            
-                                | `v` To Clipboard   |  
+Cheat Sheet
+
+Current Supported Languages     | Output modes       | Input Modes         | Output Modifications
+--------------------------------|--------------------|---------------------|---------------------
+`C` C / C++ / Java / Javascript | `h` Help           | `i` Left aligned    | `v` Copy To Clipboard
+`P` Python / Bash / Shell       | `s` Signature      | `r` Right Aligned   | `l` Length of Title
+`H` HTML / XML / Coldfusion     | `b` BSD License    | `m` Middle Aligned  | `w` Width of Title
+`X` Latex                       | `t` Title                              
+`N` None / Borderless           | `f` Function   
+
+--------------------------------------------------------------------------------
 
 
 Getting started
