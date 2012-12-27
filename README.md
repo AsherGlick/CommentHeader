@@ -2,12 +2,16 @@ CommentHeader
 =============
 A quick script for creating nice looking comments in code  
 
-Current Supported Comments  
-`C` C / C++ / Java / Javascript  
-`P` Python / Bash / Shell  
-`H` HTML / XML / Coldfusion  
-`X` Latex  
-`N` None / Borderless 
+--------------------------------------------------------------------------------
+
+Current Supported Comments      | Output modes       | Input Modes
+---------------------------------------------------------------------------
+`C` C / C++ / Java / Javascript | `h` Help           | `i` Left aligned
+`P` Python / Bash / Shell       | `s` Signature      | `r` Right Aligned
+`H` HTML / XML / Coldfusion     | `b` BSD License    | `m` Middle Aligned
+`X` Latex                       | `t` Title          |                              
+`N` None / Borderless           | `f` Function       |            
+                                | `v` To Clipboard   |  
 
 
 Getting started
@@ -117,11 +121,11 @@ usage: chead [-CHNPX] [-hsbtf] [-v] [-imr] [-l #] [-w #] <Input>[Input ...]
 
 
 Output formats
-`h`   Help
-`s`   Signature    Output your signature form sigfile correctly formatted
+`h`   Help                                                                     
+`s`   Signature    Output your signature form sigfile correctly formatted      
 `b`   BSD License  Output a BSD license using the input as the copyright holder
-`t`   Title        Output a title style header
-`f`   Function     Output a function style header, default option
+`t`   Title        Output a title style header                                 
+`f`   Function     Output a function style header, default option              
  
 
 Want to Help Out
