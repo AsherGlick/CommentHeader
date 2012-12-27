@@ -5,7 +5,7 @@ A quick script for creating nice looking comments in code
 --------------------------------------------------------------------------------
 
 Current Supported Comments      | Output modes       | Input Modes
----------------------------------------------------------------------------
+--------------------------------|--------------------|---------------------
 `C` C / C++ / Java / Javascript | `h` Help           | `i` Left aligned
 `P` Python / Bash / Shell       | `s` Signature      | `r` Right Aligned
 `H` HTML / XML / Coldfusion     | `b` BSD License    | `m` Middle Aligned
