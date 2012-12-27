@@ -355,7 +355,7 @@ void help() {
   cout << "             [-l #] [-w #] <Input>[Input ...] " << endl;
   cout << endl;
 
-  cout << "Modifying the size of the output" << endl;
+  cout << "Output Size and Shape" << endl;
   cout << "  l   Length       Change how many rows are formatted within the title" << endl;
   cout << "  w   Width        Change how many columns the text box takes up defaults to 80" << endl;
   cout << endl;
@@ -523,8 +523,11 @@ string headder (string input, string extendedInput) {
   return output;
 }
 
-/******************************* TITLE HEADDER ********************************\
-| the C title generator 
+/******************************** TITLE HEADER ********************************\
+| The title header function acts in a similar to the regular header function   |
+| but it does not take in any content and surrounds it with a different        |
+| wrapper. No line wrapping or aligning is done because the title can only be  |
+| one line long and is automatically centered                                  |
 \******************************************************************************/
 string title (string input) {
   string output = "";
