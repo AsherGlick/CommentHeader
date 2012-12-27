@@ -2,7 +2,7 @@ CommentHeader
 =============
 A quick script for creating nice looking comments in code  
 
-Curent Supported Comments  
+Current Supported Comments  
 `C` C / C++ / Java / Javascript  
 `P` Python / Bash / Shell  
 `H` HTML / XML / Coldfusion  
@@ -48,40 +48,113 @@ Some beginner commands to check out
 	############################## I am in python too ##############################
 	################################################################################
 
+	$ echo 'Hello world' | chead -i I am Hello World
+	/****************************** I am Hello World ******************************\
+	| Hello World                                                                  |
+	\******************************************************************************/
+
+
 Modifying the size
 ------------------
-You can modify the size (columns and rows) of the output using the `-l` and `-w` flags  
+You can modify the Length (number of rows) and Width (number of columns) of the output using the Length `l <number>` and Width `w <number>` flags  
 `chead -l 10 -w 20`  
 `chead -lw 10 20`  
 `chead -wl 20 10`  
 
+	$ chead -l 5 -w 20 IM A BOX
+	/**** IM A BOX ****\
+	|                  |
+	|                  |
+	|                  |
+	|                  |
+	|                  |
+	\******************/
+
+
+
 Extended input mode
 -------------------
-  i   Extended     Also accept input from stdin for the content
-  m   Middle       Extended input with each line aligned in the middle
-  r   Right        Extended input with each line aligned to the right
+`i` Wrap Input from stdin and align it to the left
+`m` Wrap input from stdin and aling it to the middle
+`r` Wrap input 
 
+	$ chead -i Default Aligned
+	I am aligned by default to the left
+
+	/******************************* Default Aligned ******************************\
+	| I am aligned by default to the left                                          |
+	\******************************************************************************/
+
+	$ echo 'I am aligned by default to the left' | chead -i Default Aligned
+	/******************************* Default Aligned ******************************\
+	| I am aligned by default to the left                                          |
+	\******************************************************************************/
+
+	$ echo 'I am aligned to the right' | chead -r Right Aligned
+	/******************************** Right Aligned *******************************\
+	|                                                    I am aligned to the right |
+	\******************************************************************************/
+
+	$ echo 'I am aligned to the middle' | chead -m Middle Aligned
+	/******************************* Middle Aligned *******************************\
+	|                          I am aligned to the middle                          |
+	\******************************************************************************/
 
 Clipboard (via xclip)
 ---------------------
- v   Clipboard    Copy the output to the clipboard instead of stdout
+`v`   Clipboard - Copy the output to the clipboard instead of stdout
+
+Signature
+---------
+
+BSD License Output
+------------------
+
 
 Usage
 ------------
-usage: chead [-CHNPX] [-hsbtf] [-v] [-imr]
-             [-l #] [-w #] <Input>[Input ...] 
+usage: chead [-CHNPX] [-hsbtf] [-v] [-imr] [-l #] [-w #] <Input>[Input ...] 
 
 
 Output formats
-  h   Help         Bring up this help menu
-  s   Signature    Output your signature form sigfile correctly formatted
-  b   BSD License  Output a BSD license using the input as the copyright holder
-  t   Title        Output a title style header
-  f   Function     Output a function style header, default option
+`h`   Help
+`s`   Signature    Output your signature form sigfile correctly formatted
+`b`   BSD License  Output a BSD license using the input as the copyright holder
+`t`   Title        Output a title style header
+`f`   Function     Output a function style header, default option
  
-Supported Languages
-  C   C/C++        Format comments in a C/C++/Java style
-  H   HTML / XML   Format Comments in HTML style
-  N   None         Format the comment without a border
-  P   Python       Format comments in a Python style
-  X   LaTeX        Format comments in a LaTeX style
+
+Want to Help Out
+----------------
+There are couple things that we still need help with
+- Install Packages for linux flavors
+- Testing and configurations for MacOS
+- Testing and configurations for Windows
+- Method for detecting if xclip is installed, and handling when it is not
+- Unit tests, unit tests, unit tests
+
+
+License
+=======
+Copyright (c) 2012, Asher Glick                                                 
+All rights reserved.                                                            
+                                                                                
+Redistribution and use in source and binary forms, with or without              
+modification, are permitted provided that the following conditions are met:     
+                                                                                
+* Redistributions of source code must retain the above copyright notice, this   
+  list of conditions and the following disclaimer.                              
+* Redistributions in binary form must reproduce the above copyright notice,     
+  this list of conditions and the following disclaimer in the documentation     
+  and/or other materials provided with the distribution.                        
+                                                                                
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED   
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE          
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE    
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL      
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR      
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER      
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,   
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE   
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.            
