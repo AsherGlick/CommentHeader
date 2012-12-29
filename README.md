@@ -113,6 +113,7 @@ Clipboard (via xclip)
 
 Signature
 ---------
+The signature file is stored at `~/signaturesource`. An easy way to generate your own signature is using the online app [taag](http://patorjk.com/software/taag/#p=display&f=Georgia11&t=Signature%0A). If you would like to generate your signature via the terminal you can use `FIGlet` which taag is based off of. All of the fonts can be downloaded at [java.de](http://www.jave.de/figlet/fonts.html) [(Direct Link)](http://www.jave.de/figlet/figletfonts40.zip)
 
 BSD License Output
 ------------------
