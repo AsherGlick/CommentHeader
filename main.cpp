@@ -82,6 +82,8 @@ unsigned int titleWidth = DEFAULT_TITLE_WIDTH;
 map<string, char> fullFlagCompression;
 bool xclipMode = false;
 
+bool postArgParseHalt = false;
+
 
 
 void help();
@@ -169,7 +171,7 @@ bool activateFlag ( char flag ) {
       if (!outputFlagSet) { outputFlag = flag; outputFlagSet = true;}
       else {
         cout << "You have set multiple output flags, only one is allowed" << endl;
-        exit (0);
+        postArgParseHalt = true;;
       }
       return true;    
     // Choose as many of these as you want
@@ -181,7 +183,7 @@ bool activateFlag ( char flag ) {
       if (extendedInputAlign == 'l') extendedInputAlign = 'r';
       else {
         cout << "You have set multiple align flags for extended input, only one is allowed" << endl;
-        exit (0);
+        postArgParseHalt = true;
       }
       return true;
     case 'm':
@@ -189,7 +191,7 @@ bool activateFlag ( char flag ) {
       if (extendedInputAlign == 'l') extendedInputAlign = 'm';
       else {
         cout << "You have set multiple align flags for extended input, only one is allowed" << endl;
-        exit (0);
+        postArgParseHalt = true;
       }
       return true;
     case 'v':
@@ -268,7 +270,7 @@ int main (int argv, char * argc[])
           if (arguments[i][j] == 'w'){
             if (i+1 >= arguments.size()) {
               cout << "Error: You did not specify a width for your title after using the -w flag" << endl;
-              return 0;
+              postArgParseHalt = true;
             }
             else { 
               titleWidth = atoi(arguments[i+1].c_str()); 
@@ -279,7 +281,7 @@ int main (int argv, char * argc[])
           else if( arguments[i][j] == 'l' ) {
             if (i+1 >= arguments.size()) {
               cout << "Error: You did not specify a length for your title after using the -l flag" << endl;
-              return 0;
+              postArgParseHalt = true;
             }
             else { 
               titleLength = atoi(arguments[i+1].c_str()); 
@@ -290,6 +292,7 @@ int main (int argv, char * argc[])
           else if (activateFlag(arguments[i][j])) {}
           else {
             cout << "Undefined flag: " << arguments[i][j] << endl;
+            postArgParseHalt = true; // Stop the program after parsing inputs
           }
         }
       }
@@ -300,6 +303,11 @@ int main (int argv, char * argc[])
       userInput += inputSpaces + arguments[i];
       inputSpaces = " ";
     }
+  }
+
+  // Kill the program if any undefined flags were found
+  if (postArgParseHalt) {
+    return 1;
   }
 
   // Prevent the extended input flag and the tital flag from both being active
