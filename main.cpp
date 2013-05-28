@@ -302,6 +302,12 @@ int main (int argv, char * argc[])
     }
   }
 
+  // Prevent the extended input flag and the tital flag from both being active
+  if (extendedInputFlag && outputFlag=='t'){
+    extendedInputFlag = false;
+    cout << "Warning: the extended input flag is ignored becasue you are creating a title" << endl;
+  }
+
   // A string for containing the extended input's data
   string extendedInputString = "";
   // Check for the input flag
