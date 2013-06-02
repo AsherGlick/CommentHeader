@@ -1,8 +1,8 @@
 all : chead
 
-chead: main.cpp headertitle.h pipein.h
+chead: source/main.cpp source/headertitle.h source/pipein.h
 	mkdir -p bin
-	g++ main.cpp -o ./bin/chead -Wall
+	g++ source/main.cpp -o ./bin/chead -Wall
 
 install: chead
 	cp ./bin/chead /usr/bin/chead
@@ -14,4 +14,4 @@ clean:
 	rm -r ./bin
 
 test: chead
-	python unitTest.py 
+	(cd tests && python Tests.py)
