@@ -6,6 +6,9 @@ import struct
 import os
 
 units = [
+
+    {"TestName": "BreakPoint", "BreakTitle": "Standard Generators"},
+
     {"TestName": "Standard Even Length",
      "Test": "../bin/chead EVEN",
      "Stdin": "",
@@ -38,6 +41,8 @@ units = [
                "################################################################################\n"
      },
 
+    {"TestName": "BreakPoint", "BreakTitle": "Resizing Functions"},
+
     {"TestName": "Python Small Width and Height",
      "Test": "../bin/chead -Pwl 12 2 EVEN",
      "Stdin": "",
@@ -58,6 +63,8 @@ units = [
                "|                                                                                        |\n"
                "\\****************************************************************************************/\n"
      },
+
+    {"TestName": "BreakPoint", "BreakTitle": "Title Functions"},
 
     {"TestName": "Standard Title Even",
      "Test": "../bin/chead -t EVEN",
@@ -91,6 +98,8 @@ units = [
                "################################################################################\n"
      },
 
+    {"TestName": "BreakPoint", "BreakTitle": "Error Catching"},
+
     {"TestName": "Too many output flags error",
      "Test": "../bin/chead -ft Too many flags",
      "Stdin": "",
@@ -102,6 +111,8 @@ units = [
      "Stdin": "",
      "Result": "You have set multiple align flags for extended input, only one is allowed\n"
      },
+
+    {"TestName": "BreakPoint", "BreakTitle": "Extended Input"},
 
     {"TestName": "Extended Input Basic",
      "Test": "../bin/chead -i EXTENDED INPUT",
@@ -227,6 +238,12 @@ def getTerminalSize():
 
 (width, height) = getTerminalSize()
 for unit in units:
+
+    if unit["TestName"] == "BreakPoint":
+        padding = " " * ((width - len(unit["BreakTitle"])) / 2)
+        print padding+unit["BreakTitle"]+padding
+        continue
+
     if run(unit["Test"], unit["Stdin"]) == unit["Result"]:
         print unit["TestName"] + " " + ("."*(width-11-len(unit["TestName"]))) + OKGREEN + " [SUCESS]" + ENDC
     else:
