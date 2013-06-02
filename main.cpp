@@ -345,7 +345,9 @@ int main (int argv, char * argc[])
 
   // Output the results to stdout or to xclip depending on the flag specified 
   if (xclipMode){
-    copyToClipboard(output.str());
+    if (copyToClipboard(output.str()) == -1) {
+      cout << output.str(); // print out if xclip is not found
+    }
   }
   else {
     cout << output.str();

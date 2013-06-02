@@ -8,6 +8,11 @@
 \******************************************************************************/
 int copyToClipboard(std::string contents)
 {
+    std::ifstream xclipBinary("/usr/bin/xclip");
+    if (!xclipBinary.good()){
+        std::cout << "Error: Cannot Find XClip" << std::endl;
+        return -1;
+    }
     int fd1[2];
     pid_t pid;
     // Create a pipe
