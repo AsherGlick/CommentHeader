@@ -263,7 +263,6 @@ int main (int argv, char * argc[])
       if (arguments[i][1] == '-') {
         string flag = arguments[i];
         flag = flag.substr(2,flag.size()-2);
-        cout << "FULL FLAG SEARCHING FOR: " << flag << endl;
         string smallflag = fullFlagCompression[flag];
         if (smallflag == "") {
           cout << "Undefined Argument: " << flag << endl;
@@ -271,11 +270,9 @@ int main (int argv, char * argc[])
           continue;
         }
         else {
-          cout << "found argument: " + smallflag << endl;
           arguments[i] = "-"+smallflag;
         }
       }
-      cout << arguments[i] << endl;
       for (unsigned int j = 1; j < arguments[i].size(); j++) {
         // Grab arguments for width
         if (arguments[i][j] == 'w'){
