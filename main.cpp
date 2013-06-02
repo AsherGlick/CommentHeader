@@ -79,7 +79,7 @@ char extendedInputAlign = 'l';
 unsigned int titleLength = DEFAULT_TITLE_LENGTH;
 #define DEFAULT_TITLE_WIDTH 80
 unsigned int titleWidth = DEFAULT_TITLE_WIDTH;
-map<string, char> fullFlagCompression;
+map<string, string> fullFlagCompression;
 bool xclipMode = false;
 
 bool postArgParseHalt = false;
@@ -141,7 +141,9 @@ void initilizeHeaderStyles() {
 | the user is calling the function                                             |
 \******************************************************************************/
 void initilizeFullFlags() {
-  fullFlagCompression["c++"] = 'c';
+  fullFlagCompression["c++"] = "C";
+  fullFlagCompression["python"] = "P";
+  fullFlagCompression["clipboard"] = "v";
 }
 
 /******************************* ACTIVATE FLAGS *******************************\
@@ -262,38 +264,46 @@ int main (int argv, char * argc[])
         string flag = arguments[i];
         flag = flag.substr(2,flag.size()-2);
         cout << "FULL FLAG SEARCHING FOR: " << flag << endl;
+        string smallflag = fullFlagCompression[flag];
+        if (smallflag == "") {
+          cout << "Undefined Argument: " << flag << endl;
+          postArgParseHalt = true;
+          continue;
+        }
+        else {
+          cout << "found argument: " + smallflag << endl;
+          arguments[i] = "-"+smallflag;
+        }
       }
-      
-      else {
-        for (unsigned int j = 1; j < arguments[i].size(); j++) {
-          // Grab arguments for width
-          if (arguments[i][j] == 'w'){
-            if (i+1 >= arguments.size()) {
-              cout << "Error: You did not specify a width for your title after using the -w flag" << endl;
-              postArgParseHalt = true;
-            }
-            else { 
-              titleWidth = atoi(arguments[i+1].c_str()); 
-              arguments.erase (arguments.begin()+i+1);
-            }
+      cout << arguments[i] << endl;
+      for (unsigned int j = 1; j < arguments[i].size(); j++) {
+        // Grab arguments for width
+        if (arguments[i][j] == 'w'){
+          if (i+1 >= arguments.size()) {
+            cout << "Error: You did not specify a width for your title after using the -w flag" << endl;
+            postArgParseHalt = true;
           }
-          // Grab arguments for length
-          else if( arguments[i][j] == 'l' ) {
-            if (i+1 >= arguments.size()) {
-              cout << "Error: You did not specify a length for your title after using the -l flag" << endl;
-              postArgParseHalt = true;
-            }
-            else { 
-              titleLength = atoi(arguments[i+1].c_str()); 
-              arguments.erase (arguments.begin()+i+1);
-            }
+          else { 
+            titleWidth = atoi(arguments[i+1].c_str()); 
+            arguments.erase (arguments.begin()+i+1);
+          }
+        }
+        // Grab arguments for length
+        else if( arguments[i][j] == 'l' ) {
+          if (i+1 >= arguments.size()) {
+            cout << "Error: You did not specify a length for your title after using the -l flag" << endl;
+            postArgParseHalt = true;
+          }
+          else { 
+            titleLength = atoi(arguments[i+1].c_str()); 
+            arguments.erase (arguments.begin()+i+1);
+          }
 
-          }
-          else if (activateFlag(arguments[i][j])) {}
-          else {
-            cout << "Undefined flag: " << arguments[i][j] << endl;
-            postArgParseHalt = true; // Stop the program after parsing inputs
-          }
+        }
+        else if (activateFlag(arguments[i][j])) {}
+        else {
+          cout << "Undefined flag: " << arguments[i][j] << endl;
+          postArgParseHalt = true; // Stop the program after parsing inputs
         }
       }
     }
