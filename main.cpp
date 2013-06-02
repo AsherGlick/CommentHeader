@@ -105,6 +105,7 @@ void initilizeHeaderStyles() {
   globalTitleStyle = titleStyles [_C] = titleStyle ("  /","/","/"," /","/","/","/","/","/ ","/","/","/  ");
   languageNames[_C] = "C/C++";
   languageDescription[_C] = "Format comments in a C/C++/Java style";
+  fullFlagCompression["c++"] = _C;
 
   //Python Header Style
   #define _PYTHON 'P'
@@ -112,6 +113,7 @@ void initilizeHeaderStyles() {
   titleStyles [_PYTHON] = titleStyle ("#","#","#","#","#","","","#","#","#","#","#");
   languageNames[_PYTHON] = "Python";
   languageDescription[_PYTHON] = "Format comments in a Python style";
+  fullFlagCompression["python"] = _PYTHON;
 
   // LaTeX Header Style
   #define _LATEX 'X'
@@ -119,6 +121,7 @@ void initilizeHeaderStyles() {
   titleStyles [_LATEX] = titleStyle (" %","%","% ","%%","%","","","%","%%"," %","%","% ");
   languageNames[_LATEX] = "LaTeX";
   languageDescription[_LATEX] = "Format comments in a LaTeX style";
+  fullFlagCompression["latex"] = _LATEX;
 
   //HTML Header Style
   #define _HTML 'H'
@@ -126,6 +129,7 @@ void initilizeHeaderStyles() {
   titleStyles[_HTML] = titleStyle("  <!--","-","-->"," <!--","-","-","-","-","--> ","<!--","-","-->  ");
   languageNames[_HTML] ="HTML / XML";
   languageDescription[_HTML] = "Format Comments in HTML style";
+  fullFlagCompression["html"] = _HTML;
 
   // No Border Style
   #define _NONE 'N'
@@ -133,6 +137,7 @@ void initilizeHeaderStyles() {
   titleStyles[_NONE] = titleStyle(""," ","",""," ","",""," ","",""," ","");
   languageNames[_NONE] = "None";
   languageDescription[_NONE] = "Format the comment without a border";
+  fullFlagCompression["borderless"] = _NONE;
 
 }
 
@@ -141,9 +146,17 @@ void initilizeHeaderStyles() {
 | the user is calling the function                                             |
 \******************************************************************************/
 void initilizeFullFlags() {
-  fullFlagCompression["c++"] = "C";
-  fullFlagCompression["python"] = "P";
+  fullFlagCompression["length"] = "l";
+  fullFlagCompression["width"] = "w";
+  fullFlagCompression["help"] = "h";
+  fullFlagCompression["signature"] = "s";
+  fullFlagCompression["bsd"] = "b";
+  fullFlagCompression["title"] = "t";
+  fullFlagCompression["function"] = "f";
   fullFlagCompression["clipboard"] = "v";
+  fullFlagCompression["extended"] = "i";
+  fullFlagCompression["align-middle"] = "m";
+  fullFlagCompression["align-right"] = "r";
 }
 
 /******************************* ACTIVATE FLAGS *******************************\
