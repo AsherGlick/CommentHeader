@@ -106,6 +106,7 @@ void initilizeHeaderStyles() {
   languageNames[_C] = "C/C++";
   languageDescription[_C] = "Format comments in a C/C++/Java style";
   fullFlagCompression["c++"] = _C;
+  fullFlagCompression["java"] = _C;
 
   //Python Header Style
   #define _PYTHON 'P'
@@ -114,6 +115,7 @@ void initilizeHeaderStyles() {
   languageNames[_PYTHON] = "Python";
   languageDescription[_PYTHON] = "Format comments in a Python style";
   fullFlagCompression["python"] = _PYTHON;
+  fullFlagCompression["shell"] = _PYTHON;
 
   // LaTeX Header Style
   #define _LATEX 'X'
@@ -130,6 +132,7 @@ void initilizeHeaderStyles() {
   languageNames[_HTML] ="HTML / XML";
   languageDescription[_HTML] = "Format Comments in HTML style";
   fullFlagCompression["html"] = _HTML;
+  fullFlagCompression["xml"] = _HTML;
 
   // No Border Style
   #define _NONE 'N'
