@@ -192,18 +192,35 @@ units = [
                "|     Maecenas mollis lacus ac neque sollicitudin vitae pharetra mi imperdiet. |\n"
                "|                                               Praesent sit amet auctor nisi. |\n"
                "\\******************************************************************************/\n"
-     }
+     },
+
+    {"TestName": "BreakPoint", "BreakTitle": "Clipboard Functions"},
+
+    {"TestName": "Clipboard Copy (Run)",
+     "Test": "../bin/chead -v To The clipboard",
+     "Stdin": "",
+     "Result": ""
+     },
+
+    {"TestName": "Clipboard Copy (Validate)",
+     "Test": "xclip -out -selection clipboard",
+     "Stdin": "",
+     "Result": "/****************************** To The clipboard ******************************\\\n"
+               "| \n"
+               "\\******************************************************************************/\n"
+     },
 ]
 
 
-def run(command, cin=""):
+def run(command, cin="", waitForReply=True):
     commands = command.split(" ")
     process = Popen(commands, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     if cin != "":
         output = process.communicate(input=cin)[0]
     else:
-        #exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
+        os.waitpid(process.pid, 0)
+        if waitForReply:
+            output = process.communicate()[0]
     return output
 
 OKGREEN = '\033[92m'
@@ -244,7 +261,9 @@ for unit in units:
         print padding+unit["BreakTitle"]+padding
         continue
 
-    if run(unit["Test"], unit["Stdin"]) == unit["Result"]:
+    if unit["Result"] == "":
+        print unit["TestName"] + " Completed -- no check"
+    elif run(unit["Test"], unit["Stdin"]) == unit["Result"]:
         print unit["TestName"] + " " + ("."*(width-11-len(unit["TestName"]))) + OKGREEN + " [SUCESS]" + ENDC
     else:
         print unit["TestName"] + " " + ("."*(width-11-len(unit["TestName"]))) + FAIL + " [FAILED]" + ENDC
