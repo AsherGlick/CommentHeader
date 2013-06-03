@@ -146,9 +146,9 @@ The signature file is stored at `~/signaturesource`. An easy way to generate you
 
 BSD License Output
 ------------------
-	The BSD licence function will generate a 2 clause BSD licence wrapped with the specified border using the input as the copyright holder and the current year as the date.
+The BSD licence function will generate a 2 clause BSD licence wrapped with the specified border using the input as the copyright holder and the current year as the date.
 
-	$ chead -b
+    $ chead -b Bugs Bunny
     /*********************************** LICENSE **********************************\
     | Copyright (c) 2013, Bugs Bunny                                               |
     | All rights reserved.                                                         |
