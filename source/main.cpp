@@ -92,6 +92,7 @@ string title (string title);
 string signiture();
 string bsd(string owner);
 
+map<char,vector<string> > languageAliases;
 
 /*************************** INITILIZE HEADER STYLES **************************\
 | Include all of the header and title styles into the list of possible styles  |
@@ -103,44 +104,41 @@ void initilizeHeaderStyles() {
   #define _C 'C'
   globalHeaderStyle = headerStyles[_C] = headerStyle("/*","*","*\\","| "," |","\\*","*","*/");
   globalTitleStyle = titleStyles [_C] = titleStyle ("  /","/","/"," /","/","/","/","/","/ ","/","/","/  ");
-  languageNames[_C] = "C/C++";
+  languageNames[_C] = "c++";
   languageDescription[_C] = "Format comments in a C/C++/Java style";
-  fullFlagCompression["c++"] = _C;
-  fullFlagCompression["java"] = _C;
+  languageAliases[_C] = {"c","java","javascipt","c#","go","actionscript"};
 
   //Python Header Style
   #define _PYTHON 'P'
   headerStyles[_PYTHON] = headerStyle("#","#","#","# "," #","#","#","#");
   titleStyles [_PYTHON] = titleStyle ("#","#","#","#","#","","","#","#","#","#","#");
-  languageNames[_PYTHON] = "Python";
+  languageNames[_PYTHON] = "python";
   languageDescription[_PYTHON] = "Format comments in a Python style";
-  fullFlagCompression["python"] = _PYTHON;
-  fullFlagCompression["shell"] = _PYTHON;
+  languageAliases[_PYTHON] = {"shell","perl","ruby","php"};
 
   // LaTeX Header Style
   #define _LATEX 'X'
   headerStyles[_LATEX] = headerStyle("%","%","%","% "," %","%","%","%");
   titleStyles [_LATEX] = titleStyle (" %","%","% ","%%","%","","","%","%%"," %","%","% ");
-  languageNames[_LATEX] = "LaTeX";
+  languageNames[_LATEX] = "latex";
   languageDescription[_LATEX] = "Format comments in a LaTeX style";
-  fullFlagCompression["latex"] = _LATEX;
+  languageAliases[_LATEX] = {"prolog","matlab","erlang"};
 
   //HTML Header Style
   #define _HTML 'H'
   headerStyles[_HTML] = headerStyle("<!--","-","+ "," | ","| "," +","-","-->");
   titleStyles[_HTML] = titleStyle("  <!--","-","-->"," <!--","-","-","-","-","--> ","<!--","-","-->  ");
-  languageNames[_HTML] ="HTML / XML";
+  languageNames[_HTML] ="html";
   languageDescription[_HTML] = "Format Comments in HTML style";
-  fullFlagCompression["html"] = _HTML;
-  fullFlagCompression["xml"] = _HTML;
+  languageAliases[_HTML] = {"xml"};
 
   // No Border Style
   #define _NONE 'N'
   headerStyles[_NONE] = headerStyle(""," ","","","",""," ","");
   titleStyles[_NONE] = titleStyle(""," ","",""," ","",""," ","",""," ","");
-  languageNames[_NONE] = "None";
+  languageNames[_NONE] = "none";
   languageDescription[_NONE] = "Format the comment without a border";
-  fullFlagCompression["borderless"] = _NONE;
+  languageAliases[_NONE] = {"borderless"};
 
 }
 
@@ -153,7 +151,7 @@ void initilizeFullFlags() {
   fullFlagCompression["width"] = "w";
   fullFlagCompression["help"] = "h";
   fullFlagCompression["signature"] = "s";
-  fullFlagCompression["bsd"] = "b";
+  fullFlagCompression["bsd-license"] = "b";
   fullFlagCompression["title"] = "t";
   fullFlagCompression["function"] = "f";
   fullFlagCompression["clipboard"] = "v";
@@ -395,32 +393,42 @@ void help() {
   cout << endl;
 
   cout << "Output Size and Shape" << endl;
-  cout << "  l   Length       Change how many rows are formatted within the title" << endl;
-  cout << "  w   Width        Change how many columns the text box takes up defaults to 80" << endl;
+  cout << " -l --length       Change how many rows are formatted within the title" << endl;
+  cout << " -w --width        Change how many columns the text box takes up defaults to 80" << endl;
   cout << endl;
 
   cout << "Output formats" << endl;
-  cout << "  h   Help         Bring up this help menu" << endl;
-  cout << "  s   Signature    Output your signature form sigfile correctly formatted" << endl;
-  cout << "  b   BSD License  Output a BSD license using the input as the copyright holder" << endl;
-  cout << "  t   Title        Output a title style header" << endl;
-  cout << "  f   Function     Output a function style header, default option" << endl;
-  cout << "  v   Clipboard    Copy the output to the clipboard instead of stdout" << endl;
+  cout << " -h --help         Bring up this help menu" << endl;
+  cout << " -s --signature    Output your signature form sigfile correctly formatted" << endl;
+  cout << " -b --bsd-license  Output a BSD license using the input as the copyright holder" << endl;
+  cout << " -t --title        Output a title style header" << endl;
+  cout << " -f --function     Output a function style header, default option" << endl;
+  cout << " -v --clipboard    Copy the output to the clipboard instead of stdout" << endl;
   cout << endl;
 
   cout << "Input formats" << endl;
-  cout << "  i   Extended     Also accept input from stdin for the content" << endl;  
-  cout << "  m   Middle       Extended input with each line aligned in the middle" << endl;
-  cout << "  r   Right        Extended input with each line aligned to the right" << endl;
+  cout << " -i --extended     Also accept input from stdin for the content" << endl;  
+  cout << " -m --middle-align Extended input with each line aligned in the middle" << endl;
+  cout << " -r --right-align  Extended input with each line aligned to the right" << endl;
   cout << endl;
 
+  printLanguages(false);
+}
+
+void printLanguages(bool showall) {
   cout << "Languages" << endl;
   //Dynamically create the language section based on the languages initialized
   it = headerStyles.begin();
   while (it != headerStyles.end()){
-    cout << "  " << it->first  << "   " << languageNames[it->first];
+    cout << " -" << it->first  << " --" << languageNames[it->first];
     for (int i = 0; i < (13-languageNames[it->first].length());i++)  cout << " ";
-    cout << languageDescription[it->first] << endl;
+    cout << languageDescription[it->first];
+    for (u_int i = 0; i < languageAliases[it->first].size(); i++) {
+      if (i%2 == 0) cout << endl << "    ";
+      cout << "--" << languageAliases[it->first][i];
+      for (int j = 0; j < (13 - languageAliases[it->first][i].length()); j++)  cout << " " ;
+    }
+    cout << endl;
     it++;
   }
 }
