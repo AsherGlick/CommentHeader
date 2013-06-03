@@ -2,7 +2,7 @@ all : chead
 
 chead: source/main.cpp source/headertitle.h source/pipein.h
 	mkdir -p bin
-	g++ source/main.cpp -o ./bin/chead -Wall
+	g++ source/main.cpp -o ./bin/chead -Wall -std=c++0x
 
 install: chead
 	cp ./bin/chead /usr/bin/chead
