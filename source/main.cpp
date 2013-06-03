@@ -375,6 +375,7 @@ int main (int argv, char * argc[])
   }
 }
 
+
 /************************************ HELP ************************************\
 | This is the help function it displays all of the possible settings that can  |
 | be activated in the code and presents them to the user. It will              |
@@ -412,23 +413,13 @@ void help() {
   cout << " -r --right-align  Extended input with each line aligned to the right" << endl;
   cout << endl;
 
-  printLanguages(false);
-}
-
-void printLanguages(bool showall) {
   cout << "Languages" << endl;
   //Dynamically create the language section based on the languages initialized
   it = headerStyles.begin();
   while (it != headerStyles.end()){
     cout << " -" << it->first  << " --" << languageNames[it->first];
     for (int i = 0; i < (13-languageNames[it->first].length());i++)  cout << " ";
-    cout << languageDescription[it->first];
-    for (u_int i = 0; i < languageAliases[it->first].size(); i++) {
-      if (i%2 == 0) cout << endl << "    ";
-      cout << "--" << languageAliases[it->first][i];
-      for (int j = 0; j < (13 - languageAliases[it->first][i].length()); j++)  cout << " " ;
-    }
-    cout << endl;
+    cout << languageDescription[it->first] << endl;
     it++;
   }
 }
