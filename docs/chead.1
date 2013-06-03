@@ -1,0 +1,40 @@
+.\" Manpage for chead
+.\" Contact aglick@aglick.com to correct errors or typos.
+.TH man 1 "03 June 2013" "1.0" "Comment Header Manual"
+
+.SH NAME
+chead - pritty print comments
+
+.SH SYNOPSIS
+chead [-CHNPX] [-hsbtf] [-v] [-imr] [-l #] [-w #] Input ...
+
+.SH DESCRIPTION
+chead is used to create neat and tidy looking coments for your code in order to make it readable and understandable while also looking pretty
+
+.SH OPTIONS
+.SS Output Size and Shape
+-l, --length <value>
+.RS 4
+Change the number of rows that are displayed with the resulting comment header. If there are more lines of text then the length requested the length will be extended to fit the number of line. If there are fewer lines of text then the number selected empty lines will be appended to the text.
+.RE
+.PP
+-w, --width <value>
+.RS 4
+Change how many columns the text box takes up defaults to 80. Note that this is the outside width of the text box not the width that characters will be able to exist in.
+.RE
+.PP
+.SS Output formats
+-h, --help
+.RS 4
+Bring up a help menu to display a basic set of commands and instructions on how to use the program
+.RE
+.PP
+-s, --signature    Output your signature form sigfile correctly formatted
+-b, --bsd-license  Output a BSD license using the input as the copyright holder
+-t, --title        Output a title style header
+-f, --function     Output a function style header, default option
+-v, --clipboard    Copy the output to the clipboard instead of stdout
+.SS Input formats
+-i, --extended     Also accept input from stdin for the content
+-m, --middle-align Extended input with each line aligned in the middle
+-r, --right-align  Extended input with each line aligned to the right
