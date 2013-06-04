@@ -6,8 +6,8 @@ chead: source/main.cpp source/headertitle.h source/pipein.h
 
 install: chead
 	cp ./bin/chead /usr/bin/chead
-	install -g 0 -o 0 -m 0644 documentation/chead.1 /usr/local/man/man1/
-	gzip /usr/local/man/man1/chead.1
+	install -g 0 -o 0 -m 0644 documentation/chead.1 /usr/share/man/man1/
+	gzip /usr/share/man/man1/chead.1
 
 uninstall:
 	rm /usr/bin/chead
