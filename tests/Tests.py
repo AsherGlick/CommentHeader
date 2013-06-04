@@ -4,6 +4,7 @@ import fcntl
 import termios
 import struct
 import os
+from datetime import date
 
 units = [
 
@@ -212,10 +213,34 @@ units = [
 
     {"TestName": "BreakPoint", "BreakTitle": "BSD License"},
 
-    {"TestName": "Clipboard Copy (Run)",
-     "Test": "../bin/chead -v To The clipboard",
+    {"TestName": "Generic BSD",
+     "Test": "../bin/chead -b Bugs Bunny",
      "Stdin": "",
-     "Result": ""
+     "Result": "/*********************************** LICENSE **********************************\\\n"
+               "| Copyright (c) "+str(date.today().year)+", Bugs Bunny                                               |\n"
+               "| All rights reserved.                                                         |\n"
+               "|                                                                              |\n"
+               "| Redistribution and use in source and binary forms, with or without           |\n"
+               "| modification, are permitted provided that the following conditions are met:  |\n"
+               "|                                                                              |\n"
+               "| * Redistributions of source code must retain the above copyright notice,     |\n"
+               "|   this list of conditions and the following disclaimer.                      |\n"
+               "| * Redistributions in binary form must reproduce the above copyright notice,  |\n"
+               "|   this list of conditions and the following disclaimer in the documentation  |\n"
+               "|   and/or other materials provided with the distribution.                     |\n"
+               "|                                                                              |\n"
+               "| THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"  |\n"
+               "| AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE    |\n"
+               "| IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE   |\n"
+               "| ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE    |\n"
+               "| LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR          |\n"
+               "| CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF         |\n"
+               "| SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS     |\n"
+               "| INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN      |\n"
+               "| CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)      |\n"
+               "| ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   |\n"
+               "| POSSIBILITY OF SUCH DAMAGE.                                                  |\n"
+               "\\******************************************************************************/\n"
      },
 
     {"TestName": "BreakPoint", "BreakTitle": "Signature"},
@@ -299,3 +324,4 @@ for unit in units:
     else:
         print unit["TestName"] + " " + ("."*(width-11-len(unit["TestName"]))) + FAIL + " [FAILED]" + ENDC
         print run(unit["Test"], unit["Stdin"])
+        print unit["Result"]
