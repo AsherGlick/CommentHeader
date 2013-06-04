@@ -246,23 +246,35 @@ units = [
     {"TestName": "BreakPoint", "BreakTitle": "Signature"},
 
     {"TestName": "Signature Missing - Setup",
-     "Test": "",
+     "Test": "/bin/bash backupSignature.sh",
      "Stdin": "",
      "Result": ""
      },
 
     {"TestName": "Signature Mission - Test",
-     "Test": "/usr/bin/xclip -out -selection clipboard",
+     "Test": "../bin/chead -s",
      "Stdin": "",
      "Result": "Unable to open signature file\n" +
                os.path.expanduser("~")+"/.signaturesource\n"
      },
 
-    {"TestName": "Signature Cleanup",
-     "Test": "",
+    {"TestName": "Signature Test - Setup",
+     "Test": "/bin/bash createTempSignature.sh",
      "Stdin": "",
      "Result": ""
      },
+
+    {"TestName": "Signature Mission - Test",
+     "Test": "../bin/chead -s",
+     "Stdin": "",
+     "Result": "Totally works man"
+     },
+
+    {"TestName": "Signature Cleanup - Setup",
+     "Test": "/bin/bash restoreSignature.sh",
+     "Stdin": "",
+     "Result": ""
+     }, 
 ]
 
 
