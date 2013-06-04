@@ -571,8 +571,9 @@ string signiture () {
   }
 
   else {
-    cerr << "Unable to open signature file" << endl;
-    cerr << path << endl;
+    cout << "Unable to open signature file" << endl;
+    cout << path;
+    return "";
   }
 
   extendedInputAlign = 'm';
