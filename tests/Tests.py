@@ -209,10 +209,40 @@ units = [
                "| \n"
                "\\******************************************************************************/\n"
      },
+
+    {"TestName": "BreakPoint", "BreakTitle": "BSD License"},
+
+    {"TestName": "Clipboard Copy (Run)",
+     "Test": "../bin/chead -v To The clipboard",
+     "Stdin": "",
+     "Result": ""
+     },
+
+    {"TestName": "BreakPoint", "BreakTitle": "Signature"},
+
+    {"TestName": "Signature Missing - Setup",
+     "Test": "",
+     "Stdin": "",
+     "Result": ""
+     },
+
+    {"TestName": "Signature Mission - Test",
+     "Test": "/usr/bin/xclip -out -selection clipboard",
+     "Stdin": "",
+     "Result": "Unable to open signature file\n" +
+               os.path.expanduser("~")+"/.signaturesource\n"
+     },
+
+    {"TestName": "Signature Cleanup",
+     "Test": "",
+     "Stdin": "",
+     "Result": ""
+     },
 ]
 
 
 def run(command, cin="", waitForReply=True):
+    output = ""
     commands = command.split(" ")
     process = Popen(commands, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     if cin != "":
@@ -262,6 +292,7 @@ for unit in units:
         continue
 
     if unit["Result"] == "":
+        run(unit["Test"], unit["Stdin"], False)
         print unit["TestName"] + " Completed -- no check"
     elif run(unit["Test"], unit["Stdin"]) == unit["Result"]:
         print unit["TestName"] + " " + ("."*(width-11-len(unit["TestName"]))) + OKGREEN + " [SUCESS]" + ENDC
