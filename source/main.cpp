@@ -1,25 +1,4 @@
 /******************************************************************************\
-|                                     ,,                                       |
-|                    db             `7MM                                       |
-|                   ;MM:              MM                                       |
-|                  ,V^MM.    ,pP"Ybd  MMpMMMb.  .gP"Ya `7Mb,od8                |
-|                 ,M  `MM    8I   `"  MM    MM ,M'   Yb  MM' "'                |
-|                 AbmmmqMA   `YMMMa.  MM    MM 8M""""""  MM                    |
-|                A'     VML  L.   I8  MM    MM YM.    ,  MM                    |
-|              .AMA.   .AMMA.M9mmmP'.JMML  JMML.`Mbmmd'.JMML.                  |
-|                                                                              |
-|                                                                              |
-|                                ,,    ,,                                      |
-|                     .g8"""bgd `7MM    db        `7MM                         |
-|                   .dP'     `M   MM                MM                         |
-|                   dM'       `   MM  `7MM  ,p6"bo  MM  ,MP'                   |
-|                   MM            MM    MM 6M'  OO  MM ;Y                      |
-|                   MM.    `7MMF' MM    MM 8M       MM;Mm                      |
-|                   `Mb.     MM   MM    MM YM.    , MM `Mb.                    |
-|                     `"bmmmdPY .JMML..JMML.YMbmd'.JMML. YA.                   |
-|                                                                              |
-\******************************************************************************/
-/******************************************************************************\
 | Copyright (c) 2012, Asher Glick                                              |
 | All rights reserved.                                                         |
 |                                                                              |
@@ -44,57 +23,84 @@
 | ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   |
 | POSSIBILITY OF SUCH DAMAGE.                                                  |
 \******************************************************************************/
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <time.h>
-#include <sstream>
-#include <map>
-#include <vector>
-#include <stdlib.h>
+#include "main.h"
 
+#include <time.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
 
-#include "headertitle.h"
-#include "pipein.h"
+#include <sstream>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#include "./headertitle.h"
+#include "./pipein.h"
+#include "./editables.h"
+
 using namespace std;
 
-/////////////////////////////// GLOBAL VARIABLES /////////////////////////////////////////
+
 headerStyle globalHeaderStyle;
-titleStyle globalTitleStyle; 
-map<char,headerStyle> headerStyles;
-map<char,titleStyle> titleStyles;
-map<char,string> languageNames;
-map<char,string> languageDescription;
-// Output style flag
-char outputFlag = 'f'; // defaults to the function header flag
-bool outputFlagSet = false;
+titleStyle globalTitleStyle;
+std::map<char, headerStyle> headerStyles;
+std::map<char, titleStyle> titleStyles;
+std::map<char, std::string> languageNames;
+std::map<char, std::string> languageDescription;
+
+// Output format flag
+char outputFormatFlag = 'f';  // defaults to the function header flag
+bool outputFormatFlagSet = false;
+
+// Output open flag
+char outputRightWallFlag = 'e'; // Defaults to enclosed
+bool outputRightWallFlagSet = false;
+
 // Input flag
-bool extendedInputFlag  = false;
-char extendedInputAlign = 'l';
+char inputLocationFlag = 'i'; // defaults to gathering from stdin
+bool inputLocationFlagSet = false;
+
+
+char outputLocationFlag = 'o'; // Defaults to printing to stdout
+bool outputLocationFlagSet = false;
+
+
+char outputAlignmentFlag = 'n'; // Defaults to left aligned
+bool outputAlignmentFlagSet = false;
+
+
 // The default title length
-#define DEFAULT_TITLE_LENGTH 0
 unsigned int titleLength = DEFAULT_TITLE_LENGTH;
-#define DEFAULT_TITLE_WIDTH 80
 unsigned int titleWidth = DEFAULT_TITLE_WIDTH;
-map<string, string> fullFlagCompression;
-bool xclipMode = false;
+std::map<std::string, std::string> fullFlagCompression;
 
 bool postArgParseHalt = false;
 
+std::map<char, std::vector<std::string> > languageAliases;
 
 
-void help();
-string headder(string title,string extendedInput);
-string title (string title);
-string signiture();
-string bsd(string owner);
 
-map<char,vector<string> > languageAliases;
+/**************************** INITILIZE FULL FLAGS ****************************\
+| Add all of the full name alias functions to a list that can be parsed when   |
+| the user is calling the function                                             |
+\******************************************************************************/
+void initilizeFullFlags() {
+  fullFlagCompression["length"] = "l";
+  fullFlagCompression["width"] = "w";
+  fullFlagCompression["help"] = "h";
+  fullFlagCompression["signature"] = "s";
+  fullFlagCompression["bsd-license"] = "b";
+  fullFlagCompression["title"] = "t";
+  fullFlagCompression["function"] = "f";
+  fullFlagCompression["clipboard"] = "v";
+  fullFlagCompression["extended"] = "i";
+  fullFlagCompression["align-middle"] = "m";
+  fullFlagCompression["align-right"] = "r";
+}
 
-#include "editables.h"
 
 /******************************* ACTIVATE FLAGS *******************************\
 | Given a specific character flag this functions changes internal variables to |
@@ -112,48 +118,71 @@ map<char,vector<string> > languageAliases;
 | r - align the extended input to the right                                    |
 | l - specify a custom character length for the title (default 80)  [External] |
 \******************************************************************************/
-bool activateFlag ( char flag ) {
+bool activateFlag(char flag) {
   switch ( flag ) {
-    // Chose one of these output flags, help will override everything
+    // Chose one of these output flags
     case 'h':
     case 's':
     case 'b':
     case 't':
     case 'f':
-      if (!outputFlagSet) { outputFlag = flag; outputFlagSet = true;}
-      else {
-        cout << "You have set multiple output flags, only one is allowed" << endl;
-        postArgParseHalt = true;;
-      }
-      return true;    
-    // Choose as many of these as you want
-    case 'i':
-      extendedInputFlag = true;
-      return true;
-    case 'r':
-      extendedInputFlag = true;
-      if (extendedInputAlign == 'l') extendedInputAlign = 'r';
-      else {
-        cout << "You have set multiple align flags for extended input, only one is allowed" << endl;
+      if(outputFormatFlagSet) {
+        cout << "You have set multiple output format flags, only one is allowed" << endl;
         postArgParseHalt = true;
       }
+      outputFormatFlag = flag;
+      outputFormatFlagSet = true;
       return true;
-    case 'm':
-      extendedInputFlag = true;
-      if (extendedInputAlign == 'l') extendedInputAlign = 'm';
-      else {
-        cout << "You have set multiple align flags for extended input, only one is allowed" << endl;
+    
+    // Choose edge closed pattern
+    case 'g':
+    case 'e':
+      if(outputRightWallFlagSet) {
+        cout << "You have set multiple bounding box flags, only one is allowed" << endl;
         postArgParseHalt = true;
       }
-      return true;
-    case 'v':
-      xclipMode = true;
+      outputRightWallFlag = flag;
+      outputRightWallFlagSet = true;
       return true;
 
+    // Choose input location
+    case 'i':
+    case 'a':
+    case 'c':
+      if(inputLocationFlagSet) {
+        cout << "You have set multiple input location flags, only one is allowed" << endl;
+        postArgParseHalt = true;
+      }
+      inputLocationFlag = flag;
+      inputLocationFlagSet = true;
+      return true;
+
+    // Choose output alignment
+    case 'r':
+    case 'm':
+    case 'n':
+      if (outputAlignmentFlagSet) {
+        cout << "You have set multiple output alignment flags, only one is allowed" << endl;
+        postArgParseHalt = true;
+      }
+      outputAlignmentFlag = flag;
+      outputAlignmentFlagSet = true;
+      return true;
+
+    // Choose output location
+    case 'o':   
+    case 'v':
+      if (outputLocationFlagSet) {
+        cout << "You have set multiple output location flags, only one is allowed" << endl;
+        postArgParseHalt = true;
+      }
+      outputLocationFlag = flag;
+      outputLocationFlagSet = true;
+      return true;
   }
 
   // Find the flag in the language map
-  map<char,headerStyle>::iterator it = headerStyles.find(flag);
+  map<char, headerStyle>::iterator it = headerStyles.find(flag);
   if (it != headerStyles.end()) {
     globalHeaderStyle = headerStyles[flag];
     globalTitleStyle = titleStyles[flag];
@@ -162,9 +191,6 @@ bool activateFlag ( char flag ) {
 
   return false;
 }
-
-// parse arguments into a string
-string userInput = "";
 
 
 /*************************** CAPTURE EXTENDED INPUT ***************************\
@@ -182,19 +208,38 @@ string captureExtendedInput() {
   return output;
 }
 
+
+string stripTrailingSpaces(string withTrailingSpaces) {
+  string withoutTrailingSpaces = "";
+  int cutoff = withTrailingSpaces.size()-1;
+  for (; cutoff >= 0; cutoff--) {
+    if (withTrailingSpaces[cutoff] != ' ') {
+      break;
+    }
+  }
+  for (int i = 0; i <= cutoff; i++) {
+    withoutTrailingSpaces += withTrailingSpaces[i];
+  }
+
+  return withoutTrailingSpaces;
+}
+
+
 /************************************ MAIN ************************************\
 | The main function handles all of the arguments for parsing  
 \******************************************************************************/
-int main (int argv, char * argc[])
-{
+int main(int argv, char * argc[]) {
   initilizeHeaderStyles();
   initilizeFullFlags();
 
-  string inputSpaces = ""; // used to append spaces after the first text argument
+  // parse arguments into a string
+  string userInput = "";
+
+  // used to append spaces after the first text argument
+  string inputSpaces = "";
 
   // If there are no arguments, output the help screen
-  if (argv <= 1)
-  {
+  if (argv <= 1) {
     help();
     return 0;
   }
@@ -212,7 +257,7 @@ int main (int argv, char * argc[])
       // Check to see if the flag is a fulltext flag
       if (arguments[i][1] == '-') {
         string flag = arguments[i];
-        flag = flag.substr(2,flag.size()-2);
+        flag = flag.substr(2, flag.size() - 2);
         string smallflag = fullFlagCompression[flag];
         if (smallflag == "") {
           cout << "Undefined Argument: " << flag << endl;
@@ -225,36 +270,35 @@ int main (int argv, char * argc[])
       }
       for (unsigned int j = 1; j < arguments[i].size(); j++) {
         // Grab arguments for width
-        if (arguments[i][j] == 'w'){
+        if (arguments[i][j] == 'w') {
           if (i+1 >= arguments.size()) {
             cout << "Error: You did not specify a width for your title after using the -w flag" << endl;
             postArgParseHalt = true;
           }
-          else { 
-            titleWidth = atoi(arguments[i+1].c_str()); 
-            arguments.erase (arguments.begin()+i+1);
+          else {
+            titleWidth = atoi(arguments[i + 1].c_str());
+            arguments.erase(arguments.begin()+i+1);
           }
         }
         // Grab arguments for length
-        else if( arguments[i][j] == 'l' ) {
+        else if (arguments[i][j] == 'l') {
           if (i+1 >= arguments.size()) {
             cout << "Error: You did not specify a length for your title after using the -l flag" << endl;
             postArgParseHalt = true;
           }
-          else { 
-            titleLength = atoi(arguments[i+1].c_str()); 
-            arguments.erase (arguments.begin()+i+1);
+          else {
+            titleLength = atoi(arguments[i + 1].c_str());
+            arguments.erase(arguments.begin() + i + 1);
           }
-
         }
         else if (activateFlag(arguments[i][j])) {}
         else {
           cout << "Undefined flag: " << arguments[i][j] << endl;
-          postArgParseHalt = true; // Stop the program after parsing inputs
+          postArgParseHalt = true;  // Stop the program after parsing inputs
         }
       }
     }
-    
+
     // Take all non flagged input and append it together
     else {
       userInput += inputSpaces + arguments[i];
@@ -268,21 +312,18 @@ int main (int argv, char * argc[])
   }
 
   // Prevent the extended input flag and the tital flag from both being active
-  if (extendedInputFlag && outputFlag=='t'){
-    extendedInputFlag = false;
-    cout << "Warning: the extended input flag is ignored becasue you are creating a title" << endl;
+  if (inputLocationFlagSet && outputFormatFlag != 'f') {
+    // extendedInputFlag = false; // TODO should this be replaced?
+    cout << "Warning: the input location flag is ignored becasue you are not creating a function title" << endl;
   }
 
   // A string for containing the extended input's data
   string extendedInputString = "";
-  // Check for the input flag
-  if (extendedInputFlag == true){
-    extendedInputString = captureExtendedInput();
-  }
+
 
   stringstream output;
   // Check to see what type of header needs to be generated
-  switch (outputFlag) {
+  switch (outputFormatFlag) {
     case 'h':
       help();
       break;
@@ -296,17 +337,38 @@ int main (int argv, char * argc[])
       output << title(userInput) << endl;
       break;
     case 'f':
-      output << headder(userInput,extendedInputString) << endl;
+
+      // Check for the input flag
+      if (inputLocationFlag == 'a') {
+        extendedInputString = "I AM NOT PARSING FROM ARGS PROPERLY"; // TODO: PARSE FROM ARGS
+      }
+      else if (inputLocationFlag == 'i') {
+        extendedInputString = captureExtendedInput();
+      }
+      else if (inputLocationFlag == 'c') {
+        extendedInputString = copyFromClipboard();
+      }
+
+      output << headder(userInput, extendedInputString, outputRightWallFlag) << endl;
       break;
+
+    default:
+      cout << "ERROR: UNKNOWN FORMAT FLAG FOUND" << endl;
   }
 
-  // Output the results to stdout or to xclip depending on the flag specified 
-  if (xclipMode){
+  // Output the results to stdout or to xclip depending on the flag specified
+  
+  if (outputLocationFlag == 'v') {
     if (copyToClipboard(output.str()) == -1) {
-      cout << output.str(); // print out if xclip is not found
+      // Print the output to stdout if xclip is not found
+      cout << output.str();
     }
   }
+  else if (outputLocationFlag == 'o') {
+    cout << output.str();
+  }
   else {
+    cout << "Invalid outputLocationFlag" << endl;
     cout << output.str();
   }
 }
@@ -320,67 +382,87 @@ int main (int argv, char * argc[])
 \******************************************************************************/
 void help() {
   string languageflags = "";
-  map<char,headerStyle>::iterator it = headerStyles.begin();
-  while (it != headerStyles.end()){
-    languageflags +=it->first;
+  map<char, headerStyle>::iterator it = headerStyles.begin();
+  while (it != headerStyles.end()) {
+    languageflags += it->first;
     it++;
   }
-  cout << "usage: chead [-"+languageflags+"] [-hsbtf] [-v] [-imr]"<<endl;
-  cout << "             [-l #] [-w #] <Input>[Input ...] " << endl;
+  cout << "usage: chead [-" + languageflags + "] [-hsbtf] [-ge] [-ov] [-ic] [-nmr]" << endl;
+  cout << "             [-l #] [-w #] <Input> [Input ...] " << endl;
   cout << endl;
 
   cout << "Output Size and Shape" << endl;
-  cout << " -l --length       Change how many rows are formatted within the title" << endl;
-  cout << " -w --width        Change how many columns the text box takes up defaults to 80" << endl;
+  cout << " -l --lines         Change how many rows are formatted within the title" << endl;
+  cout << " -w --width         Change how many columns the text box takes up defaults to 80" << endl;
   cout << endl;
 
-  cout << "Output formats" << endl;
-  cout << " -h --help         Bring up this help menu" << endl;
-  cout << " -s --signature    Output your signature form sigfile correctly formatted" << endl;
-  cout << " -b --bsd-license  Output a BSD license using the input as the copyright holder" << endl;
-  cout << " -t --title        Output a title style header" << endl;
-  cout << " -f --function     Output a function style header, default option" << endl;
-  cout << " -v --clipboard    Copy the output to the clipboard instead of stdout" << endl;
+  cout << "Output Formats" << endl;
+  cout << " -h --help          Bring up this help menu" << endl;
+  cout << " -s --signature     Output your signature form sigfile correctly formatted" << endl;
+  cout << " -b --bsd-license   Output a BSD license using the input as the copyright holder" << endl;
+  cout << " -t --title         Output a title style header" << endl;
+  cout << " -f --function      Output a function style header, default option" << endl;
   cout << endl;
 
-  cout << "Input formats" << endl;
-  cout << " -i --extended     Also accept input from stdin for the content" << endl;  
-  cout << " -m --middle-align Extended input with each line aligned in the middle" << endl;
-  cout << " -r --right-align  Extended input with each line aligned to the right" << endl;
+  cout << "Bounding Box Options" << endl;
+  cout << " -g --hanging       Function Output: Leave right hand side hanging with no padding" << endl;
+  cout << " -e --enclosed      Function Output: Pad right hand side with whitespace and decorations" << endl;
   cout << endl;
 
+  cout << "Output Destinations" << endl;
+  cout << " -o --stdout         Write the output to the terminal" << endl;
+  cout << " -v --clipboard-out  Copy the output to the clipboard instead of stdout" << endl;
+  cout << endl;
+
+  cout << "Input Formats" << endl;
+  cout << " -i --stdin         Parse title from args and content input from stdin" << endl;
+  // cout << " -a --argument-only Parse title from first arg and content from remainder" << endl;
+  cout << " -c --clipboard-in  Parse title from args and content from clipboard" << endl;
+  cout << endl;
+
+  cout << "Content Alignment" << endl;
+  cout << " -n --left-align    Content aligned to the left" << endl;
+  cout << " -m --middle-align  Content aligned to the middle" << endl;
+  cout << " -r --right-align   Content alligned to the right" << endl;
+  cout << endl;
+
+  // Dynamically create the language section based on the languages initialized
   cout << "Languages" << endl;
-  //Dynamically create the language section based on the languages initialized
   it = headerStyles.begin();
-  while (it != headerStyles.end()){
+  while (it != headerStyles.end()) {
     cout << " -" << it->first  << " --" << languageNames[it->first];
-    for (int i = 0; i < (13-languageNames[it->first].length());i++)  cout << " ";
+    for (int i = 0; i < (14 - languageNames[it->first].length()); i++) {
+      cout << " ";
+    }
     cout << languageDescription[it->first] << endl;
     it++;
   }
 }
+
 
 /************************************ WRAP ************************************\
 | This function takes in a string of text wraps it to a specified width by     |
 | moving words that push a single line over that width to the next line. It    |
 | returns a vector of strings each element containing one line                 |
 \******************************************************************************/
-vector<string> wrap (string text, unsigned int width) {
+vector<string> wrap(string text, unsigned int width) {
   vector<string> lines;
   int lastSplit = 0;
   // Split on newlines
-  for (unsigned int i = 0; i < text.size(); i++){
-    if (text[i] == '\n'){
-      lines.push_back(text.substr(lastSplit,i-lastSplit));
-      lastSplit = i+1;
+  for (unsigned int i = 0; i < text.size(); i++) {
+    if (text[i] == '\n') {
+      lines.push_back(text.substr(lastSplit, i-lastSplit));
+      lastSplit = i + 1;
     }
   }
-  if (text.substr(lastSplit,text.size()-lastSplit) != "") lines.push_back(text.substr(lastSplit,text.size()-lastSplit));
+  if (text.substr(lastSplit, text.size() - lastSplit) != "") {
+    lines.push_back(text.substr(lastSplit, text.size() - lastSplit));
+  }
 
   // Split lines that are too long
   vector<string> wrappedLines;
   for (unsigned int i = 0; i < lines.size(); i++) {
-    while (lines[i].size() > width){
+    while (lines[i].size() > width) {
       int splitIndex = width;
       // Find the last space to prevent splitting mid-word
       for (int j = width-1; j >= 0; j--) {
@@ -390,8 +472,8 @@ vector<string> wrap (string text, unsigned int width) {
         }
       }
 
-      wrappedLines.push_back(lines[i].substr(0,splitIndex));
-      lines[i] = lines[i].substr(splitIndex+1, lines.size()-splitIndex);
+      wrappedLines.push_back(lines[i].substr(0, splitIndex));
+      lines[i] = lines[i].substr(splitIndex + 1, lines.size() - splitIndex);
     }
     wrappedLines.push_back(lines[i]);
   }
@@ -400,20 +482,20 @@ vector<string> wrap (string text, unsigned int width) {
   return wrappedLines;
 }
 
+
 /************************************ ALIGN ***********************************\
 | This function takes in a vector of strings and adds spaces to either side    |
 | of the string so that it becomes of length 'width'. The spaces are added to  |
 | the left, right, or both sides to center the text depending on the position  |
 | variable                                                                     |
 \******************************************************************************/
-vector<string> align (string text, char position, unsigned int width) {
-
-  vector <string> wrapped = wrap(text,width);
+vector<string> align(string text, char position, unsigned int width) {
+  vector<string> wrapped = wrap(text, width);
 
   for (unsigned int i = 0; i < wrapped.size(); i++) {
     unsigned int difference = width-wrapped[i].size();
-    switch(position){
-      case 'l':
+    switch (position) {
+      case 'n':
         for (unsigned int j = 0; j < difference; j++) {
           wrapped[i] += " ";
         }
@@ -432,70 +514,95 @@ vector<string> align (string text, char position, unsigned int width) {
         for (unsigned int j = 0; j < rightDifference; j++) {
           wrapped[i] += " ";
         }
-
         break;
     }
   }
   return wrapped;
 }
 
-/*********************************** HEADER ***********************************\
+
+/*********************************** HEADER *******************F****************\
 | The header function takes in a title and a content variables for the header  |
 | to display. It then runs the wrap and align functions and returns the        |
 | wrapped and aligned text surrounded by the box style set by the user         |
 \******************************************************************************/
-string headder (string input, string extendedInput) {
-  string output = "";
+string headder(string input, string extendedInput, char outputRightWallFlag) {
+
+  bool fillRightWall = true;
+  if (outputRightWallFlag == 'g') {
+    fillRightWall = false;
+  }
+
+
+  vector<string> output;
 
   // Print Top Line
   int fillWidth = titleWidth - 2 - globalHeaderStyle._TOP_LEFT.size() - globalHeaderStyle._TOP_RIGHT.size() - input.size();
   int halfFillWidth = fillWidth/2;
-  output += globalHeaderStyle._TOP_LEFT;
+  string topLine = globalHeaderStyle._TOP_LEFT;
   for (int i = 0; i < fillWidth - halfFillWidth; i++) {
-    output+=globalHeaderStyle._TOP_FILL;
+    topLine+=globalHeaderStyle._TOP_FILL;
   }
-  output += " " + input + " ";
+  topLine += " " + input + " ";
   for (int i = 0; i < halfFillWidth; i ++) {
-    output += globalHeaderStyle._TOP_FILL;
+    topLine += globalHeaderStyle._TOP_FILL;
   }
-  output += globalHeaderStyle._TOP_RIGHT;
-  output += "\n";
+  topLine += globalHeaderStyle._TOP_RIGHT;
+  // output += "\n";
+  output.push_back(topLine);
 
   // Print Text filled Rows
   int whitespaceLength = titleWidth - globalHeaderStyle._LEFT_COLUMN.size() - globalHeaderStyle._RIGHT_COLUMN.size();
   if (extendedInput != "") {
-    vector<string> textLines = align(extendedInput,extendedInputAlign,whitespaceLength);
+    vector<string> textLines = align(extendedInput, outputAlignmentFlag, whitespaceLength);
     for (unsigned int i = 0; i < textLines.size(); i++) {
-      output += globalHeaderStyle._LEFT_COLUMN;
-      output += textLines[i];
-      output += globalHeaderStyle._RIGHT_COLUMN + "\n";
+      string middleLine = globalHeaderStyle._LEFT_COLUMN;
+      middleLine += textLines[i];
+      if (fillRightWall) {
+        middleLine += globalHeaderStyle._RIGHT_COLUMN;
+      }
+      // output += "\n";
+      output.push_back(middleLine);
     }
   }
 
   // Print blank rows
-  if (titleLength == 0 && extendedInput == "") output += globalHeaderStyle._LEFT_COLUMN + "\n";
+  if (titleLength == 0 && extendedInput == "") {
+    output.push_back(globalHeaderStyle._LEFT_COLUMN);
+  }
   else {
-    for (unsigned int i = 0; i < titleLength; i++ ) {
-      output += globalHeaderStyle._LEFT_COLUMN;
-      for (int j = 0; j < whitespaceLength; j++ ) {
-        output += " ";
+    for (unsigned int i = 0; i < titleLength; i++) {
+      string blankLine = globalHeaderStyle._LEFT_COLUMN;
+      for (int j = 0; j < whitespaceLength; j++) {
+        blankLine += " ";
       }
-      output += globalHeaderStyle._RIGHT_COLUMN + "\n";
-
+      blankLine += globalHeaderStyle._RIGHT_COLUMN;
+      output.push_back(blankLine);
     }
   }
 
   // Print Bottom Line
-  output += globalHeaderStyle._BOTTOM_LEFT;
+  string bottomLine = globalHeaderStyle._BOTTOM_LEFT;
   int bottomWidth = titleWidth - globalHeaderStyle._BOTTOM_LEFT.size() - globalHeaderStyle._BOTTOM_RIGHT.size();
   for (int i = 0; i < bottomWidth; i++) {
-    output += globalHeaderStyle._BOTTOM_FILL;
+    bottomLine += globalHeaderStyle._BOTTOM_FILL;
   }
-  output += globalHeaderStyle._BOTTOM_RIGHT;
-  
+  bottomLine += globalHeaderStyle._BOTTOM_RIGHT;
+
+  output.push_back(bottomLine);
+
+
+
+  string textOutput = "";
+
+  for (int i = 0; i < output.size(); i++) {
+    textOutput += stripTrailingSpaces(output[i]) + "\n";
+  }
+
   // Return the result
-  return output;
+  return textOutput;
 }
+
 
 /******************************** TITLE HEADER ********************************\
 | The title header function acts in a similar to the regular header function   |
@@ -503,82 +610,84 @@ string headder (string input, string extendedInput) {
 | wrapper. No line wrapping or aligning is done because the title can only be  |
 | one line long and is automatically centered                                  |
 \******************************************************************************/
-string title (string input) {
-  string output = "";
-  // Begin Comment
-  int headerLength = titleWidth - globalTitleStyle._TOP_LEFT.size() - globalTitleStyle._TOP_RIGHT.size();
-  output += globalTitleStyle._TOP_LEFT;
-  for (int i = 0; i < headerLength; i++) {
-    output += globalTitleStyle._TOP_FILL;
-  }
-  output += globalTitleStyle._TOP_RIGHT;
+string title(string input) {
 
-  output += "\n";
+  // Begin Comment Row
+  string topLine = "";
+  int headerLength = titleWidth - globalTitleStyle._TOP_LEFT.size() - globalTitleStyle._TOP_RIGHT.size();
+  topLine += globalTitleStyle._TOP_LEFT;
+  for (int i = 0; i < headerLength; i++) {
+    topLine += globalTitleStyle._TOP_FILL;
+  }
+  topLine += globalTitleStyle._TOP_RIGHT;
 
   // Middle Row
+  string middleLine = "";
   int midLength = titleWidth - input.size() - 2 - globalTitleStyle._MID_LEFT_START.size() - globalTitleStyle._MID_RIGHT_END.size() - globalTitleStyle._MID_LEFT_END.size() - globalTitleStyle._MID_RIGHT_START.size();
   int halfLength = midLength / 2;
 
-  output += globalTitleStyle._MID_LEFT_START;
+  middleLine += globalTitleStyle._MID_LEFT_START;
   for (int i = 0; i < halfLength; i++) {
-    output += globalTitleStyle._MID_LEFT_FILL;
+    middleLine += globalTitleStyle._MID_LEFT_FILL;
   }
-  output += globalTitleStyle._MID_LEFT_END;
-  output += " " + input + " ";
-  output += globalTitleStyle._MID_RIGHT_START;
+  middleLine += globalTitleStyle._MID_LEFT_END;
+  middleLine += " " + input + " ";
+  middleLine += globalTitleStyle._MID_RIGHT_START;
   for (int i = 0; i < midLength - halfLength; i++) {
-    output += globalTitleStyle._MID_RIGHT_FILL;
+    middleLine += globalTitleStyle._MID_RIGHT_FILL;
   }
-  output += globalTitleStyle._MID_RIGHT_END;
-  output += "\n";
+  middleLine += globalTitleStyle._MID_RIGHT_END;
 
-  // Footer Line
+  // Footer Row
+  string bottomLine = "";
   int footerLength = titleWidth - globalTitleStyle._BOTTOM_LEFT.size() - globalTitleStyle._BOTTOM_RIGHT.size();
-  output += globalTitleStyle._BOTTOM_LEFT;
+  bottomLine += globalTitleStyle._BOTTOM_LEFT;
   for (int i = 0; i < footerLength; i++) {
-    output += globalTitleStyle._BOTTOM_FILL;
+    bottomLine += globalTitleStyle._BOTTOM_FILL;
   }
-  output += globalTitleStyle._BOTTOM_RIGHT;
+  bottomLine += globalTitleStyle._BOTTOM_RIGHT;
+
+  string output = "";
+  output += stripTrailingSpaces(topLine) + "\n";
+  output += stripTrailingSpaces(middleLine) + "\n";
+  output += stripTrailingSpaces(bottomLine) + "\n";
 
   return output;
 }
+
 
 /******************************** MY SIGNATURE ********************************\
 | Returns my signature, it's nice and pretty :) it takes in top, bottom and    |////////////
 | column variables                                                             |////////////
 \******************************************************************************/
-string signiture () {
-
+string signiture() {
   struct passwd *pw = getpwuid(getuid());
   const char *homedir = pw->pw_dir;
   string path = string(homedir) + "/.signaturesource";
-
 
   string signature = "";
   string line;
   ifstream myfile;
   myfile.open(path.c_str());
-  if (myfile.is_open())
-  {
-    getline (myfile,line);
+  if (myfile.is_open()) {
+    getline(myfile, line);
     signature += line;
-    while ( myfile.good() )
-    {
-      getline (myfile,line);
-      signature += '\n'+line;
+    while (myfile.good()) {
+      getline(myfile, line);
+      signature += '\n' + line;
     }
     myfile.close();
   }
-
   else {
     cout << "Unable to open signature file" << endl;
     cout << path;
     return "";
   }
 
-  extendedInputAlign = 'm';
-  return headder ("SIGNATURE", signature);
+  outputAlignmentFlag = 'm';
+  return headder("SIGNATURE", signature, outputRightWallFlag);
 }
+
 
 /******************************* CALCULATE YEAR *******************************\
 | This functions calculates the current year for use in the BSD license        |
@@ -593,6 +702,7 @@ string thisyear() {
   return ss.str();
 }
 
+
 /******************************** BSD FUNCTION ********************************\
 | This function prints out the BSD license to the screen with the correct      |
 | borders for the language selected                                            |
@@ -603,7 +713,7 @@ string bsd(string owner) {
 
   // Calculate the Current Year
   string year = thisyear();
-  
+
   // Top Half of the license
   string content = "Copyright (c) "+year+", "+owner+"\n";
   content += "All rights reserved.\n";
@@ -614,7 +724,7 @@ string bsd(string owner) {
   // Clauses
   string clause1 = "Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n";
   string clause2 = "Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n";
-  
+
   // Wrap the clauses smaller for 'indentation'
   vector<string> wrappedClause1 = wrap(clause1, fillWidth-2);
   clause1 = "* " + wrappedClause1[0] + "\n";
@@ -632,5 +742,5 @@ string bsd(string owner) {
 
   string fullLicense = content + clause1 + clause2 + license;
 
-  return headder ("LICENSE", fullLicense);
+  return headder("LICENSE", fullLicense, outputRightWallFlag);
 }
